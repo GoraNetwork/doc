@@ -169,6 +169,10 @@ remain unaffected.
 
 ### Off-chain computation requests
 
+|**Gora off-chain computation workflow**|
+|:--:|
+|<img src="off_chain.svg" width="500">|
+
 For use cases that require more flexibility, Gora supports oracle requests that
 execute user-supplied [Web Assembly](https://webassembly.org/) code to produce
 an oracle value. This enables querying of data sources determined at runtime and
@@ -177,11 +181,13 @@ off-chain by Gora nodes and is subject to resource limits.
 
 To make use of this feature, the developer must write their off-chain program
 using Gora off-chain API in any language that compiles to Web Assembly. Compiled
-binary is then included with the request as a parameter to a special URL.
+binary is then encoded as `Base64` and included with the request to a special URL
+as a parameter named "inline". For example:
+```
+gora://offchain?inline=AGFzbQEAAAABhoCAgAABYAF/AX8CuoCAgAACA2Vudg9fX2xpbmVhcl9tZW1vcnkCAAEDZW52GV9faW5kaXJlY3RfZnVuY3Rpb25fdGFibGUBcAAAA4KAgIAAAQAHjICAgAABCGdvcmFNYWluAAAMgYCAgAABCpGAgIAAAQ8AIABBgICAgAA2AghBAAsLk4CAgAABAEEACw1IZWxsbyB3b3JsZCEAAMKAgIAAB2xpbmtpbmcCCJuAgIAAAgCkAQAJZ29yYV9tYWluAQIGLkwuc3RyAAANBZKAgIAAAQ4ucm9kYXRhLi5MLnN0cgABAJGAgIAACnJlbG9jLkNPREUFAQQGAQAApoCAgAAJcHJvZHVjZXJzAQxwcm9jZXNzZWQtYnkBBWNsYW5nBjE2LjAuNgCsgICAAA90YXJnZXRfZmVhdHVyZXMCKw9tdXRhYmxlLWdsb2JhbHMrCHNpZ24tZXh0
+```
 
-To included with a Web Assembly binary in a Gora off-chain request, you must
-first be encoded using `Base64`, e.g.:
-
+Base64 encoding of files can normally be done from Linux or MacOs command line:
 ```
 $ base64 example_off_chain_basic.wasm
 AGFzbQEAAAABhoCAgAABYAF/AX8CuoCAgAACA2Vudg9fX2xpbmVhcl9tZW1vcnkCAAEDZW52GV9f
@@ -193,17 +199,9 @@ ZWQtYnkBBWNsYW5nBjE2LjAuNgCsgICAAA90YXJnZXRfZmVhdHVyZXMCKw9tdXRhYmxlLWdsb2Jh
 bHMrCHNpZ24tZXh0
 $
 ```
-
 To reduce blockchain storage use, you can apply Gzip compression before
 encoding: `gzip < example_off_chain_basic.wasm | base64`. Gora will automatically
 recognize and decompress gzipped binaries.
-
-The resulting base64 string is then supplied as an URL parameter named "inline":
-`gora://offchain?inline=AGFzbQEAAAABhoCAgAABYAF/AX8CuoCAgAACA2Vudg9fX2xpbmVhcl9tZW1vcnkCAAEDZW52GV9faW5kaXJlY3RfZnVuY3Rpb25fdGFibGUBcAAAA4KAgIAAAQAHjICAgAABCGdvcmFNYWluAAAMgYCAgAABCpGAgIAAAQ8AIABBgICAgAA2AghBAAsLk4CAgAABAEEACw1IZWxsbyB3b3JsZCEAAMKAgIAAB2xpbmtpbmcCCJuAgIAAAgCkAQAJZ29yYV9tYWluAQIGLkwuc3RyAAANBZKAgIAAAQ4ucm9kYXRhLi5MLnN0cgABAJGAgIAACnJlbG9jLkNPREUFAQQGAQAApoCAgAAJcHJvZHVjZXJzAQxwcm9jZXNzZWQtYnkBBWNsYW5nBjE2LjAuNgCsgICAAA90YXJnZXRfZmVhdHVyZXMCKw9tdXRhYmxlLWdsb2JhbHMrCHNpZ24tZXh0`
-
-|**Gora off-chain computation workflow**|
-|:--:|
-|<img src="off_chain.svg" width="500">|
 
 ### Off-chain computation API
 
@@ -229,10 +227,8 @@ Finishing a step, the program returns a value which tells the Gora node what to
 do next: execute another step, finish successfully or terminate with a specific
 error code. For the list of valid return values, see
 [`gora_off_chain.h`](https://github.com/GoraNetwork/developer-quick-start/blob/main/gora_off_chain.h)
-header file.
-
-For a hands-on introduction to Gora Off-Chain API and execution model, consider
-[Included Solidity examples](#included-solidity-examples).
+header file. For a hands-on introduction to Gora Off-Chain API and execution
+model, please see [Included Solidity examples](#included-solidity-examples).
 
 ### Included Solidity examples
 
