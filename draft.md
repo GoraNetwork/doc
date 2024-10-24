@@ -4,14 +4,15 @@
 (smart contracts) to interact with the outside world. Getting financial
 information from high-quality providers, extracting arbitrary data from public
 pages, calling online APIs or running Web Assembly code off-chain - is all made
-possible by Gora. To maintain security and trust, Gora relies on decentralization.
-A network of independent Gora nodes executes requested operations in parallel and
-certifies the outcome via reliable consensus procedure. This document is aimed
-at developers working with blockchains that already use Gora, or companies
-interested in adding Gora capabilities to a blockchain they manage. Therefore it
-will focus on developer experience as well as technical description of the
-current Gora offering. Gora help on running Gora nodes on Algorand support,
-please refer to Gora legacy documentation.
+possible by Gora. To maintain security and trust, Gora relies on
+decentralization.  A network of independent Gora nodes executes requested
+operations in parallel and certifies the outcome via reliable consensus
+procedure. This document is aimed at developers working with EVM-compatible
+blockchains that already use Gora, or companies interested in adding Gora
+capabilities to a blockchain they manage. Therefore it will focus on developer
+experience as well as technical description of the current Gora offering. For
+help on running Gora nodes or development on the Algorand platform, please
+refer to Gora legacy documentation.
 
 |**Gora structure and workflow overview**|
 |:--:|
