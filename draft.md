@@ -86,7 +86,6 @@ contract. In its simplest form, it takes the following positional arguments:
 | 1            |`string`           |Data source specification                 |
 | 2            |`string`           |Value extraction expression               |
 | 3            |`string`           |Destination specification                 |
-|--------------|-------------------|------------------------------------------|
 
 For example: `bytes32 reqId = gora.request(4, "http://example.com/mydata", "substr:0,2", "myMethod")`
 More precisely, Gora `request` method arguments have the following meanings:
@@ -131,7 +130,6 @@ data-receiving method must only accept two arguments:
 |--------------|-------------------|------------------------------------------|
 | 0            |`bytes32`          |Request ID                                |
 | 1            |`bytes`            |Oracle value                              |
-|--------------|-------------------|------------------------------------------|
 
 Namely:
 
