@@ -6,30 +6,21 @@ information from high-quality providers, extracting arbitrary data from public
 pages, calling online APIs or running Web Assembly code off-chain - is all made
 possible by Gora. To maintain security and trust, Gora relies on decentralization.
 A network of independent Gora nodes executes requested operations in parallel and
-certifies the outcome via reliable consensus procedure.
+certifies the outcome via reliable consensus procedure. This document is aimed
+at developers working with blockchains that already use Gora, or companies
+interested in adding Gora capabilities to a blockchain they manage. Therefore it
+will focus on developer experience as well as technical description of the
+current Gora offering. Gora help on running Gora nodes on Algorand support,
+please refer to Gora legacy documentation.
 
 |**Gora structure and workflow overview**|
 |:--:|
 |<img src="overview.svg" width="500">|
 
-Customers interact with Gora in one of the three roles: investor, node operator
-or smart contract developer. An investor purchases Gora tokens and delegates
-them to a node operator, receiving a share of rewards accrued from processing
-Gora requests. A node operator stakes Gora tokens (their own or investor's) and
-runs Gora Node Runner software to process Gora requests and be rewarded in Gora
-tokens. A smart contract developer writes applications that make use of Gora
-smart contract API. Here you will find detailed documentation for each of these
-usage cases.
-
 ## Developing with Gora on EVM-compatible blockchains
 
-Customer applications interact with Gora by calling Gora smart contracts. At
-this time, on EVM-compatible networks there is one such contract which we will
-call *Gora main contract*.  Smart contracts can be called from any software, but
-we will concentrate on calling Gora from other smart contracts because this is
-how you normally use a blockchain oracle.
-
-On EVM-compatible networks, smart contracts are almost always written in
+Customer applications interact with Gora by calling Gora smart contracts. On
+EVM-compatible networks, smart contracts are almost always written in
 [Solidity](https://soliditylang.org/), so this is the language we will use in
 our documentation and examples. For a quick hands-on introduction to using Gora
 from your Solidity programs, skip to [Included Solidity examples](#included-solidity-examples).
@@ -144,14 +135,13 @@ them to Solidity numeric types if they need. Strings are returned as is.
 
 ### Data extraction specifications
 
-As mentioned when talking about requesting oracle data, Gora users most often
-want a specific piece of the data source output. So they must let Gora know how
-to extract it. This is what a Gora data extraction specification does. It
-consists of two parts, separated by colon: method, expression and an optional
-rounding modifier. For example, `substr:4,11` tells Gora that it needs to return
-a substring from data source output, starting at 4th and ending at 11th
-character. Gora supports the following data extraction methods and expression
-formats:
+Gora users most often want a specific piece of data source output, so they must
+be able to tell Gora how to extract it. This is what a Gora data extraction
+specification does. It consists of up to three parts, separated by colon:
+method, expression and an optional rounding modifier. For example, `substr:4,11`
+tells Gora that it needs to return a substring from data source output, starting
+at 4th and ending at 11th character. Gora supports the following data extraction
+methods and expression formats:
 
  * `jsonpath`: JSONPath expression, see: https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/
  * `xpath`: XPath expression, see: https://www.w3.org/TR/2017/REC-xpath-31-20170321/
@@ -159,13 +149,13 @@ formats:
  * `substr`: substring specification, start and end offsets, e.g. `substr:4,11`
  * `bytes`: same as substr, but operates on bytes rather than characters
 
-The optional rounding modifier is used to round floating-point values to certain
+An optional rounding modifier is used to round floating-point values to certain
 amount of digits after the point. This may be necessary with some types of
 values such as cryptocurrency exchange rates. They can be so volatile that
 different Gora nodes are likely to get slightly different results despite
 querying them at almost the same time. That would prevent the nodes from
-achieving consensus and confirming the value as authentic, but adequate
-rounding gets us around this issue.
+achieving consensus and confirming the value as authentic. Adequate rounding
+gets us around this issue.
 
 For example, if you specify `jsonpath:$.rate:3`, the responses
 `{ "rate": 1.2345 }` and `{ "rate": 1.2344 }` that may be received by different
