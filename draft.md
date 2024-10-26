@@ -24,37 +24,18 @@ platform, please refer to Gora legacy documentation.
 Customer applications interact with Gora by calling Gora smart contracts. On
 EVM-compatible networks, smart contracts are almost always written in
 [Solidity](https://soliditylang.org/), so this is the language we use in our
-documentation and examples. For a quick hands-on introduction to using Gora from
-Solidity, skip to [Solidity examples](#solidity-examples).  For a more complete
-overview as well as API reference, read on.
+documentation and examples. For a quick hands-on introduction to using Gora,
+skip to [Solidity examples](#solidity-examples).  For a more complete
+overview as well as an API reference, read on.
 
 ### Calling Gora
 
-Gora functionality is accessed by calling *methods* of Gora *main smart contract*.
-To get started, you need Gora main contract address for the blockchain network
-that you are going to use. The preferred way to find it is by running `info`
-command of Gora CLI tool, for example (with irrelevant output removed):
-
-```
-$ ./gora info
-...
-EVM chain "baseSepolia":
-  ...
-  Gora main contract: "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-  ...
-EVM chain "baseMainnet":
-  ...
-  Gora main contract: "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
-...
-$
-```
-
-Another method, that does not require any tools, is to check the home page of
-Gora Explorer for the network in question. For example,
-[Gora Explorer for Base mainnet](https://mainnet.base.explorer.gora.io/).
-Gora main contract address is shown next to "Gora App" label. The downside
-of this method is that it will not work for developer's test networks that may
-be running locally or publicly alongside official ones.
+Gora functionality is accessed by calling *methods* of Gora *main smart
+contract*. To get started, you need Gora main contract address for the
+blockchain network that you are going to use. The preferred way to find it is to
+check the home page of Gora Explorer for the network in question. For example,
+[Gora Explorer for Base mainnet](https://mainnet.base.explorer.gora.io/). Gora
+main contract address is shown next to "Gora App" label.
 
 With Gora main contract address, you can create a Gora API Solidity object
 in your smart contract and start making Gora calls. For example, read total
@@ -169,22 +150,22 @@ fractional part of the rounded number, all whole part digits are preserved.
 For example, if rounding parameter is set to `7`, the number `123890.7251`
 will be rounded to `123890.7`, but the number `98765430` will remain unaffected.
 
-### Requesting data using off-chain computation
+### Using off-chain computation
 
 |**Gora off-chain computation workflow**|
 |:--:|
 |<img src="off_chain.svg" width="500">|
 
 For use cases that require more flexibility, Gora supports oracle requests that
-execute user-supplied [Web Assembly](https://webassembly.org/) code to produce
-an oracle value. This enables querying of data sources determined at runtime and
+execute user-supplied [Web Assembly](https://webassembly.org/) to produce an
+oracle value. This enables querying of data sources determined at runtime and
 processing their outputs in arbitrary ways. The user-supplied code is executed
 off-chain by Gora nodes and is subject to resource limits.
 
-To make use of this feature, the developer must write their off-chain program
+To make use of this feature, developers must write their off-chain programs
 using Gora off-chain API in any language that compiles to Web Assembly. Compiled
 binary is then encoded as `Base64` and included with the request to a special URL
-as a parameter named "inline". For example:
+as parameter named "inline". For example:
 ```
 gora://offchain?inline=AGFzbQEAAAABhoCAgAABYAF/AX8CuoCAgAACA2Vudg9fX2xpbmVhcl9tZW1vcnkCAAEDZW52GV9faW5kaXJlY3RfZnVuY3Rpb25fdGFibGUBcAAAA4KAgIAAAQAHjICAgAABCGdvcmFNYWluAAAMgYCAgAABCpGAgIAAAQ8AIABBgICAgAA2AghBAAsLk4CAgAABAEEACw1IZWxsbyB3b3JsZCEAAMKAgIAAB2xpbmtpbmcCCJuAgIAAAgCkAQAJZ29yYV9tYWluAQIGLkwuc3RyAAANBZKAgIAAAQ4ucm9kYXRhLi5MLnN0cgABAJGAgIAACnJlbG9jLkNPREUFAQQGAQAApoCAgAAJcHJvZHVjZXJzAQxwcm9jZXNzZWQtYnkBBWNsYW5nBjE2LjAuNgCsgICAAA90YXJnZXRfZmVhdHVyZXMCKw9tdXRhYmxlLWdsb2JhbHMrCHNpZ24tZXh0
 ```
@@ -203,15 +184,15 @@ $
 ```
 To reduce blockchain storage use, you can apply Gzip compression before
 encoding: `gzip < example_off_chain_basic.wasm | base64`. Gora will automatically
-recognize and decompress gzipped binaries.
+recognize and decompress gzipped Web Assembly binaries.
 
 ### Off-chain computation API
 
 Web Assembly programs that you supply with Gora off-chain computation requests
 interact with Gora nodes that host them via a simple API. It provides functions
-to setup and initiate HTTP(s) requests or write log messages. It also includes a
-persistent data structure to share data with the Gora node or between *steps* of
-your program. *Steps* are essentially repeated executions of the program in
+to setup and initiate HTTP(s) requests, or write log messages. It also includes
+a persistent data structure to share data with the host node or between *steps*
+of your program. *Steps* are essentially repeated executions of the program in
 course of serving the same off-chain computation request. They are necessary
 because Web Assembly programs cannot efficiently pause while waiting to receive
 data from external sources such as network connections.
@@ -234,36 +215,23 @@ model, please see [Solidity examples](#solidity-examples).
 ### Solidity examples
 
 The following examples are provided as a hands-on introduction and potential
-templates for your own applications. The source code includes extensive comments
-that are intended to be self-sufficient.
+templates for your own applications. The source code is extensively commented
+to help you understand it without consulting other sources.
 
- * [`example_basic.sol`](./example_basic.sol) - querying arbitrary HTTP
-   JSON endpoints
+ * [`example_basic.sol`](./example_basic.sol) - most simple example that queries
+   a test arbitrary HTTP JSON endpoint.
 
- * [`example_off_chain_basic.c`](./example_off_chain_basic.c) - a "Hello world!"
-   app using off-Gora chain computation. To compile it, install [Clang](https://clang.llvm.org/)
-   C compiler v. 12 or newer and run:
-   ```
-   clang example_off_chain_basic.c -Os --target=wasm32-unknown-unknown-wasm -c -o example_off_chain_basic.wasm
-   ```
+ * [`example_off_chain_basic.c`](./example_off_chain_basic.c) - a minimal
+   example using off-Gora chain computation.
 
- * [`example_off_chain_multi_step.c`](./example_off_chain_multi_step.c) -
-   a more advanced off-chain computation example, featuring URL requests and
-   asynchronous operations. To compile it, run:
-   ```
-   clang example_off_chain_multi_step.c -Os --target=wasm32-unknown-unknown-wasm -c -o example_off_chain_multi_step.wasm
-   ```
+ * [`example_off_chain_multi.c`](./example_off_chain_multi.c) -
+   an advanced off-chain computation example, featuring dynamic HTTPS requests
+   and multiple steps for asynchronous operations.
 
-To compile, deploy and test an example, execute `run_example` script with
-example name as argument, e.g.:
+To compile, deploy and test an example, use included `run_example` script. Run
+it without arguments to see valid options and usage instructions. You are
+welcome to play with examples by modifying them and re-running the script.
 
-```
-./run_example basic
-```
-or
-```
-./run_example off_chain
-```
-
-You are welcome to play with examples by modifying the source code and repeating
-the above steps.
+*To develop your own applications with Gora and to deploy them to production
+networks, you are expected to use tools of your own choice. Gora does not try
+to bind you to any specific toolchain.*
