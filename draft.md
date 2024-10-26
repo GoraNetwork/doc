@@ -25,8 +25,8 @@ Customer applications interact with Gora by calling Gora smart contracts. On
 EVM-compatible networks, smart contracts are almost always written in
 [Solidity](https://soliditylang.org/), so this is the language we use in our
 documentation and examples. For a quick hands-on introduction to using Gora,
-skip to [Solidity examples](#solidity-examples).  For a more complete
-overview as well as an API reference, read on.
+see [Usage examples](https://github.com/GoraNetwork/phoenix-examples/).
+For a more complete overview as well as an API reference, read on.
 
 ### Calling Gora
 
@@ -46,7 +46,7 @@ amount of tokens currently staked in this Gora network:
   Gora gora = Gora(goraMainAddr);
   uint totalStake = gora.totalStake();
 ```
-*The above is an excerpt, for a complete working example see [Solidity examples](#solidity-examples).*
+*The above is an excerpt, for a complete working example see [Usage examples](https://github.com/GoraNetwork/phoenix-examples/)*.
 
 ### Requesting oracle data
 
@@ -186,13 +186,13 @@ To reduce blockchain storage use, you can apply Gzip compression before
 encoding: `gzip < example_off_chain_basic.wasm | base64`. Gora will automatically
 recognize and decompress gzipped Web Assembly binaries.
 
-### Off-chain computation API
+### Gora Off-chain computation API
 
 Web Assembly programs that you supply with Gora off-chain computation requests
-interact with Gora nodes that host them via a simple API. It provides functions
-to setup and initiate HTTP(s) requests, or write log messages. It also includes
-a persistent data structure to share data with the host node or between *steps*
-of your program. *Steps* are essentially repeated executions of the program in
+interact with host Gora nodes via a simple API. It provides functions to setup
+and initiate HTTP(s) requests, or write log messages. It also includes a
+persistent data structure to share data with the host node or between *steps* of
+your program. *Steps* are essentially repeated executions of the program in
 course of serving the same off-chain computation request. They are necessary
 because Web Assembly programs cannot efficiently pause while waiting to receive
 data from external sources such as network connections.
@@ -208,30 +208,6 @@ computation request.
 
 Finishing a step, the program returns a value which tells the Gora node what to
 do next: execute another step, finish successfully or terminate with a specific
-error code. For the list of valid return values, see [`gora_off_chain.h`](./gora_off_chain.h)
+error code. For the list of valid return values, see [`gora_off_chain.h`](https://github.com/GoraNetwork/phoenix-examples/blob/main/gora_off_chain.h).
 header file. For a hands-on introduction to Gora Off-Chain API and execution
-model, please see [Solidity examples](#solidity-examples).
-
-### Solidity examples
-
-The following examples are provided as a hands-on introduction and potential
-templates for your own applications. The source code is extensively commented
-to help you understand it without consulting other sources.
-
- * [`example_basic.sol`](./example_basic.sol) - most simple example that queries
-   a test arbitrary HTTP JSON endpoint.
-
- * [`example_off_chain_basic.c`](./example_off_chain_basic.c) - a minimal
-   example using off-Gora chain computation.
-
- * [`example_off_chain_multi.c`](./example_off_chain_multi.c) -
-   an advanced off-chain computation example, featuring dynamic HTTPS requests
-   and multiple steps for asynchronous operations.
-
-To compile, deploy and test an example, use included `run_example` script. Run
-it without arguments to see valid options and usage instructions. You are
-welcome to play with examples by modifying them and re-running the script.
-
-*To develop your own applications with Gora and to deploy them to production
-networks, you are expected to use tools of your own choice. Gora does not try
-to bind you to any specific toolchain.*
+model, please see [Usage examples](https://github.com/GoraNetwork/phoenix-examples/).
