@@ -219,16 +219,25 @@ oracle value. This enables querying of data sources determined at runtime and
 processing their outputs in arbitrary ways. The user-supplied code is executed
 off-chain by Gora nodes and is subject to resource limits.
 
-To make use of this feature, developers must write their off-chain programs
-using Gora off-chain API in any language that compiles to Web Assembly. Compiled
-binary is then encoded as `Base64` and included with the request to a special URL
-as parameter named "inline". For example: ``gora://offchain?inline=AGFzbQEAAAABhoCAg...``
+To make use of this feature, developers write their off-chain programs utilizing
+Gora off-chain API. Any language that compiles to Web Assembly may be used. We
+recommend C language due to its simplicity and ubiquity, and `Clang compiler
+<https://clang.llvm.org/>`_ because of it can generate Web Assembly binaries
+directly. E.g.:
+
+.. code:: bash
+
+  $ clang example.c -Os --target=wasm32-unknown-unknown-wasm -c -o example.wasm
+
+Compiled binary is then encoded as `Base64` and included with the request to a
+special URL as parameter named "inline". For example:
+``gora://offchain?inline=AGFzbQEAAAABhoCAg...``
 
 Files can normally be encoded into Base64 from Linux or MacOs command line:
 
 .. code:: bash
 
-  $ base64 example_off_chain_basic.wasm
+  $ base64 example.wasm
   AGFzbQEAAAABhoCAgAABYAF/AX8CuoCAgAACA2Vudg9fX2xpbmVhcl9tZW1vcnkCAAEDZW52GV9f
   aW5kaXJlY3RfZnVuY3Rpb25fdGFibGUBcAAAA4KAgIAAAQAHjICAgAABCGdvcmFNYWluAAAMgYCA
   gAABCpGAgIAAAQ8AIABBgICAgAA2AghBAAsLk4CAgAABAEEACw1IZWxsbyB3b3JsZCEAAMKAgIAA
@@ -241,7 +250,7 @@ Files can normally be encoded into Base64 from Linux or MacOs command line:
 To reduce blockchain storage use, you can apply Gzip compression before
 encoding:
 
-:code:`gzip < example_off_chain_basic.wasm | base64`
+:code:`gzip < example.wasm | base64`
 
 Gora will automatically recognize and decompress gzipped Web Assembly binaries.
 
