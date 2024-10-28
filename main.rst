@@ -32,9 +32,9 @@ Developing applications with Gora
 Customer applications interact with Gora by calling Gora smart contracts. On
 EVM-compatible networks, smart contracts are almost always written in `Solidity
 <https://soliditylang.org/>`_ , so this is the language we use in our
-documentation. For a quick hands-on introduction, see `Gora source code examples
-<https://github.com/GoraNetwork/phoenix-examples/>`_.  For a more complete
-overview as well as an API reference, read on.
+documentation and examples. For a quick hands-on introduction, see `Gora source
+code examples <https://github.com/GoraNetwork/phoenix-examples/>`_.  For a more
+complete overview as well as an API reference, read on.
 
 ************
 Calling Gora
@@ -57,7 +57,7 @@ amount of tokens currently staked in this Gora network:
   Gora gora = Gora(goraMainAddr);
   uint totalStake = gora.totalStake();
 
-*The above is an excerpt, for a complete working example see*
+*The above is an excerpt, for complete working examples see*
 `Gora source code examples <https://github.com/GoraNetwork/phoenix-examples/>`_.
 
 **********************
@@ -158,11 +158,16 @@ tells Gora that it needs to return a substring from data source output, starting
 at 4th and ending at 11th character. Gora supports the following data extraction
 methods and expression formats:
 
- * `jsonpath`: JSONPath expression, see: https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/
- * `xpath`: XPath expression, see: https://www.w3.org/TR/2017/REC-xpath-31-20170321/
- * `regex`: JavaScript regular expression, see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
- * `substr`: substring specification, start and end offsets, e.g. `substr:4,11`
- * `bytes`: same as substr, but operates on bytes rather than characters
+jsonpath
+  JSONPath expression, see: https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/
+xpath
+  XPath expression, see: https://www.w3.org/TR/2017/REC-xpath-31-20170321/
+regex
+  JavaScript regular expression, see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+substr
+  substring specification, start and end offsets, e.g. `substr:4,11`
+bytes
+  same as substr, but operates on bytes rather than characters
 
 An optional rounding modifier is used to round floating-point values to certain
 amount of digits after the point. This may be necessary with some types of
