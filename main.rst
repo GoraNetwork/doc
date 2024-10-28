@@ -18,10 +18,12 @@ Its main focus is developer experience and technical description of current
 Gora offering. For help on running Gora nodes or using Gora on `Algorand <https://algorand.org/>`_,
 please refer to Gora legacy documentation.
 
-..
-   |**Gora structure and workflow overview**|
-   |:--:|
-   |<img src="overview.svg" width="500">|
+.. figure:: overview.svg
+   :width: 400
+   :align: right
+   :alt: Gora structure and workflow overview diagram
+
+   Gora general structure and workflow
 
 *********************************
 Developing applications with Gora
@@ -182,10 +184,13 @@ will be rounded to `123890.7`, but the number `98765430` will remain unaffected.
 Using off-chain computation
 ***************************
 
-..
-   |**Gora off-chain computation workflow**|
-   |:--:|
-   |<img src="off_chain.svg" width="500">|
+
+.. figure:: off_chain.svg
+   :width: 400
+   :align: right
+   :alt: Gora off-chain computation workflow diagram
+
+   Gora off-chain computation workflow
 
 For use cases that require more flexibility, Gora supports oracle requests that
 execute user-supplied `Web Assembly <https://webassembly.org/>`_ to produce an
