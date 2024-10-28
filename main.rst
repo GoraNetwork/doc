@@ -1,3 +1,6 @@
+.. role:: javascript(code)
+   :language: javascript
+
 .. contents::
 
 ##########
@@ -188,13 +191,15 @@ querying them at almost the same time. That would prevent the nodes from
 achieving consensus and confirming the value as authentic. Adequate rounding
 gets us around this issue.
 
-For example, if you specify `jsonpath:$.rate:3`, the responses
-`{ "rate": 1.2345 }` and `{ "rate": 1.2344 }` that may be received by different
-Gora nodes will yield the same value `"1.234"`. The nodes will achieve consensus
-and you will get `"1.234"` as the resulting oracle value. Rounding only affects
-fractional part of the rounded number, all whole part digits are preserved.
-For example, if rounding parameter is set to `7`, the number `123890.7251`
-will be rounded to `123890.7`, but the number `98765430` will remain unaffected.
+For instance, if you specify ``jsonpath:$.rate:3``, the responses :javascript:`{
+"rate": 1.2344 }` and :javascript:`{ "rate": 1.2342 }` that may be received by
+different Gora nodes will yield the same value ``"1.234"``. The nodes will
+achieve consensus and you will get ``"1.234"`` as the resulting oracle value.
+
+Rounding only affects fractional part of the rounded number, all whole part
+digits are preserved.  For example, if rounding parameter is set to ``4``, the
+number ``1.12345`` will be rounded to ``1.1234``; but, for exmaple, the number
+``12345678`` will remain unaffected.
 
 ***************************
 Using off-chain computation
