@@ -30,11 +30,11 @@ Developing applications with Gora
 #################################
 
 Customer applications interact with Gora by calling Gora smart contracts. On
-EVM-compatible networks, smart contracts are almost always written in
-`Solidity <https://soliditylang.org/>`_ , so this is the language we use in our
-documentation and examples. For a quick hands-on introduction to using Gora,
-see `Usage <examples https://github.com/GoraNetwork/phoenix-examples/>`_
-For a more complete overview as well as an API reference, read on.
+EVM-compatible networks, smart contracts are almost always written in `Solidity
+<https://soliditylang.org/>`_ , so this is the language we use in our
+documentation. For a quick hands-on introduction, see `Gora source code examples
+<https://github.com/GoraNetwork/phoenix-examples/>`_.  For a more complete
+overview as well as an API reference, read on.
 
 ************
 Calling Gora
@@ -58,7 +58,7 @@ amount of tokens currently staked in this Gora network:
   uint totalStake = gora.totalStake();
 
 *The above is an excerpt, for a complete working example see*
-`Usage examples <https://github.com/GoraNetwork/phoenix-examples/>`_.
+`Gora source code examples <https://github.com/GoraNetwork/phoenix-examples/>`_.
 
 **********************
 Requesting oracle data
@@ -225,7 +225,7 @@ encoding:
 Gora will automatically recognize and decompress gzipped Web Assembly binaries.
 
 ******************************
-Gora Off-chain computation API
+Gora off-chain computation API
 ******************************
 
 Web Assembly programs supplied with off-chain computation requests interact with
@@ -240,15 +240,15 @@ external sources such as network connections.
 A *step* starts when the program's *main function* is called by the executing
 Gora node and ends when this function returns. During a step, the program can
 schedule HTTP(S) requests, possibly using URL templates that it can fill at run
-time. When the step ends, these requests are executed by the Gora node. On
-their completion, the next step commences and your program can access request
-results as well as other data provided by the Gora node via current *context*
-structure. The *context* persists for the duration of executing your off-chain
-computation request.
+time. When the step ends, these requests are executed by the Gora node. On their
+completion, the next step commences and your program can access request results
+as well as other data provided by the Gora node via current *context* structure.
+The *context* persists for the duration of executing your off-chain computation
+request. Finishing a step, the program returns a value which tells the Gora node
+what to do next: execute another step, finish successfully or terminate with a
+specific error code.
 
-Finishing a step, the program returns a value which tells the Gora node what to
-do next: execute another step, finish successfully or terminate with a specific
-error code. For the list of valid return values, see
+For the list of valid return values, see
 `gora_off_chain.h <https://github.com/GoraNetwork/phoenix-examples/blob/main/gora_off_chain.h>`_.
-header file. For a hands-on introduction to Gora Off-Chain API and execution
-model, please see `usage examples <https://github.com/GoraNetwork/phoenix-examples/>`_.
+header file. To learn how Gora Off-Chain API is used in practice and its execution
+model, please consider `Gora source code examples <https://github.com/GoraNetwork/phoenix-examples/>`_.
