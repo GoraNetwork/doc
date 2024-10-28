@@ -4,6 +4,13 @@
 About Gora
 ##########
 
+.. figure:: overview.svg
+   :width: 400
+   :align: right
+   :alt: Gora structure and workflow overview diagram
+
+   Gora general structure and workflow
+
 `Gora <https://gora.io/>`_ enables blockchain programs (smart contracts) to
 interact with the outside world. Getting financial information from high-quality
 providers, extracting arbitrary data from public pages, calling online APIs or
@@ -18,16 +25,9 @@ Its main focus is developer experience and technical description of current
 Gora offering. For help on running Gora nodes or using Gora on `Algorand <https://algorand.org/>`_,
 please refer to Gora legacy documentation.
 
-.. figure:: overview.svg
-   :width: 400
-   :align: right
-   :alt: Gora structure and workflow overview diagram
-
-   Gora general structure and workflow
-
-*********************************
+#################################
 Developing applications with Gora
-*********************************
+#################################
 
 Customer applications interact with Gora by calling Gora smart contracts. On
 EVM-compatible networks, smart contracts are almost always written in
@@ -201,13 +201,9 @@ off-chain by Gora nodes and is subject to resource limits.
 To make use of this feature, developers must write their off-chain programs
 using Gora off-chain API in any language that compiles to Web Assembly. Compiled
 binary is then encoded as `Base64` and included with the request to a special URL
-as parameter named "inline". For example:
+as parameter named "inline". For example: ``gora://offchain?inline=AGFzbQEAAAABhoCAg...``
 
-```
-gora://offchain?inline=AGFzbQEAAAABhoCAgAABYAF/AX8CuoCAgAACA2Vudg9fX2xpbmVhcl9tZW1vcnkCAAEDZW52GV9faW5kaXJlY3RfZnVuY3Rpb25fdGFibGUBcAAAA4KAgIAAAQAHjICAgAABCGdvcmFNYWluAAAMgYCAgAABCpGAgIAAAQ8AIABBgICAgAA2AghBAAsLk4CAgAABAEEACw1IZWxsbyB3b3JsZCEAAMKAgIAAB2xpbmtpbmcCCJuAgIAAAgCkAQAJZ29yYV9tYWluAQIGLkwuc3RyAAANBZKAgIAAAQ4ucm9kYXRhLi5MLnN0cgABAJGAgIAACnJlbG9jLkNPREUFAQQGAQAApoCAgAAJcHJvZHVjZXJzAQxwcm9jZXNzZWQtYnkBBWNsYW5nBjE2LjAuNgCsgICAAA90YXJnZXRfZmVhdHVyZXMCKw9tdXRhYmxlLWdsb2JhbHMrCHNpZ24tZXh0
-```
-
-Base64 encoding of files can normally be done from Linux or MacOs command line:
+Files can normally be encoded into Base64 from Linux or MacOs command line:
 
 .. code:: bash
 
@@ -222,21 +218,24 @@ Base64 encoding of files can normally be done from Linux or MacOs command line:
   $
 
 To reduce blockchain storage use, you can apply Gzip compression before
-encoding: :code:`gzip < example_off_chain_basic.wasm | base64`. Gora will
-automaticallyrecognize and decompress gzipped Web Assembly binaries.
+encoding:
+
+:code:`gzip < example_off_chain_basic.wasm | base64`
+
+Gora will automatically recognize and decompress gzipped Web Assembly binaries.
 
 ******************************
 Gora Off-chain computation API
 ******************************
 
-Web Assembly programs that you supply with Gora off-chain computation requests
-interact with host Gora nodes via a simple API. It provides functions to setup
-and initiate HTTP(s) requests, or write log messages. It also includes a
-persistent data structure to share data with the host node or between *steps* of
-your program. *Steps* are essentially repeated executions of the program in
-course of serving the same off-chain computation request. They are necessary
-because Web Assembly programs cannot efficiently pause while waiting to receive
-data from external sources such as network connections.
+Web Assembly programs supplied with off-chain computation requests interact with
+host Gora nodes via a simple API. It provides functions to setup and initiate
+HTTP(s) requests, or write log messages. It also includes a persistent data
+structure to share data with the host node or between *steps* of your
+program. *Steps* are essentially repeated executions of the program in course of
+serving the same off-chain computation request. They are necessary because Web
+Assembly programs cannot efficiently pause while waiting to receive data from
+external sources such as network connections.
 
 A *step* starts when the program's *main function* is called by the executing
 Gora node and ends when this function returns. During a step, the program can
@@ -252,4 +251,4 @@ do next: execute another step, finish successfully or terminate with a specific
 error code. For the list of valid return values, see
 `gora_off_chain.h <https://github.com/GoraNetwork/phoenix-examples/blob/main/gora_off_chain.h>`_.
 header file. For a hands-on introduction to Gora Off-Chain API and execution
-model, please see `Usage examples <https://github.com/GoraNetwork/phoenix-examples/>`_.
+model, please see `usage examples <https://github.com/GoraNetwork/phoenix-examples/>`_.
