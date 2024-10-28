@@ -4,7 +4,7 @@
 About Gora
 ##########
 
-.. figure:: overview.svg
+.. image:: overview.svg
    :width: 400
    :align: right
    :alt: Gora structure and workflow overview diagram
