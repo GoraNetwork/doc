@@ -155,19 +155,30 @@ be able to tell Gora how to extract it. This is what a Gora data extraction
 specification does. It consists of up to three parts, separated by colon:
 method, expression and an optional rounding modifier. For example, `substr:4,11`
 tells Gora that it needs to return a substring from data source output, starting
-at 4th and ending at 11th character. Gora supports the following data extraction
-methods and expression formats:
+at 4th and ending at 11th character.
+
+Gora supports the following data extraction methods and expression formats:
 
 jsonpath
-  JSONPath expression, see: https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/
+  | JSONPath expression, see: https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/
+  | Example: ``jsonpath:jsonpath:$.data.temperature``
+
 xpath
-  XPath expression, see: https://www.w3.org/TR/2017/REC-xpath-31-20170321/
+  | XPath expression, see: https://www.w3.org/TR/2017/REC-xpath-31-20170321/
+  | Example: ``xpath:/p/a``
+
 regex
-  JavaScript regular expression, see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+  | JavaScript regular expression, see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+  | Example: ``regex: the magic number is ([0-9]+)``
+
 substr
-  substring specification, start and end offsets, e.g. `substr:4,11`
+  | Substring specification, start and end offsets, e.g. `substr:4,11`
+  | Example: ``substr:0,10``
+
 bytes
-  same as substr, but operates on bytes rather than characters
+  | Same as substring specification, but operates on bytes rather than characters
+  | Example: ``bytes:2,4``
+
 
 An optional rounding modifier is used to round floating-point values to certain
 amount of digits after the point. This may be necessary with some types of
