@@ -230,8 +230,9 @@ directly. E.g.:
   $ clang example.c -Os --target=wasm32-unknown-unknown-wasm -c -o example.wasm
 
 Compiled binary is then encoded as `Base64` and included with the request to a
-special URL as parameter named "inline". For example:
-``gora://offchain?inline=AGFzbQEAAAABhoCAg...``
+special URL as parameter named ``body``. Positional arguments to the program can
+be supplied with as parameters named  ``arg_<argument index>``. For example:
+``gora://offchain/simple?arg_0=red&arg_1=123&body=AGFzbQEAAAABhoCAg...``
 
 Files can normally be encoded into Base64 from Linux or MacOs command line:
 
