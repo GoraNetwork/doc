@@ -237,7 +237,7 @@ URL has the following format:
 Current Gora offchain API version is ``0``. So, for example, to execute your
 program with two positional arguments (``"red"`` and ``"apple"``) you would
 specify the following URL:
-``gora://offchain/v0/simple?arg_0=red&arg_1=apple&body=AGFzbQEAAAABhoCAg...``
+``gora://offchain/v0/simple?arg=red&arg=apple&body=AGFzbQEAAAABhoCAg...``
 
 To convert binaries into Base64 encoding, you can use ``base64`` command line
 utility, normally included with Linux or MacOs:
