@@ -82,7 +82,7 @@ For example:
 
 .. code:: solidity
 
-  bytes32 reqId = gora.request("http://example.com/mydata", "substr:0,2", "myMethod")
+  bytes32 reqId = gora.request("http://example.com/mydata", bytes("substr:0,2"), "myMethod")
 
 More precisely, Gora `request` method arguments have the following meanings:
 
