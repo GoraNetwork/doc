@@ -97,7 +97,7 @@ More precisely, Gora `request` method arguments have the following meanings:
 For sources that are not *special* (i.e. do not begin with ``gora://``) this
   parameter contains a *value extraction specification*. It describes how
   oracle-returned value is to be extracted from data provided by the source. For
-  example, with a JSON endpoint that returns javascript:``{ "score": 123 }`` one
+  example, with a JSON endpoint that returns ``{ "score": 123 }`` one
   would specify: ``jsonpath:$.score``. Gora supports a number of value extraction
   options which will be explained in detail below.  Special Gora sources will be
   described separately.
@@ -185,8 +185,8 @@ querying them at almost the same time. That would prevent the nodes from
 achieving consensus and confirming the value as authentic. Adequate rounding
 gets us around this issue.
 
-For instance, if you specify ``jsonpath:$.rate:3``, the responses :javascript:`{
-"rate": 1.2344 }` and :javascript:`{ "rate": 1.2342 }` that may be received by
+For instance, if you specify ``jsonpath:$.rate:3``, the responses
+``{ "rate": 1.2344 }`` and ``{ "rate": 1.2342 }`` that may be received by
 different Gora nodes will yield the same value ``"1.234"``. The nodes will
 achieve consensus and you will get ``"1.234"`` as the resulting oracle value.
 
