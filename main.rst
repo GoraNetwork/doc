@@ -94,11 +94,11 @@ More precisely, Gora `request` method arguments have the following meanings:
   without querying external endpoints.
 
 :Data source parameter:
-  For sources that are not special (i.e. do not being with ``gora://``) this
+For sources that are not *special* (i.e. do not begin with ``gora://``) this
   parameter contains a *value extraction specification*. It describes how
   oracle-returned value is to be extracted from data provided by the source. For
-  example, with a JSON endpoint that returns `{ "score": 123 }` one would
-  specify: `jsonpath:$.score`. Gora supports a number of value extraction
+  example, with a JSON endpoint that returns javascript:``{ "score": 123 }`` one
+  would specify: ``jsonpath:$.score``. Gora supports a number of value extraction
   options which will be explained in detail below.  Special Gora sources will be
   described separately.
 
