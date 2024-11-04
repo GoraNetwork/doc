@@ -94,7 +94,7 @@ More precisely, Gora `request` method arguments have the following meanings:
   without querying external endpoints.
 
 :Data source parameter:
-For sources that are not *special* (i.e. do not begin with ``gora://``) this
+  For sources that are not *special* (i.e. do not begin with ``gora://``) this
   parameter contains a *value extraction specification*. It describes how
   oracle-returned value is to be extracted from data provided by the source. For
   example, with a JSON endpoint that returns ``{ "score": 123 }`` one
@@ -143,9 +143,9 @@ Namely:
   be down to receiving smart contract to convert them to Solidity numeric
   types if they need. Strings are returned as is.
 
-******************************
+**********************************
 Value extraction specifications
-******************************
+**********************************
 
 Gora users most often want a specific piece of data source output, so they must
 be able to tell Gora how to extract it. This is what a Gora value extraction
