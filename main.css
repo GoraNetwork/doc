@@ -1,5 +1,7 @@
+dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
 pre.terminal {
     padding: 1em 0.5em; color: white; background: black;
 }
-
-aside.warning { padding: 1em; color: darkRed; background: lightYellow; }
+aside.warning {
+    padding: 1em; color: darkRed; background: lightYellow;
+}

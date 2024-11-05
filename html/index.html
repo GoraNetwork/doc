@@ -2,14 +2,14 @@
 
     <title>Gora Decentralized Oracle Documentation</title>
     <meta charset="utf-8" />
-    <style>pre.terminal {
+    <style>dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
+pre.terminal {
     padding: 1em 0.5em; color: white; background: black;
 }
-aside.warning { padding: 1em; color: darkRed; background: lightYellow; }
+aside.warning {
+    padding: 1em; color: darkRed; background: lightYellow;
+}
 </style>
-    <meta content="Specifies the data source and method to access it. It has the structure of a standard URL, e.g. http://some-source.example.com/some_data.json. Besides HTTP(S), request URLs may use Gora-specific access protocols. For example, gora://classic/1 specifies test source that always returns 1, without querying external endpoints." name="Data source specification" />
-    <meta content="For sources that are not special (i.e. do not begin with gora://) this parameter contains a value extraction specification. It describes how oracle-returned value is to be extracted from data provided by the source. For example, with a JSON endpoint that returns { &#34;score&#34;: 123 } one would specify: jsonpath:$.score. Gora supports a number of value extraction options which will be explained in detail below. Special Gora sources will be described separately." name="Data source parameter" />
-    <meta content="Contains the name of the method in customer's smart contract to be called with the oracle return value. Gora returns oracle value by calling the same customer's smart contract that that requested it." name="Destination specification" />
     <meta content="identifier of Gora request for which the value provided is the response. You smart contract will likely want to use it to determine which of the Gora requests made previously this response applies to." name="Request ID" />
     <meta content="value returned by the oracle, as a byte string. Numeric values will be provided as their string representaitons, e.g. &#34;0.1234&#34;, &#34;-12&#34;. It will be down to receiving smart contract to convert them to Solidity numeric types if they need. Strings are returned as is." name="Oracle value" />
 
@@ -105,8 +105,7 @@ aside.warning { padding: 1em; color: darkRed; background: lightYellow; }
                 </section>
                 <section id="a-start-your-gora-node-locally">
                     <h4>3a) Start your Gora node locally</h4>
-                    <p>Before continuing, make sure that you have installed Docker and <em>added yourself to the `docker` group</em> on your host. To start your node, execute: <code>./gora
-docker-start</code>. When run for the first time, it will pull GNR docker image from Gora docker registry. As the node launches, it starts logging its progress to standard output, e.g.:</p>
+                    <p>Before continuing, make sure that you have installed Docker and <em>added yourself to the `docker` group</em> on your host. To start your node, execute: <code>./gora docker-start</code>. When run for the first time, it will pull GNR docker image from Gora docker registry. As the node launches, it starts logging its progress to standard output, e.g.:</p>
                     <pre class="terminal">2024-10-04T11:19:56.648Z DEBUG Applying GORA_CONFIG environment variable
 2024-10-04T11:19:57.613Z INFO  Starting Gora Node Runner
 2024-10-04T11:19:57.984Z INFO  Version: "1.1.65"
@@ -117,8 +116,7 @@ docker-start</code>. When run for the first time, it will pull GNR docker image 
 2024-10-04T11:19:57.985Z INFO  Docker image hash: "dd20b9d55e7081687b3cacfba9d1e93a49e924c4e8e7a582cbedc86b6285c55d"
 2024-11-04T11:19:58.951Z INFO  EVM network "baseMainnet" enabled, chain Id "8453", main contract "Gora" at "0xd4c99F88095F32dF993030d9a6080e3BE723F617"
 2024-10-04T11:20:01.020Z INFO  Waiting for next oracle request</pre>
-                    <p>To make the node switch into background upon startup, add <code>--background</code> to the command. For a quick check of instance's status, use <code>gora
-docker-status</code>. To inspect instance's logs, use docker log command, e.g.: <code>docker logs -fn 100 gora-nr</code>.</p>
+                    <p>To make the node switch into background upon startup, add <code>--background</code> to the command. For a quick check of instance's status, use <code>gora docker-status</code>. To inspect instance's logs, use docker log command, e.g.: <code>docker logs -fn 100 gora-nr</code>.</p>
                 </section>
                 <section id="b-start-your-gora-node-on-aws">
                     <h4>3b) Start your Gora Node on AWS</h4>
@@ -196,6 +194,14 @@ Gora<span class="w"> </span>gora<span class="w"> </span><span class="o">=</span>
                 <p>For example:</p>
                 <pre data-language="solidity"><span class="kt">bytes32</span><span class="w"> </span><span class="nv">reqId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gora<span class="p">.</span>request<span class="p">(</span><span class="s2">&quot;http://example.com/mydata&quot;</span><span class="p">,</span><span class="w"> </span><span class="kt">bytes</span><span class="p">(</span><span class="s2">&quot;substr:0,2&quot;</span><span class="p">),</span><span class="w"> </span><span class="s2">&quot;myMethod&quot;</span><span class="p">)</span></pre>
                 <p>More precisely, Gora <cite>request</cite> method arguments have the following meanings:</p>
+                <dl>
+                    <dt>Data source specification</dt>
+                    <dd>Specifies the data source and method to access it. It has the structure of a standard URL, e.g. <cite>http://some-source.example.com/some_data.json</cite>. Besides HTTP(S), request URLs may use Gora-specific access protocols. For example, <cite>gora://classic/1</cite> specifies test source that always returns <cite>1</cite>, without querying external endpoints.</dd>
+                    <dt>Data source parameter</dt>
+                    <dd>For sources that are not <em>special</em> (i.e. do not begin with <code>gora://</code>) this parameter contains a <em>value extraction specification</em>. It describes how oracle-returned value is to be extracted from data provided by the source. For example, with a JSON endpoint that returns <code>{ "score": 123 }</code> one would specify: <code>jsonpath:$.score</code>. Gora supports a number of value extraction options which will be explained in detail below. Special Gora sources will be described separately.</dd>
+                    <dt>Destination specification</dt>
+                    <dd>Contains the name of the method in customer's smart contract to be called with the oracle return value. Gora returns oracle value by calling the same customer's smart contract that that requested it.</dd>
+                </dl>
                 <p><strong>Return value</strong> of the <cite>request</cite> method is a unique identifier for the created request. It is necessary to map returned oracle values to requests when making multiple oracle calls, to manipulate created requests or to access their properties.</p>
             </section>
             <section id="receiving-oracle-data">
