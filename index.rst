@@ -1,6 +1,10 @@
 .. role:: js(code)
    :language: javascript
 
+---------------------------------------
+Gora Decentralized Oracle Documentation
+---------------------------------------
+
 .. contents::
 
 ##########
