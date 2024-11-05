@@ -102,10 +102,10 @@ To start over, rename or delete the produced config file ``~/.gora``.
 ================================
 
 Before continuing, make sure that you have installed Docker and *added yourself
-to the `docker` group* on your host. To start your node, execute: ``./gora
-docker-start``.  When run for the first time, it will pull GNR docker image from
-Gora docker registry. As the node launches, it starts logging its progress to
-standard output, e.g.:
+to the `docker` group* on your host. To start your node, execute:
+``./gora docker-start``.  When run for the first time, it will pull GNR docker
+image from Gora docker registry. As the node launches, it starts logging its
+progress to standard output, e.g.:
 
 .. parsed-literal::
    :class: terminal
@@ -122,8 +122,8 @@ standard output, e.g.:
    2024-10-04T11:20:01.020Z INFO  Waiting for next oracle request
 
 To make the node switch into background upon startup, add ``--background`` to
-the command.  For a quick check of instance's status, use ``gora
-docker-status``. To inspect instance's logs, use docker log command, e.g.:
+the command.  For a quick check of instance's status, use ``gora docker-status``.
+To inspect instance's logs, use docker log command, e.g.:
 ``docker logs -fn 100 gora-nr``.
 
 ================================
