@@ -1,6 +1,7 @@
 .. _Docker: https://docker.io/
 .. _AWS: https://aws.amazon.com/
 .. _AWS CLI: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+.. _Gora CLI tool: https://download.gora.io/
 
 ###############################
 Setting up a Gora node network
@@ -20,9 +21,9 @@ node network comes down to setting up GNR for each node operator.
 
 The GNR is distributed as a Linux-based `Docker`_ image that runs on any
 docker-enabled customer host or in Amazon cloud as an `AWS Fargate <https://aws.amazon.com/fargate/>`_
-application. GNR is managed via `Gora CLI tool <https://download.goracle.io/>`_ -
-a self-contained command-line executable that encapsulates all required
-functionality for Gora node operators or power users.
+application. GNR is managed via `Gora CLI tool`_ - a self-contained command-line
+executable that encapsulates all required functionality for Gora node operators
+or power users.
 
 *************
 Prerequisites
@@ -50,7 +51,7 @@ To become a Gora node operator, one should possess the following:
   Gora tokens and staking them.
 
 ***************************
-Setting up Gora Node Runner
+Installing Gora Node Runner
 ***************************
 
 ============================
@@ -62,8 +63,7 @@ Setting up Gora Node Runner
     able to use it as a normal, *non-root user*; normally this requires adding
     yourself to the ``docker`` group, then logging out and back in.
 
-  * [Download](https://download.gora.io/latest-release/linux/gora) Gora CLI tool.
-    To do it with ``wget`` run:
+  * Download `Gora CLI tool`_. To do it with ``wget`` utility run:
     ``wget https://download.gora.io/latest-release/linux/gora -O gora``
 
   * Make the downloaded binary executable by running `chmod u+x ./gora`
@@ -84,11 +84,12 @@ time by pressing `Ctrl-C`. During initialization, Gora CLI tool will:
 
 To start over, rename or delete the produced config file ``~/.gora``.
 
-.. warning:: **At no time should you run Gora software as root**. If hacked, a
-             program executed with root priveleges becomes a gateway to complete
-             control of your system.  This makes such software a high-priority
-             target for hackers, which is neither in Gora's interest nor
-             yours. **No support will be provided for such usage scenarios.**
+.. warning:: **WARNING! At no time should you run Gora software as root**. If
+             hacked, a program executed with root priveleges becomes a gateway
+             to complete control of your system.  This makes such software a
+             high-priority target for hackers, which is neither in Gora's
+             interest nor yours. **No support will be provided for such usage
+             scenarios.**
 
              If you run into a permissions issue, **do NOT use sudo** to
              force your way through. For docker-related errors, make sure you
@@ -110,7 +111,6 @@ progress to standard output, e.g.:
 .. parsed-literal::
    :class: terminal
 
-   2024-10-04T11:19:56.648Z DEBUG Applying GORA_CONFIG environment variable
    2024-10-04T11:19:57.613Z INFO  Starting Gora Node Runner
    2024-10-04T11:19:57.984Z INFO  Version: "1.1.65"
    2024-10-04T11:19:57.984Z INFO  Built on: "Sat, 02 Nov 2024 02:54:17 GMT"
@@ -130,9 +130,10 @@ To inspect instance's logs, use docker log command, e.g.:
 3b) Start your Gora Node on AWS
 ================================
 
-*AWS functionality is currently* **experimental**, *new users are encouraged to
-run their nodes locally*. *If you are willing to try running on AWS, execute*
-``export GORA_EXPERIMENTAL_MODE=1`` *and proceed with caution.*
+.. note:: *AWS functionality is currently* **experimental**, *new users are
+          encouraged to run their nodes locally*. *If you are willing to try
+          running on AWS, execute* ``export GORA_EXPERIMENTAL_MODE=1`` *and
+          proceed with caution.*
 
 Running your Gora node on AWS is a lower maintenance option, altough it is not
 as flexible or economical as running it locally. To begin, download and install
