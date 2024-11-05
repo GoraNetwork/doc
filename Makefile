@@ -2,7 +2,7 @@
 
 SHELL = /bin/bash # pick up executable paths properly
 CONVERTER = rst2html5 --halt 3 --template=template.html \
-                      --stylesheet-inline main.css 
+                      --stylesheet-inline main.css
 
 all: html/index.html svg
 
