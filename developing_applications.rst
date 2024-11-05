@@ -103,12 +103,12 @@ Argument #   ABI Type   Description
 
 Namely:
 
-:Request ID:
+Request ID
   identifier of Gora request for which the value provided is the
   response. You smart contract will likely want to use it to determine which of
   the Gora requests made previously this response applies to.
 
-:Oracle value:
+Oracle value
   value returned by the oracle, as a byte string. Numeric values will be
   provided as their string representaitons, e.g. "0.1234", "-12". It will
   be down to receiving smart contract to convert them to Solidity numeric
