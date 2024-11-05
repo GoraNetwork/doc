@@ -57,14 +57,14 @@ For example:
 
 More precisely, Gora `request` method arguments have the following meanings:
 
-:Data source specification:
+Data source specification
   Specifies the data source and method to access it. It has the structure of a
   standard URL, e.g. `http://some-source.example.com/some_data.json`.
   Besides HTTP(S), request URLs may use Gora-specific access protocols. For
   example, `gora://classic/1` specifies test source that always returns `1`,
   without querying external endpoints.
 
-:Data source parameter:
+Data source parameter
   For sources that are not *special* (i.e. do not begin with ``gora://``) this
   parameter contains a *value extraction specification*. It describes how
   oracle-returned value is to be extracted from data provided by the source. For
@@ -73,7 +73,7 @@ More precisely, Gora `request` method arguments have the following meanings:
   options which will be explained in detail below.  Special Gora sources will be
   described separately.
 
-:Destination specification:
+Destination specification
   Contains the name of the method in customer's smart contract to be called
   with the oracle return value. Gora returns oracle value by calling the same
   customer's smart contract that that requested it.
