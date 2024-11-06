@@ -8,8 +8,6 @@ pre.terminal {
 }
 aside.warning { padding: 1em; color: darkRed; background: lightYellow; }
 aside.note { padding: 1em; background: lightBlue; }</style>
-    <meta content="identifier of Gora request for which the value provided is the response. You smart contract will likely want to use it to determine which of the Gora requests made previously this response applies to." name="Request ID" />
-    <meta content="value returned by the oracle, as a byte string. Numeric values will be provided as their string representaitons, e.g. &#34;0.1234&#34;, &#34;-12&#34;. It will be down to receiving smart contract to convert them to Solidity numeric types if they need. Strings are returned as is." name="Oracle value" />
 
 <html>
 <body>
@@ -97,7 +95,7 @@ aside.note { padding: 1em; background: lightBlue; }</style>
                     </blockquote>
                     <p>To start over, rename or delete the produced config file <code>~/.gora</code>.</p>
                     <aside class="warning">
-                        <p><strong>WARNING! At no time should you run Gora software as root</strong>. If hacked, a program executed with root priveleges becomes a gateway to complete control of your system. This makes such software a high-priority target for hackers, which is neither in Gora's interest nor yours. <strong>No support will be provided for such usage scenarios.</strong></p>
+                        <p><strong>At no time should you run Gora software as root</strong>. If hacked, a program executed with root priveleges becomes a gateway to complete control of your system. This makes such software a high-priority target for hackers, which is neither in Gora's interest nor yours. <strong>No support will be provided for such usage scenarios.</strong></p>
                         <p>If you run into a permissions issue, <strong>do NOT use sudo</strong> to force your way through. For docker-related errors, make sure you have added yourself to <code>docker</code> user group. When adding priveleges to your normal user account is undesirable, create a new user (e.g. <code>gora</code>) with <code>useradd</code> command, give it the necessary permissions and perform all Gora-related operations as that user.</p>
                     </aside>
                 </section>
@@ -226,6 +224,12 @@ Gora<span class="w"> </span>gora<span class="w"> </span><span class="o">=</span>
                     </tbody>
                 </table>
                 <p>Namely:</p>
+                <dl>
+                    <dt>Request ID</dt>
+                    <dd>identifier of Gora request for which the value provided is the response. You smart contract will likely want to use it to determine which of the Gora requests made previously this response applies to.</dd>
+                    <dt>Oracle value</dt>
+                    <dd>value returned by the oracle, as a byte string. Numeric values will be provided as their string representaitons, e.g. "0.1234", "-12". It will be down to receiving smart contract to convert them to Solidity numeric types if they need. Strings are returned as is.</dd>
+                </dl>
             </section>
             <section id="value-extraction-specifications">
                 <h3>Value extraction specifications</h3>

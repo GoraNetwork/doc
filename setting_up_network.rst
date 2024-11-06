@@ -84,12 +84,11 @@ time by pressing `Ctrl-C`. During initialization, Gora CLI tool will:
 
 To start over, rename or delete the produced config file ``~/.gora``.
 
-.. warning:: **WARNING! At no time should you run Gora software as root**. If
-             hacked, a program executed with root priveleges becomes a gateway
-             to complete control of your system.  This makes such software a
-             high-priority target for hackers, which is neither in Gora's
-             interest nor yours. **No support will be provided for such usage
-             scenarios.**
+.. warning:: **At no time should you run Gora software as root**. If hacked, a
+             program executed with root priveleges becomes a gateway to complete
+             control of your system.  This makes such software a high-priority
+             target for hackers, which is neither in Gora's interest nor
+             yours. **No support will be provided for such usage scenarios.**
 
              If you run into a permissions issue, **do NOT use sudo** to
              force your way through. For docker-related errors, make sure you
