@@ -55,18 +55,18 @@ Installing Gora Node Runner
 ***************************
 
 ============================
-1. Install required software
+1) Install required software
 ============================
 
-  * Install `Docker`_  engine if you want to run your node locally, or `AWS CLI`_
-    if you prefer to run it on `AWS`_. When choosing Docker, ensure that you are
-    able to use it as a normal, *non-root user*; normally this requires adding
-    yourself to the ``docker`` group, then logging out and back in.
+* Install `Docker`_  engine if you want to run your node locally, or `AWS CLI`_
+  if you prefer to run it on `AWS`_. When choosing Docker, ensure that you are
+  able to use it as a normal, *non-root user*; normally this requires adding
+  yourself to the ``docker`` group, then logging out and back in.
 
-  * Download `Gora CLI tool`_. To do it with ``wget`` utility run:
-    ``wget https://download.gora.io/latest-release/linux/gora -O gora``
+* Download `Gora CLI tool`_. To do it with ``wget`` utility run:
+  ``wget https://download.gora.io/latest-release/linux/gora -O gora``
 
-  * Make the downloaded binary executable by running `chmod u+x ./gora`
+* Make the downloaded binary executable by running `chmod u+x ./gora`
 
 ===============================
 2) Initialize your installation
@@ -76,11 +76,11 @@ To kick off the initialization process, run `./gora init`. You will be guided
 through the steps with prompts and messages. You can abort the process at any
 time by pressing `Ctrl-C`. During initialization, Gora CLI tool will:
 
-  * Create your Gora *participation accounts* on the selected blockchains.
-  * For blockchains that require it, link your participation and main accounts,
-    and supply it with Gora tokens and currency.
-  * Create ``~/.gora`` configuration file with info on used accounts as well
-    as access details for blockcians API nodes that your Gora node will use.
+* Create your Gora *participation accounts* on the selected blockchains.
+* For blockchains that require it, link your participation and main accounts,
+  and supply it with Gora tokens and currency.
+* Create ``~/.gora`` configuration file with info on used accounts as well
+  as access details for blockcians API nodes that your Gora node will use.
 
 To start over, rename or delete the produced config file ``~/.gora``.
 

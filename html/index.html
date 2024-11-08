@@ -22,7 +22,7 @@ aside.note { padding: 1em; background: lightBlue; }</style>
                         <li><a href="#prerequisites">Prerequisites</a></li>
                         <li><a href="#installing-gora-node-runner">Installing Gora Node Runner</a>
                             <ul>
-                                <li><a href="#install-required-software">1. Install required software</a></li>
+                                <li><a href="#install-required-software">1) Install required software</a></li>
                                 <li><a href="#initialize-your-installation">2) Initialize your installation</a></li>
                                 <li><a href="#a-start-your-gora-node-locally">3a) Start your Gora node locally</a></li>
                                 <li><a href="#b-start-your-gora-node-on-aws">3b) Start your Gora Node on AWS</a></li>
@@ -74,25 +74,21 @@ aside.note { padding: 1em; background: lightBlue; }</style>
             <section id="installing-gora-node-runner">
                 <h3>Installing Gora Node Runner</h3>
                 <section id="install-required-software">
-                    <h4>1. Install required software</h4>
-                    <blockquote>
-                        <ul>
-                            <li>Install <a href="https://docker.io/">Docker</a> engine if you want to run your node locally, or <a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">AWS CLI</a> if you prefer to run it on <a href="https://aws.amazon.com/">AWS</a>. When choosing Docker, ensure that you are able to use it as a normal, <em>non-root user</em>; normally this requires adding yourself to the <code>docker</code> group, then logging out and back in.</li>
-                            <li>Download <a href="https://download.gora.io/">Gora CLI tool</a>. To do it with <code>wget</code> utility run: <code>wget https://download.gora.io/latest-release/linux/gora -O gora</code></li>
-                            <li>Make the downloaded binary executable by running <cite>chmod u+x ./gora</cite></li>
-                        </ul>
-                    </blockquote>
+                    <h4>1) Install required software</h4>
+                    <ul>
+                        <li>Install <a href="https://docker.io/">Docker</a> engine if you want to run your node locally, or <a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">AWS CLI</a> if you prefer to run it on <a href="https://aws.amazon.com/">AWS</a>. When choosing Docker, ensure that you are able to use it as a normal, <em>non-root user</em>; normally this requires adding yourself to the <code>docker</code> group, then logging out and back in.</li>
+                        <li>Download <a href="https://download.gora.io/">Gora CLI tool</a>. To do it with <code>wget</code> utility run: <code>wget https://download.gora.io/latest-release/linux/gora -O gora</code></li>
+                        <li>Make the downloaded binary executable by running <cite>chmod u+x ./gora</cite></li>
+                    </ul>
                 </section>
                 <section id="initialize-your-installation">
                     <h4>2) Initialize your installation</h4>
                     <p>To kick off the initialization process, run <cite>./gora init</cite>. You will be guided through the steps with prompts and messages. You can abort the process at any time by pressing <cite>Ctrl-C</cite>. During initialization, Gora CLI tool will:</p>
-                    <blockquote>
-                        <ul>
-                            <li>Create your Gora <em>participation accounts</em> on the selected blockchains.</li>
-                            <li>For blockchains that require it, link your participation and main accounts, and supply it with Gora tokens and currency.</li>
-                            <li>Create <code>~/.gora</code> configuration file with info on used accounts as well as access details for blockcians API nodes that your Gora node will use.</li>
-                        </ul>
-                    </blockquote>
+                    <ul>
+                        <li>Create your Gora <em>participation accounts</em> on the selected blockchains.</li>
+                        <li>For blockchains that require it, link your participation and main accounts, and supply it with Gora tokens and currency.</li>
+                        <li>Create <code>~/.gora</code> configuration file with info on used accounts as well as access details for blockcians API nodes that your Gora node will use.</li>
+                    </ul>
                     <p>To start over, rename or delete the produced config file <code>~/.gora</code>.</p>
                     <aside class="warning">
                         <p><strong>At no time should you run Gora software as root</strong>. If hacked, a program executed with root priveleges becomes a gateway to complete control of your system. This makes such software a high-priority target for hackers, which is neither in Gora's interest nor yours. <strong>No support will be provided for such usage scenarios.</strong></p>
