@@ -24,36 +24,87 @@ web-based code generation tool. When higher levels of customization are
 required, oracle programs are written explicitly in C or any language that
 compiles to Web Assembly.
 
-For more flexibility and reliability, Gora's app-specific oracles use an
-*executor* to fulfill their requests: a more generic oracle engine that handles
-oracle fundamentals such as distributed node support and consensus verification.
-This allows ASO customers a smooth upgrade path: they can start with
-Gora-provided shared executor and progress to deploying their own when and if
-they need. A custom executor can provide extra privacy, computing power or even
+**************************
+Architecture of Gora ASO's
+**************************
+
+[TODO: ASO architecture diagram]
+
+Gora's app-specific oracle can be viewed as having two essential parts: an ASO
+smart contract and an *executor*. ASO smart contract contains an oracle program
+and custom configuration required by customer for their specific use case. Its
+job is to receive app-specific oracle requests, forward them together with the
+oracle program to executor, receive responses from the executor and forward
+them back to requester.
+
+An executor is a generic and complete oracle engine that handles fundamentals
+such as distributed node support and consensus verification. Customers can
+switch executors at any time. This allows for a smooth upgrade path: start with
+Gora-provided shared executor and progress to deploying your own when and if
+you need. A custom executor can provide extra privacy, computing power or even
 means to raise capital when issuing a custom token for oracle node staking and
-rewards. Abillity to switch executors without chaning the ASO smart contract
-also enables failover configurations and smoother upgrades.
+rewards. Ability to switch executors also comes in handy when creating failover
+configurations and helps smoother upgrades.
 
-*****************************************
-Architecture of Gora app-specific oracles
-*****************************************
+***************************
+Creating and managing ASO's
+***************************
 
-TODO
+TODO:
 
-*****************************
-Gora app-specific oracle tool
-*****************************
+ - Gora ASO control panel intro
+ - Steps to create a simple ASO
+ - What fields in control panel mean and how to set them
 
-TODO
 
-**********************************
-Managing your app-specific oracles
-**********************************
+************************************************
+Oracle programs: generating, writing, testing
+************************************************
 
-TODO
+TODO:
 
-************************************
-Creating and testing oracle programs
-************************************
+ - Program generator form and how to use it
+ - Testing programs before deploying
+ - Example C progams and how to use them as templates
+ - Writing C programs from scratch with ASO API
+
+******************************************************
+Calling app-specific oracles from your smart contracts
+******************************************************
+
+TODO:
+
+ - ASO Solidity examples (to be written)
+ - Gora ASO Solidity API reference
+
+*********************
+Shared Gora executors
+*********************
+
+Gora provides shared executors for ASO customer use. These are essentially
+generic oracles relying on a decentralized network of nodes for data querying
+and validation. Node operators use Gora tokens to make stakes for proof-of-stake
+valudation and to receive rewards for fulfilling oracle requests. Customers
+using a shared Gora executor must therefore fund their ASO smart contract with
+Gora tokens and maintain their balance as they are being spent.
+
+To use a Gora shared executor, set your ASO executor address according to
+network being used:
+
+=====================  ============
+Blockchain Network     Address
+=====================  ============
+Base Sepolia           TODO
+Base Mainnet           TODO
+Polygon Testnet        TODO
+Polygon Mainnet        TODO
+=====================  ============
+
+When using a testnet, visit `Gora testnet faucet <https://dev.gora.io/faucet>`_
+to get tokens for funding your ASO contract.
+
+*********************
+Custom executors
+*********************
 
 TODO
