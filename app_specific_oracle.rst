@@ -8,7 +8,7 @@ maximum flexibility to support all kinds or applications, it may lack
 specialized data processing or access control features needed for more niche use
 cases. For example, a sports oracle may want to provide team statistics which
 requires getting data from several resources and performing floating-point maths
-on it.  A private oracle may want to only serve specific smart contracts or
+on it. A private oracle may want to only serve specific smart contracts or
 authenticate itself to data sources in a bespoke way.
 
 Gora provides accesible and flexible tools to create your own ASO's and deploy
@@ -24,27 +24,42 @@ web-based code generation tool. When higher levels of customization are
 required, oracle programs are written explicitly in C or any language that
 compiles to Web Assembly.
 
-**************************
-Architecture of Gora ASO's
-**************************
+***********************************
+Gora ASO architecture and workflow
+***********************************
 
 [TODO: ASO architecture diagram]
 
-Gora's app-specific oracle can be viewed as having two essential parts: an ASO
-smart contract and an *executor*. ASO smart contract contains an oracle program
-and custom configuration required by customer for their specific use case. Its
-job is to receive app-specific oracle requests, forward them together with the
-oracle program to executor, receive responses from the executor and forward
-them back to requester.
+Gora's app-specific oracle relies on two key mechanisms: an ASO smart contract
+and an *executor* oracle. ASO smart contract contains oracle program and custom
+configuration required by customer for their specific use case. An executor
+oracle is a generic and complete oracle engine that implements fundamental
+oracle functionality such as distributed node management and consensus
+verification. They work together to serve web3 application requests as follows:
 
-An executor is a generic and complete oracle engine that handles fundamentals
-such as distributed node support and consensus verification. Customers can
-switch executors at any time. This allows for a smooth upgrade path: start with
-Gora-provided shared executor and progress to deploying your own when and if
-you need. A custom executor can provide extra privacy, computing power or even
-means to raise capital when issuing a custom token for oracle node staking and
-rewards. Ability to switch executors also comes in handy when creating failover
-configurations and helps smoother upgrades.
+* An application smart contract makes a request for an oracle value. It calls
+  the ASO smart contract, providing request parameters (if any) and expects a
+  call back with a response.
+
+* ASO smart contract combines received parameters with its configuration
+  settings and oracle program, making a request to the executor oracle.
+
+* Request to the executor oracle is picked up by decentralized network of nodes.
+  Each online node runs the oracle program provided by the ASO smart contract.
+  The program queries online data sources, processes received data, performs
+  other programmed operations as needed to produce an oracle value.
+
+* The produced value is submitted by each node to the executor smart contract
+  for a proof-of-stake consensus verification. Upon reaching the configured
+  threshold, the executor contract calls back ASO smart contract with the
+  response. The ASO smart contract forwards the response to the application
+  smart contract.
+
+Gora provides common shared executors on a number of popular public blockchain
+networks. ASO customers just starting out are advised to use these. When data
+privacy, extra computing power or control over staking tokenomics is desired,
+customers are welcome to setup their own executors using Gora software. ASO
+smart contract can switch executors at any time.
 
 ***************************
 Creating and managing ASO's
