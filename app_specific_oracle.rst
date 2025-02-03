@@ -65,12 +65,30 @@ smart contract can switch executors at any time.
 Creating and managing ASO's
 ***************************
 
+Application-specific oracles are created using Gora's web-based `ASO control
+panel <https://aso.gora.io/>`_ To start using it, connect your Web3 wallet by
+clicking "Connect Wallet". If you already created ASO's using this wallet
+account, you will be able to choose one from the drop-down list. You will also
+see a "Create new" clicking it will create a new ASO for you.
+
+.. warning:: Creating or updating ASO's on a public mainnet generates blockchain
+             transactions that cost real money. For trying things out free of
+             charge, we suggest using a public testnet, such as Base Sepolia.
+             Before doing that, you would need to make sure you have some
+             testnet ETH in your wallet account. You should be able to get some
+             via a public web faucet for the chosen network.
+
+Once you create a new ASO by clicking "Create new" button, or select an existing
+one in the dropdown list, you will be presented with ASO configuration form.
+It contains properties of the currenty selected ASO for you to edit.
+
+.. warning:: ASO configuration property values are stored on the blockchain, so
+             the larger they are, the more it will cost. Oracle program source
+             code property is for customer information only and can be kept
+             empty on mainnets to storage costs.
 TODO:
 
- - Gora ASO control panel intro
- - Steps to create a simple ASO
- - What fields in control panel mean and how to set them
-
+ - Editing configuration form
 
 ************************************************
 Oracle programs: generating, writing, testing
