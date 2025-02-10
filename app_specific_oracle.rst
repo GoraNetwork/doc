@@ -31,7 +31,10 @@ C or any language that compiles to Web Assembly.
 Gora ASO architecture and workflow
 ***********************************
 
-[TODO: ASO architecture diagram]
+.. figure:: aso_arch_0.svg
+   :width: 800
+   :align: center
+   :alt: Gora ASO architecture and workflow diagram
 
 Gora's app-specific oracle relies on two key mechanisms: an ASO smart contract
 and an *executor* oracle. ASO smart contract contains oracle program and custom
