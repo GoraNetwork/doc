@@ -90,11 +90,55 @@ It contains properties of the currenty selected ASO for you to edit.
 
 .. warning:: ASO configuration property values are stored on the blockchain, so
              the larger they are, the more it will cost. Oracle program source
-             code property is for customer information only and can be kept
-             empty on mainnets to storage costs.
-TODO:
+             code property is for customer information only, it can be left
+             empty on a mainnet to reduce storage cost.
 
- - Editing configuration form
+Configuration form fields and their meanings are as follows:
+
+ASO contract
+  Address of the ASO contract being configured
+
+Description
+  Short string describing the ASO, e.g. "Footbal player rating"
+
+Own fee
+  Amount in blockchain native currency that must be paid by the calling smart
+  contract to make a request to the ASO. Specified as whole number with regard
+  to number of decimals used by the blockchain for its currency. E.g. `Base
+  <https://base.org/>`_ like most EVM-based blockchains use 18 decimals, so to
+  charge ``0.0001`` Base ether, set this to ``100000000000000``.
+
+Executor
+  Address of the executor oracle smart contract that the ASO will forward its
+  requests to. This should default to Gora shared executor address on the
+  current blockchain. Should you need to reset it, see addresses in `Shared Gora
+  executors <#shared-gora-executors-1>`_ section. Customer using their own
+  custom executor network will need to enter its address here.
+
+Maxium executor fee
+  Highest amount that the ASO is allowed to pay for an executor oracle request.
+  Executor request price is defined by the executor and can be fixed or varying
+  to accomodate for market volatility. Setting maximum executor fee allows to
+  prevent ASO losing money: if the executor fee goes higher, ASO will decline
+  requests. `Shared Gora executors <#shared-gora-executors-1>`_ section contains
+  their respective pricing info. Customers with a custom executor will have set
+  its pricing when they had deployed it. Every executor will also set the asset
+  in which it will be paid - an ERC20 token or native currency. This asset will
+  be auto-detected by the ASO, so it does not need to be configured here.
+
+Source code
+  Source code for the oracle program - piece of software that queries data
+  sources and produces an oracle value. This field is for *for customer
+  reference only* and is not used by ASO. It may be best to leave it empty on
+  mainnet blockchain networks for privacy and cost saving. It is primarily
+  intended for development use on public testnets or local blockchain networks.
+
+Compiled binary
+  Oracle program in compiled (binary form). This field can be populated by
+  compiling source code in the above field after pressing "Compile".
+  Alternatively, users can upload any Web Assembly binary converted to a hex
+  string, optionally compressed with ``gzip``.
+
 
 ************************************************
 Oracle programs: generating, writing, testing
@@ -130,14 +174,14 @@ Gora tokens and maintain their balance as they are being spent.
 To use a Gora shared executor, set your ASO executor address according to
 network being used:
 
-=====================  ============
-Blockchain Network     Address
-=====================  ============
-Base Sepolia           TODO
-Base Mainnet           TODO
-Polygon Testnet        TODO
-Polygon Mainnet        TODO
-=====================  ============
+=====================  ============  ============  ============
+Blockchain Network     Address       Fee asset     Fee amount
+=====================  ============  ============  ============
+Base Sepolia           TODO          TODO          TODO
+Base Mainnet           TODO          TODO          TODO
+Polygon Testnet        TODO          TODO          TODO
+Polygon Mainnet        TODO          TODO          TODO
+=====================  ============  ============  ============
 
 When using a testnet, visit `Gora testnet faucet <https://dev.gora.io/faucet>`_
 to get tokens for funding your ASO contract.
