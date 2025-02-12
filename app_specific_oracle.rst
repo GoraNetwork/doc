@@ -176,11 +176,68 @@ arguments (JSON)" is populated with a JSON-formatted array. In a production
 environment, these arguments would come from ``args`` parameter of the
 ``request()`` method call to ASO smart contract.
 
-=====================
-Program API reference
-=====================
+========================
+Gora oracle programs API
+========================
 
-TODO
+Oracle programs are executed by Gora nodes in a customized Web Assembly
+environment. They interact with the host node via so-called *Gora off-Chain API*
+that provides functionality to query data sources, fetch results or write log
+messages. Another essential part of this API is support for repeated program
+executions in the same request context. These are necessary because Web Assembly
+programs cannot efficiently pause while waiting to receive data from online
+sources.
+
+Gora off-chain API is made available to C programs by including
+``gora_off_chain.h`` header file. When compiling via ASO control panel, it is
+made available for inclusion automatically. It defines the following custom
+functions:
+
+``void gora_request_url(const char* url, const char* value_exprs)``
+  Request data from an URL. ``value_exprs`` argument contains one or more
+  value extraction expressions, separated by tab characters.
+
+``void gora_set_next_url_param(const char* value)``
+  Set value of a template parameter in the URL last requested with
+  ``gora_request_url()``. For example, after requesting the URL
+  ``https://example.com/?a=##&b=##``, one can call
+  ``gora_set_next_url_param("one")``, then ``gora_set_next_url_param("two")``,
+  yielding the URL ``https://example.com/?a=one&b=two``. This allows having
+  predefined templates for data source URLs and customize them at runtime.
+
+``void gora_log(const char* message, const int level)``
+  Write a message to the node log. Intended for debugging only, oracle
+  program logging is disabled by default on production nodes.
+
+This API also includes a persistent data structure to share data with
+the host node or between *steps* of your program. *Steps* are essentially
+repeated executions of the program in course of serving the same off-chain
+computation request. They are necessary because Web Assembly programs cannot
+efficiently pause while waiting to receive data from external sources such as
+network connections.
+
+It also includes a persistent data structure to share data with the host node or
+between *steps* of your program. *Steps* are essentially repeated executions of
+the program in course of serving the same off-chain computation request. They
+are necessary because Web Assembly programs cannot efficiently pause while
+waiting to receive data from external sources such as network connections.
+
+A *step* starts when the program's *main function* is called by the executing
+Gora node and ends when this function returns. During a step, the program can
+schedule HTTP(S) requests, possibly using URL templates that it can fill at run
+time. When the step ends, these requests are executed by the Gora node. On their
+completion, the next step commences and your program can access request results
+as well as other data provided by the Gora node via current *context* structure.
+The *context* persists for the duration of executing your off-chain computation
+request. Finishing a step, the program returns a value which tells the Gora node
+what to do next: execute another step, finish successfully or terminate with a
+specific error code.
+
+
+This header file defines a key structure ``gora_context_t``
+
+Gora nodes download the program code from the blockchain and run in a custom
+Web Assembly environment.
 
 ******************************************************
 Calling app-specific oracles from your smart contracts
