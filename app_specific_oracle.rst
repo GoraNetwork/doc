@@ -136,20 +136,51 @@ Source code
 Compiled binary
   Oracle program in compiled (binary form). This field can be populated by
   compiling source code in the above field after pressing "Compile".
-  Alternatively, users can upload any Web Assembly binary converted to a hex
+  Alternatively, users can upload their Web Assembly binaries converted to a hex
   string, optionally compressed with ``gzip``.
 
+************************************
+Oracle programs: writing and testing
+************************************
 
-************************************************
-Oracle programs: generating, writing, testing
-************************************************
+An ASO oracle program is a compact piece of software that queries online data
+sources and produces an oracle value. Any ASO has to have an oracle program to
+function, and usually it is written specifically for this ASO. While Gora ASO
+programs can be written in any language that compiles to Web Assembly, the ASO
+control panel and documentation examples use C language. It is simple,
+ubiquitous and can create very compact executables suitable for storage on the
+blockchain.
 
-TODO:
+============================================
+Entering and compiling progams with examples
+============================================
 
- - Program generator form and how to use it
- - Testing programs before deploying
- - Example C progams and how to use them as templates
- - Writing C programs from scratch with ASO API
+No software installation is required to work with oracle programs: they can be
+written, compiled, tested and deployed inside ASO web control panel. To get
+started, click "Insert example" button under the program source code field in a
+newly created ASO. The field (which must previously be empty) will be filled
+with a basic C program that always returns string ``"Hello Gora!"`` as the
+oracle value. Clicking "Compile" button will compile this program and populate
+the compiled binary field.
+
+================
+Testing programs
+================
+
+ASO contol panel allows to test oracle programs before they are deployed to the
+blockchain. Pressing "Test oracle" button under the "Test" section will trigger
+compilation (when source code is present) and execution of the current oracle
+program. Click it to run the test and check out the result placed in "Test
+result" read-only field. For programs that take arguments, the field "Program
+arguments (JSON)" is populated with a JSON-formatted array. In a production
+environment, these arguments would come from ``args`` parameter of the
+``request()`` method call to ASO smart contract.
+
+=====================
+Program API reference
+=====================
+
+TODO
 
 ******************************************************
 Calling app-specific oracles from your smart contracts
