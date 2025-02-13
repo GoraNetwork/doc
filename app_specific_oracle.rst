@@ -112,7 +112,7 @@ Executor
   Address of the executor oracle smart contract that the ASO will forward its
   requests to. This should default to Gora shared executor address on the
   current blockchain. Should you need to reset it, see addresses in `Shared Gora
-  executors <#shared-gora-executors-1>`_ section. Customer using their own
+  executors <#shared-gora-executors-2>`_ section. Customer using their own
   custom executor network will need to enter its address here.
 
 Maxium executor fee
@@ -120,7 +120,7 @@ Maxium executor fee
   Executor request price is defined by the executor and can be fixed or varying
   to accomodate for market volatility. Setting maximum executor fee allows to
   prevent ASO losing money: if the executor fee goes higher, ASO will decline
-  requests. `Shared Gora executors <#shared-gora-executors-1>`_ section contains
+  requests. `Shared Gora executors <#shared-gora-executors-2>`_ section contains
   their respective pricing info. Customers with a custom executor will have set
   its pricing when they had deployed it. Every executor will also set the asset
   in which it will be paid - an ERC20 token or native currency. This asset will
@@ -181,63 +181,137 @@ Gora oracle programs API
 ========================
 
 Oracle programs are executed by Gora nodes in a customized Web Assembly
-environment. They interact with the host node via so-called *Gora off-Chain API*
-that provides functionality to query data sources, fetch results or write log
-messages. Another essential part of this API is support for repeated program
-executions in the same request context. These are necessary because Web Assembly
-programs cannot efficiently pause while waiting to receive data from online
-sources.
+environment. They interact with the host node via *Gora off-Chain API* that
+provides functionality to query data sources, fetch results, write log messages
+and more. Another essential part of this API is support for repeated program
+execution in the same request context. This is necessary because Web Assembly
+programs cannot efficiently pause while waiting to receive data, such as from
+online sources.
+
+~~~~~~~~~
+Functions
+~~~~~~~~~
 
 Gora off-chain API is made available to C programs by including
 ``gora_off_chain.h`` header file. When compiling via ASO control panel, it is
 made available for inclusion automatically. It defines the following custom
 functions:
 
-``void gora_request_url(const char* url, const char* value_exprs)``
-  Request data from an URL. ``value_exprs`` argument contains one or more
-  value extraction expressions, separated by tab characters.
+``void gora_request_url(const char* url, const char* value_specs)``
+  Request data from an URL. ``value_specs`` argument contains one or more
+  `value extraction specifications <#value-extraction-specifications>`_,
+  separated by tab characters. For their syntax, see the dedicated section below.
 
 ``void gora_set_next_url_param(const char* value)``
   Set value of a template parameter in the URL last requested with
   ``gora_request_url()``. For example, after requesting the URL
   ``https://example.com/?a=##&b=##``, one can call
   ``gora_set_next_url_param("one")``, then ``gora_set_next_url_param("two")``,
-  yielding the URL ``https://example.com/?a=one&b=two``. This allows having
-  predefined templates for data source URLs and customize them at runtime.
+  yielding the URL ``https://example.com/?a=one&b=two``. This allows to have
+  predefined templates for data source URLs and fill them at runtime.
 
 ``void gora_log(const char* message, const int level)``
   Write a message to the node log. Intended for debugging only, oracle
   program logging is disabled by default on production nodes.
 
-This API also includes a persistent data structure to share data with
-the host node or between *steps* of your program. *Steps* are essentially
-repeated executions of the program in course of serving the same off-chain
-computation request. They are necessary because Web Assembly programs cannot
-efficiently pause while waiting to receive data from external sources such as
-network connections.
+~~~~~~~~~~~~~~~~~
+Context structure
+~~~~~~~~~~~~~~~~~
 
-It also includes a persistent data structure to share data with the host node or
-between *steps* of your program. *Steps* are essentially repeated executions of
-the program in course of serving the same off-chain computation request. They
-are necessary because Web Assembly programs cannot efficiently pause while
-waiting to receive data from external sources such as network connections.
+In addition to functions, Gora off-Chain API defines a *context* data structure
+It is designed for passing data from host node to oracle program as well as
+preserving current state between execution *stages* (more on that later). An
+instance of this structure is passed to oracle program whenever it executes.
+It contains:
 
-A *step* starts when the program's *main function* is called by the executing
-Gora node and ends when this function returns. During a step, the program can
-schedule HTTP(S) requests, possibly using URL templates that it can fill at run
-time. When the step ends, these requests are executed by the Gora node. On their
-completion, the next step commences and your program can access request results
-as well as other data provided by the Gora node via current *context* structure.
-The *context* persists for the duration of executing your off-chain computation
-request. Finishing a step, the program returns a value which tells the Gora node
-what to do next: execute another step, finish successfully or terminate with a
-specific error code.
+* API version information for compatibility checks
+* Arguments passed to the program with the oracle request
+* Values from queried data sources extracted by host for the program
+* Oracle value to be returned, set by the program
+* Current execution stage number
+* Scratch memory for program data to persist between execution stages
+
+Complete definition of the context structure is contained in
+``gora_off_chain.h`` header file which all oracle program developers are advised
+to peruse.
+
+~~~~~~~~~~~~~~~~
+Staged execution
+~~~~~~~~~~~~~~~~
+
+Like most low-level system languages, Web Assembly, which oracle programs are
+compiled to, does not support asynchronous calls. When a Web Assembly program
+needs to retrieve data from a source that cannot return it instantly (e.g. a
+network endpoint), it has to either constantly check for data arrival in a loop
+(very inefficient) or rely on runtime environment to call it when the data is
+ready.
+
+Gora off-chain API implements a variant of the second approach. It executes the
+program repeatedly, performing asynchronous operations between executions which
+are called *stages*. A *stage* starts when program's *main function* is called
+by the host node and ends when this function returns. During a stage, the
+program can schedule HTTP(S) requests, possibly using URL templates that it can
+fill at run time. When a stage ends, these requests are executed by the host
+node. On their completion, next stage commences and request results are made
+available to the program via the context structure. The context contains current
+stage number, so program always knows which stage it is at. It also has
+persistent memory space to share data between stages. Finishing a stage, the
+program's main function returns a value telling the host node what to do next:
+execute the next stage, finish successfully or terminate with a specific error
+code. For a hands-on primer of using staged execution, please see example ASO
+progams.
+
+*******************************
+Value extraction specifications
+*******************************
+
+Oracle users most often want a specific piece of data source output, so they
+must be able to tell Gora how to extract it. This is what a *value extraction
+specification* does. It consists of up to three parts, separated by colons:
+method, expression and an optional rounding modifier. For example, `substr:4,11`
+tells Gora that it needs to return a substring from data source output, starting
+at 4th and ending at 11th character.
+
+Gora supports the following value extraction methods and expression formats:
+
+jsonpath
+  | JSONPath expression, see: https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/
+  | Example: ``jsonpath:jsonpath:$.data.temperature``
+
+xpath
+  | XPath expression, see: https://www.w3.org/TR/2017/REC-xpath-31-20170321/
+  | Example: ``xpath:/p/a``
+
+regex
+  | JavaScript regular expression, see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+  | Example: ``regex: the magic number is ([0-9]+)``
+
+substr
+  | Substring specification, start and end offsets, e.g. `substr:4,11`
+  | Example: ``substr:0,10``
+
+bytes
+  | Same as substring specification, but operates on bytes rather than characters
+  | Example: ``bytes:2,4``
 
 
-This header file defines a key structure ``gora_context_t``
+An optional rounding modifier is used to round floating-point values to certain
+amount of digits after the point. This may be necessary with some types of
+values such as cryptocurrency exchange rates. They can be so volatile that
+different Gora nodes are likely to get slightly different results despite
+querying them at almost the same time. That would prevent the nodes from
+achieving consensus and confirming the value as authentic. Adequate rounding
+gets us around this issue.
 
-Gora nodes download the program code from the blockchain and run in a custom
-Web Assembly environment.
+For instance, if you specify ``jsonpath:$.rate:3``, the responses
+``{ "rate": 1.2344 }`` and ``{ "rate": 1.2342 }`` that may be received by
+different Gora nodes will yield the same value ``"1.234"``. The nodes will
+achieve consensus and you will get ``"1.234"`` as the resulting oracle value.
+
+Rounding only affects fractional part of the rounded number, all whole part
+digits are preserved.  For example, if rounding parameter is set to ``4``, the
+number ``1.12345`` will be rounded to ``1.1234``; but, for exmaple, the number
+``12345678`` will remain unaffected.
 
 ******************************************************
 Calling app-specific oracles from your smart contracts
