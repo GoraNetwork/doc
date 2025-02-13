@@ -261,9 +261,9 @@ execute the next stage, finish successfully or terminate with a specific error
 code. For a hands-on primer of using staged execution, please see example ASO
 progams.
 
-*******************************
+===============================
 Value extraction specifications
-*******************************
+===============================
 
 Oracle users most often want a specific piece of data source output, so they
 must be able to tell Gora how to extract it. This is what a *value extraction
@@ -322,9 +322,16 @@ TODO:
  - ASO Solidity examples (to be written)
  - Gora ASO Solidity API reference
 
-*********************
-Shared Gora executors
-*********************
+****************
+Executor oracles
+****************
+
+TODO:
+ - Incorporate docs from "classic" Gora as the explanation of executors.
+
+================
+Shared executors
+================
 
 Gora provides shared executors for ASO customer use. These are essentially
 generic oracles relying on a decentralized network of nodes for data querying
@@ -348,8 +355,11 @@ Polygon Mainnet        TODO          TODO          TODO
 When using a testnet, visit `Gora testnet faucet <https://dev.gora.io/faucet>`_
 to get tokens for funding your ASO contract.
 
-*********************
+================
 Custom executors
-*********************
+================
 
 TODO
+
+- Explain executor factory and its API
+- Provide addresses of executor factories
