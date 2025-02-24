@@ -314,13 +314,73 @@ number ``1.12345`` will be rounded to ``1.1234``; but, for exmaple, the number
 ``12345678`` will remain unaffected.
 
 ******************************************************
-Calling app-specific oracles from your smart contracts
+Using app-specific oracles from your smart contracts
 ******************************************************
 
 TODO:
+ - Request cycle flow diagram
+
+Gora app-specific oracles work using a simple callback pattern. To make an
+oracle request, customer smart contract calls ASO smart contract's ``request``
+method.  If parameters need to be passed to the oracle program, they are
+supplied as the method argument (array of byte strings). Unique request ID is
+returned by ASO for future reference. On successful request completion, customer
+smart contract gets a response call to its special ``__goraAsoResponse`` method
+from the same ASO smart contract. The call has two arguments: request ID to
+match the response to the initiated request, and the actual value returned by
+the oracle.
+
+To get a feel of it, consider the following contrived Solidity fragment that
+might occur in a smart contract tracking Bitcoin price and DowJones Industrial
+Average index:
+
+.. code:: solidity
+  :number-lines:
+
+  // ASO smart contracts to query, addresses will be known and chain-specific.
+  GoraAso rateAso(0xaaaaaaaaaaaaaaaaaaaaa);
+  GoraAso dowJonesAso(0xbbbbbbbbbbbbbbbbbbbbb);
+
+  // Local storage to track requests in flight.
+  enum RequestType { None, BitcoinPrice, DowJones };
+  mapping(bytes32 => RequestType) requests;
+
+  // Values to keep up to date. Byte strings for simplicity, but in
+  // real-world apps these are usually unpacked into more suitable formats.
+  bytes bitcoinPrice;
+  bytes dowJones;
+
+  // Request a Bitcoin price update.
+  function requestBitcoinPrice() external {
+    bytes[] memory reqParams = new bytes[](2);
+    reqParams[0] = bytes("btc");
+    reqParams[1] = bytes("usd");
+    bytes32 reqId = rateAso.request(reqParams);
+    requests[reqId] = RequestType.BitcoinPrice;
+  }
+
+  // Request a Dow Jones index update.
+  function requestDowJones() external {
+    bytes32 reqId = dowJonesAso.request(new bytes[]());
+    requests[reqId] = RequestType.DowJones;
+  }
+
+  // Handle oracle responses.
+  function __goraAsoResponse(bytes32 reqId, bytes calldata value) external {
+    if (requests[reqId] == RequestType.BitcoinPrice)
+      bitcoinPrice = value;
+    else if (requests[reqId] == RequestType.DowJones)
+      dowJones = value;
+    else
+      revert("Response to an unknown request");
+    delete requests[reqId];
+  }
+
+For complete working examples demonstrating uses of Gora ASO, please
+see this repository.
+TODO: link to examples repo/dir
 
  - ASO Solidity examples (to be written)
- - Gora ASO Solidity API reference
 
 ****************
 Executor oracles
