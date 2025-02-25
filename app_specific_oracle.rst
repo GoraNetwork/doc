@@ -419,7 +419,17 @@ to get tokens for funding your ASO contract.
 Custom executors
 ================
 
-TODO
+Shared executors rely on distributed networks of nodes run by general public.
+This may not be suitable for certain use cases: for example, when private data
+(such as keys) is used for querying data sources, or when oracle programs use
+exceptionally large amounts of resources.
 
-- Explain executor factory and its API
-- Provide addresses of executor factories
+For these kinds of situations, Gora provides a way for customers to deploy their
+own executors. Once customer deploys an executor smart contract, they can bring
+up a separate node network under their own management. Standard Gora node
+software which can work with private authentication keys can be used, or Gora
+can develop customized Gora node versions for customer's specific needs.
+
+At this time, creating custom executors is a semi-manual process, with a
+completely automated tool being on the roadmap. If you would like to explore
+this option, please contact Gora.
