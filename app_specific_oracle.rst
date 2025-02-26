@@ -13,6 +13,17 @@ getting data from several resources and performing floating-point maths on it. A
 private oracle may want to only serve specific smart contracts or authenticate
 itself to data sources in a bespoke way.
 
+==============================   =======================   =======================
+Features                         General-purpose oracle    App-specific oracle
+==============================   =======================   =======================
+Ease of use                      Moderate                  High
+Customizability                  Low                       High
+Restrictions on data sources     Not supported             Up to ASO owner
+Restrictions on users            Not supported             Up to ASO owner
+Third-party monetization         Not supported             Via ASO owner's fee
+Failover capability              None                      Via multiple executors
+==============================   =======================   =======================
+
 Gora provides accesible and flexible tools to create your own ASO's and deploy
 them to EVM-compatible blockchains of your choice: either public, like Base or
 Polygon, or private, which organizations can run internally. Gora does this by
