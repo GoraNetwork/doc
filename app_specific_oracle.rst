@@ -397,8 +397,22 @@ TODO: link to examples repo/dir
 Executor oracles
 ****************
 
-TODO:
- - Incorporate docs from "classic" Gora as the explanation of executors.
+Every ASO relies on an executor oracle (*executor*) for basic lower-level
+blockchain oracle operations. Separating ASO's and executors allows for more
+flexibility, failover capabilities and a seamless customer upgrade path from
+shared to private infrastructure. Gora recommends new ASO customers to start
+with a shared executor.
+
+================================ ======================= =======================
+Features                         Shared executor         Custom executor
+================================ ======================= =======================
+Managed by                       Gora                    ASO owner
+Requires setup and configuration No                      Yes
+Private data sources             Not supported           Configurable
+Node software customization      Not supported           Possible
+Node hardware capabilities       Limited                 Up to ASO owner
+Payment options                  GORA token              Any ERC20 token
+================================ ======================= =======================
 
 ================
 Shared executors
