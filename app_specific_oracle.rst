@@ -82,11 +82,20 @@ smart contract can switch executors at any time.
 Creating and managing ASO's
 ***************************
 
-Application-specific oracles are created using Gora's web-based `ASO control
-panel <https://aso.gora.io/>`_ To start using it, connect your Web3 wallet by
-clicking "Connect Wallet". If you already created ASO's using this wallet
-account, you will be able to choose one from the drop-down list. You will also
-see a "Create new" clicking it will create a new ASO for you.
+Gora application-specific oracles are normally created and updated using Gora's
+web-based *ASO control panel*. It provides a user-friendly way to handle all
+aspects of ASO's, including compiling oracle programs and testing them.
+
+.. figure:: aso_managing.svg
+   :width: 850
+   :align: center
+   :alt: Gora web-based control panel in ASO architecture
+
+To start using Gora ASO control panel, go to https://aso.gora.io/ and connect
+your Web3 wallet by clicking "Connect Wallet". If you already created ASO's
+using the account selected in your wallet, you will be able to choose one from
+the drop-down list. You will also see a "Create new" clicking it will create a
+new ASO for you.
 
 .. warning:: Creating or updating ASO's on a public mainnet generates blockchain
              transactions that cost real money. For trying things out free of
@@ -328,9 +337,6 @@ number ``1.12345`` will be rounded to ``1.1234``; but, for exmaple, the number
 Using app-specific oracles from your smart contracts
 ******************************************************
 
-TODO:
- - Request cycle flow diagram
-
 Gora app-specific oracles work using a simple callback pattern. To make an
 oracle request, customer smart contract calls ASO smart contract's ``request``
 method.  If parameters need to be passed to the oracle program, they are
@@ -388,10 +394,11 @@ Average index:
   }
 
 For complete working examples demonstrating uses of Gora ASO, please
-see this repository.
-TODO: link to examples repo/dir
+see the examples repository.
 
- - ASO Solidity examples (to be written)
+TODO:
+
+ - ASO Solidity examples (to be written) and update link above
 
 ****************
 Executor oracles
