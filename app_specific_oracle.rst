@@ -42,7 +42,7 @@ C or any language that compiles to Web Assembly.
 Gora ASO architecture and workflow
 ***********************************
 
-.. figure:: aso_arch_0.svg
+.. figure:: aso_arch.svg
    :width: 800
    :align: center
    :alt: Gora ASO architecture and workflow diagram
@@ -208,12 +208,10 @@ execution in the same request context. This is necessary because Web Assembly
 programs cannot efficiently pause while waiting to receive data, such as from
 online sources.
 
-
 .. figure:: aso_api.svg
    :width: 900
    :align: center
    :alt: Oracle programs in fulfilling ASO requests
-
 
 ~~~~~~~~~
 Functions
