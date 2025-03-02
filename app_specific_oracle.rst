@@ -297,28 +297,17 @@ method, expression and an optional rounding modifier. For example, `substr:4,11`
 tells Gora that it needs to return a substring from data source output, starting
 at 4th and ending at 11th character.
 
-Gora supports the following value extraction methods and expression formats:
+Gora supports several extraction methods and expression formats:
 
-jsonpath
-  | JSONPath expression, see: https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/
-  | Example: ``jsonpath:jsonpath:$.data.temperature``
-
-xpath
-  | XPath expression, see: https://www.w3.org/TR/2017/REC-xpath-31-20170321/
-  | Example: ``xpath:/p/a``
-
-regex
-  | JavaScript regular expression, see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
-  | Example: ``regex: the magic number is ([0-9]+)``
-
-substr
-  | Substring specification, start and end offsets, e.g. `substr:4,11`
-  | Example: ``substr:0,10``
-
-bytes
-  | Same as substring specification, but operates on bytes rather than characters
-  | Example: ``bytes:2,4``
-
+========================================================================================================== ========================================= ========================
+Expression type                                                                                            Example                                   Best for                 
+========================================================================================================== ========================================= ========================
+`JSONPath <https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/>`_                                   ``jsonpath:jsonpath:$.data.temperature``  JSON documents           
+`XPath <https://www.w3.org/TR/2017/REC-xpath-31-20170321/>`_                                               ``xpath:/p/a``                            XML documents            
+`Regular expression <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions>`_  ``regex: the magic number is ([0-9]+)``   Any text                 
+Character Substring                                                                                        ``substr:0,10``                           Unstructured text        
+Byte fragment                                                                                              ``bytes:2,4``                             Unstructured binary data 
+========================================================================================================== ========================================= ========================
 
 An optional rounding modifier is used to round floating-point values to certain
 amount of digits after the point. This may be necessary with some types of
