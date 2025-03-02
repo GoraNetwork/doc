@@ -216,10 +216,6 @@ online sources.
    :align: center
    :alt: Oracle programs in fulfilling ASO requests
 
-~~~~~~~~~
-Functions
-~~~~~~~~~
-
 Gora off-chain API is made available to C programs by including
 ``gora_off_chain.h`` header file. When compiling via ASO control panel, it is
 made available for inclusion automatically. It defines the following custom
@@ -242,10 +238,6 @@ functions:
   Write a message to the node log. Intended for debugging only, oracle
   program logging is disabled by default on production nodes.
 
-~~~~~~~~~~~~~~~~~
-Context structure
-~~~~~~~~~~~~~~~~~
-
 In addition to functions, Gora off-Chain API defines a *context* data structure
 It is designed for passing data from host node to oracle program as well as
 preserving current state between execution *stages* (more on that later). An
@@ -263,31 +255,28 @@ Complete definition of the context structure is contained in
 ``gora_off_chain.h`` header file which all oracle program developers are advised
 to peruse.
 
-~~~~~~~~~~~~~~~~
-Staged execution
-~~~~~~~~~~~~~~~~
-
 Like most low-level system languages, Web Assembly, which oracle programs are
 compiled to, does not support asynchronous calls. When a Web Assembly program
 needs to retrieve data from a source that cannot return it instantly (e.g. a
 network endpoint), it has to either constantly check for data arrival in a loop
 (very inefficient) or rely on runtime environment to call it when the data is
-ready.
+ready. Gora off-chain API implements a variant of the second approach.
 
-Gora off-chain API implements a variant of the second approach. It executes the
-program repeatedly, performing asynchronous operations between executions which
-are called *stages*. A *stage* starts when program's *main function* is called
-by the host node and ends when this function returns. During a stage, the
-program can schedule HTTP(S) requests, possibly using URL templates that it can
-fill at run time. When a stage ends, these requests are executed by the host
-node. On their completion, next stage commences and request results are made
-available to the program via the context structure. The context contains current
-stage number, so program always knows which stage it is at. It also has
-persistent memory space to share data between stages. Finishing a stage, the
-program's main function returns a value telling the host node what to do next:
-execute the next stage, finish successfully or terminate with a specific error
-code. For a hands-on primer of using staged execution, please see example ASO
-progams.
+Gora host node executes the program repeatedly, performing asynchronous
+operations between executions which are called *stages*. A *stage* starts when
+program's *main function* is called by the host node and ends when this function
+returns. During a stage, the program can schedule HTTP(S) requests, possibly
+using URL templates that it can fill at run time. When a stage ends, these
+requests are executed by the host node. On their completion, next stage
+commences.
+
+Request results are made available to the program via the context structure. The
+context contains current stage number, so program always knows which stage it is
+at. It also has persistent memory space to share data between stages. Finishing
+a stage, the program's main function returns a value telling the host node what
+to do next: execute the next stage, finish successfully or terminate with a
+specific error code. For a hands-on primer of using staged execution, please see
+example ASO progams.
 
 ===============================
 Value extraction specifications
@@ -323,14 +312,13 @@ querying them at almost the same time. That would prevent the nodes from
 achieving consensus and confirming the value as authentic. Adequate rounding
 gets us around this issue.
 
-For instance, if you specify ``jsonpath:$.rate:3``, the responses
-``{ "rate": 1.2344 }`` and ``{ "rate": 1.2342 }`` that may be received by
-different Gora nodes will yield the same value ``"1.234"``. The nodes will
-achieve consensus and you will get ``"1.234"`` as the resulting oracle value.
-
-Rounding only affects fractional part of the rounded number, all whole part
-digits are preserved.  For example, if rounding parameter is set to ``4``, the
-number ``1.12345`` will be rounded to ``1.1234``; but, for exmaple, the number
+For instance, if you specify ``jsonpath:$.rate:3``, the responses ``{ "rate":
+1.2344 }`` and ``{ "rate": 1.2342 }`` that may be received by different Gora
+nodes will yield the same value ``"1.234"``. The nodes will achieve consensus
+and you will get ``"1.234"`` as the resulting oracle value. Rounding only
+affects fractional part of the rounded number, all whole part digits are
+preserved.  For example, if rounding parameter is set to ``4``, the number
+``1.12345`` will be rounded to ``1.1234``; but, for exmaple, the number
 ``12345678`` will remain unaffected.
 
 ***********

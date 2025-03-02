@@ -1,5 +1,5 @@
 body { font: 15px Verdana, Tahoma, sans-serif; line-height: 1.5em;
-       margin: 0 0 0 22%; }
+       margin: 0 0.5em 0.5em 22%; }
 
 dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
 pre.terminal { padding: 1em 0.5em; color: white; background: black; }
@@ -23,3 +23,9 @@ aside.note { padding: 1em; background: lightBlue; }
 table.comparison th { background: #e9f5ef; }
 table.comparison td, table.comparison th
   { padding: 0 0.5em; border: 1px darkGray solid; }
+
+td.code { padding-left: 1em; }
+td.code .c1 { color: #555555; }
+td.code .s2 { color: darkGreen; }
+td.code .mh { color: darkRed; }
+td.code .kt { font-weight: bold; color: darkBlue; }
