@@ -1,6 +1,6 @@
-##############################
-App-specific Oracles with Gora
-##############################
+#############################
+App-specific Oracles (ASO's)
+#############################
 
 App-specific oracle (*ASO*) is an oracle designed to serve a certain web3
 application or application type. While a general-purpose oracle strives for
@@ -13,16 +13,19 @@ getting data from several resources and performing floating-point maths on it. A
 private oracle may want to only serve specific smart contracts or authenticate
 itself to data sources in a bespoke way.
 
-==============================   =======================   =======================
-Features                         General-purpose oracle    App-specific oracle
-==============================   =======================   =======================
-Ease of use                      Moderate                  High
-Customizability                  Low                       High
-Restrictions on data sources     Not supported             Up to ASO owner
-Restrictions on users            Not supported             Up to ASO owner
-Third-party monetization         Not supported             Via ASO owner's fee
-Failover capability              None                      Via multiple executors
-==============================   =======================   =======================
+.. table::
+  :class: comparison
+
+  ================================ ======================= =======================
+  Features                         General-purpose oracle  App-specific oracle
+  ================================ ======================= =======================
+  Ease of use                      Moderate                High
+  Customizability                  Low                     High
+  Restrictions on data sources     Not supported           Up to ASO owner
+  Restrictions on users            Not supported           Up to ASO owner
+  Third-party monetization         Not supported           Via ASO owner's fee
+  Failover capability              None                    Via multiple executors
+  ================================ ======================= =======================
 
 Gora provides accesible and flexible tools to create your own ASO's and deploy
 them to EVM-compatible blockchains of your choice: either public, like Base or
@@ -38,9 +41,9 @@ without programming using Gora web-based code generation tool. When higher
 levels of customization are required, oracle programs are written explicitly in
 C or any language that compiles to Web Assembly.
 
-***********************************
-Gora ASO architecture and workflow
-***********************************
+******************************
+ASO architecture and workflow
+******************************
 
 .. figure:: aso_arch.svg
    :width: 800
@@ -97,21 +100,21 @@ using the account selected in your wallet, you will be able to choose one from
 the drop-down list. You will also see a "Create new" clicking it will create a
 new ASO for you.
 
-.. warning:: Creating or updating ASO's on a public mainnet generates blockchain
-             transactions that cost real money. For trying things out free of
-             charge, we suggest using a public testnet, such as Base Sepolia.
-             Before doing that, you would need to make sure you have some
-             testnet ETH in your wallet account. You should be able to get some
-             via a public web faucet for the chosen network.
+.. warning:: **WARNING** Creating or updating ASO's on a public mainnet
+             generates blockchain transactions that cost real money. For trying
+             things out free of charge, we suggest using a public testnet, such
+             as Base Sepolia.  Before doing that, you would need to make sure
+             you have some testnet ETH in your wallet account. You should be
+             able to get some via a public web faucet for the chosen network.
 
 Once you create a new ASO by clicking "Create new" button, or select an existing
 one in the dropdown list, you will be presented with ASO configuration form.
 It contains properties of the currenty selected ASO for you to edit.
 
-.. warning:: ASO configuration property values are stored on the blockchain, so
-             the larger they are, the more it will cost. Oracle program source
-             code property is for customer information only, it can be left
-             empty on a mainnet to reduce storage cost.
+.. warning:: **WARNING** ASO configuration property values are stored on the
+             blockchain, so the larger they are, the more it will cost. Oracle
+             program source code property is for customer information only, it
+             can be left empty on a mainnet to reduce storage cost.
 
 Configuration form fields and their meanings are as follows:
 
@@ -159,9 +162,9 @@ Compiled binary
   Alternatively, users can upload their Web Assembly binaries converted to a hex
   string, optionally compressed with ``gzip``.
 
-************************************
-Oracle programs: writing and testing
-************************************
+***************
+Oracle programs
+***************
 
 An ASO oracle program is a compact piece of software that queries online data
 sources and produces an oracle value. Any ASO has to have an oracle program to
@@ -171,9 +174,9 @@ control panel and documentation examples use C language. It is simple,
 ubiquitous and can create very compact executables suitable for storage on the
 blockchain.
 
-============================================
-Entering and compiling progams with examples
-============================================
+======================
+Entering and compiling
+======================
 
 No software installation is required to work with oracle programs: they can be
 written, compiled, tested and deployed inside ASO web control panel. To get
@@ -196,9 +199,9 @@ arguments (JSON)" is populated with a JSON-formatted array. In a production
 environment, these arguments would come from ``args`` parameter of the
 ``request()`` method call to ASO smart contract.
 
-========================
-Gora oracle programs API
-========================
+============
+Programs API
+============
 
 Oracle programs are executed by Gora nodes in a customized Web Assembly
 environment. They interact with the host node via *Gora off-Chain API* that
@@ -299,15 +302,18 @@ at 4th and ending at 11th character.
 
 Gora supports several extraction methods and expression formats:
 
-========================================================================================================== ========================================= ========================
-Expression type                                                                                            Example                                   Best for                 
-========================================================================================================== ========================================= ========================
-`JSONPath <https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/>`_                                   ``jsonpath:jsonpath:$.data.temperature``  JSON documents           
-`XPath <https://www.w3.org/TR/2017/REC-xpath-31-20170321/>`_                                               ``xpath:/p/a``                            XML documents            
-`Regular expression <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions>`_  ``regex: the magic number is ([0-9]+)``   Any text                 
-Character Substring                                                                                        ``substr:0,10``                           Unstructured text        
-Byte fragment                                                                                              ``bytes:2,4``                             Unstructured binary data 
-========================================================================================================== ========================================= ========================
+.. table::
+  :class: comparison
+
+  ========================================================================================================== ========================================= ========================
+  Expression type                                                                                            Example                                   Best for
+  ========================================================================================================== ========================================= ========================
+  `JSONPath <https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/>`_                                   ``jsonpath:jsonpath:$.data.temperature``  JSON documents
+  `XPath <https://www.w3.org/TR/2017/REC-xpath-31-20170321/>`_                                               ``xpath:/p/a``                            XML documents
+  `Regular expression <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions>`_  ``regex: the magic number is ([0-9]+)``   Structured text
+  Character Substring                                                                                        ``substr:0,10``                           Unstructured text
+  Byte fragment                                                                                              ``bytes:2,4``                             Unstructured binary data
+  ========================================================================================================== ========================================= ========================
 
 An optional rounding modifier is used to round floating-point values to certain
 amount of digits after the point. This may be necessary with some types of
@@ -327,9 +333,9 @@ digits are preserved.  For example, if rounding parameter is set to ``4``, the
 number ``1.12345`` will be rounded to ``1.1234``; but, for exmaple, the number
 ``12345678`` will remain unaffected.
 
-******************************************************
-Using app-specific oracles from your smart contracts
-******************************************************
+***********
+Using ASO's
+***********
 
 Gora app-specific oracles work using a simple callback pattern. To make an
 oracle request, customer smart contract calls ASO smart contract's ``request``
@@ -390,10 +396,6 @@ Average index:
 For complete working examples demonstrating uses of Gora ASO, please
 see the examples repository.
 
-TODO:
-
- - ASO Solidity examples (to be written) and update link above
-
 ****************
 Executor oracles
 ****************
@@ -404,16 +406,19 @@ flexibility, failover capabilities and a seamless customer upgrade path from
 shared to private infrastructure. Gora recommends new ASO customers to start
 with a shared executor.
 
-================================ ======================= =======================
-Features                         Shared executor         Custom executor
-================================ ======================= =======================
-Managed by                       Gora                    ASO owner
-Requires setup and configuration No                      Yes
-Private data sources             Not supported           Configurable
-Node software customization      Not supported           Possible
-Node hardware capabilities       Limited                 Up to ASO owner
-Payment options                  GORA token              Any ERC20 token
-================================ ======================= =======================
+.. table::
+  :class: comparison
+
+  ================================ ======================= =======================
+  Features                         Shared executor         Custom executor
+  ================================ ======================= =======================
+  Managed by                       Gora                    ASO owner
+  Requires setup and configuration No                      Yes
+  Private data sources             Not supported           Configurable
+  Node software customization      Not supported           Possible
+  Node hardware capabilities       Limited                 Up to ASO owner
+  Payment options                  GORA token              Any ERC20 token
+  ================================ ======================= =======================
 
 ================
 Shared executors
@@ -429,14 +434,17 @@ Gora tokens and maintain their balance as they are being spent.
 To use a Gora shared executor, set your ASO executor address according to
 network being used:
 
-=====================  ============  ============  ============
-Blockchain Network     Address       Fee asset     Fee amount
-=====================  ============  ============  ============
-Base Sepolia           TODO          TODO          TODO
-Base Mainnet           TODO          TODO          TODO
-Polygon Testnet        TODO          TODO          TODO
-Polygon Mainnet        TODO          TODO          TODO
-=====================  ============  ============  ============
+.. table::
+  :class: comparison
+
+  =====================  ============  ============  ============
+  Blockchain Network     Address       Fee asset     Fee amount
+  =====================  ============  ============  ============
+  Base Sepolia           TODO          TODO          TODO
+  Base Mainnet           TODO          TODO          TODO
+  Polygon Testnet        TODO          TODO          TODO
+  Polygon Mainnet        TODO          TODO          TODO
+  =====================  ============  ============  ============
 
 When using a testnet, visit `Gora testnet faucet <https://dev.gora.io/faucet>`_
 to get tokens for funding your ASO contract.

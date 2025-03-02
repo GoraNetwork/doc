@@ -1,7 +1,25 @@
+body { font: 15px Verdana, Tahoma, sans-serif; line-height: 1.5em;
+       margin: 0 0 0 22%; }
+
 dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
-pre.terminal {
-    padding: 1em 0.5em; color: white; background: black;
+pre.terminal { padding: 1em 0.5em; color: white; background: black; }
+table { border-spacing: 0; border-collapse: collapse; }
+
+aside.warning { margin-left: 2em; padding-left: 1em; color: darkRed;
+                border-left: 4px darkRed solid; }
+aside.note { padding: 1em; background: lightBlue; }
+
+#contents {
+    position: fixed; left: 0; top: 0; padding: 0.5em; width: 20%; height: 100%;
+    font: 16px Verdana, Tahoma, sans-serif; line-height: 2em;
+    background: #17271f; border-right: 2px white outset;
 }
 
-aside.warning { padding: 1em; color: darkRed; background: lightYellow; }
-aside.note { padding: 1em; background: lightBlue; }
+#contents { color: #dddddd; }
+#contents h1 { display: none; }
+#contents a { color: #dddddd; text-decoration: none; }
+#contents ul {  padding-inline-start: 1em; }
+
+table.comparison th { background: #e9f5ef; }
+table.comparison td, table.comparison th
+  { padding: 0 0.5em; border: 1px darkGray solid; }
