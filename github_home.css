@@ -1,0 +1,22 @@
+body { font: 15px Verdana, Tahoma, sans-serif; line-height: 1.5em; margin: 0.5em;
+       max-width: 1024px; }
+
+h1, h2, h3, h4, dt { color: #17271f; }
+
+dl { width: 50%; }
+dl.left { float: left; clear: left; }
+dl.right { float: right; clear: right; }
+dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
+dt, dd { margin: 0.5em; }
+
+pre.terminal { padding: 1em 0.5em; color: white; background: black;
+               overflow-x: auto; }
+table { border-spacing: 0; border-collapse: collapse; }
+
+tr:nth-child(even) { background-color: #f0f0f0; }
+
+th { background: #e9f5ef; }
+td, th { padding: 0 0.5em; border: 1px darkGray solid; }
+
+img#gora-logo { float: left; }
+img#gora-avatar { float: right; margin-top: -35px; margin-right: -60px; }
