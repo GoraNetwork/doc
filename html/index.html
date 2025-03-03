@@ -5,7 +5,8 @@
     <style>body { font: 15px Verdana, Tahoma, sans-serif; line-height: 1.5em;
        margin: 0 0.5em 0.5em 22%; }
 dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
-pre.terminal { padding: 1em 0.5em; color: white; background: black; }
+pre.terminal { padding: 1em 0.5em; color: white; background: black;
+               overflow-x: auto; }
 table { border-spacing: 0; border-collapse: collapse; }
 tr:nth-child(even) { background-color: #f0f0f0; }
 #main-logo { position: absolute; top: 10px; left: 10px; }
@@ -585,10 +586,10 @@ $</pre>
 2024-10-04T11:19:57.984Z INFO  Version: "1.1.65"
 2024-10-04T11:19:57.984Z INFO  Built on: "Sat, 02 Nov 2024 02:54:17 GMT"
 2024-10-04T11:19:57.984Z INFO  Revision: "f9e66e7918f43326974d7ac345bec4bee734a0df"
-2024-10-04T11:19:57.984Z INFO  Smart contracts revision: "ac9e053d68dd6718c02ed36b76cd9ba478a390bb"
+2024-10-04T11:19:57.984Z INFO  Smart contracts revision: "ac9e053..."
 2024-10-04T11:19:57.984Z INFO  Docker image: "107782235753.dkr.ecr.eu-central-1.amazonaws.com/gora-nr:v1.1.65"
 2024-10-04T11:19:57.985Z INFO  Docker image hash: "dd20b9d55e7081687b3cacfba9d1e93a49e924c4e8e7a582cbedc86b6285c55d"
-2024-11-04T11:19:58.951Z INFO  EVM network "baseMainnet" enabled, chain Id "8453", main contract "Gora" at "0xd4c99F88095F32dF993030d9a6080e3BE723F617"
+2024-11-04T11:19:58.951Z INFO  EVM network "baseMainnet" enabled, chain Id "8453", main at "0xd4c99F88095F32dF993030d9a6080e3BE723F617"
 2024-10-04T11:20:01.020Z INFO  Waiting for next oracle request</pre>
                     <p>To make the node switch into background upon startup, add <code>--background</code> to the command. For a quick check of instance's status, use <code>gora docker-status</code>. To inspect instance's logs, use docker log command, e.g.: <code>docker logs -fn 100 gora-nr</code>.</p>
                 </section>
