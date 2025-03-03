@@ -3,9 +3,9 @@
 .. _AWS CLI: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 .. _Gora CLI tool: https://download.gora.io/
 
-###########
-Gora nodes
-###########
+###################
+Running Gora nodes
+###################
 
 .. figure:: node_installation.svg
    :width: 550
@@ -180,9 +180,9 @@ To stop a Gora node running locally in the foreground, hit ``Ctrl-C``. If it is
 running in the background, execute ``./gora docker-stop``. To stop a node on AWS,
 run ``./gora aws-stop``.
 
-*****************************************
-Updating or moving installation
-*****************************************
+********************************
+Updating or moving installations
+********************************
 
 Gora CLI tool is updated with ``gora update`` command. It checks whether there is
 a more recent version than the one being run, and if so, offers to upgrade it by
