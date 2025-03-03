@@ -1,6 +1,8 @@
 body { font: 15px Verdana, Tahoma, sans-serif; line-height: 1.5em;
        margin: 0 0.5em 0.5em 22%; }
 
+h1, h2, h3, h4, dt { color: #17271f; }
+
 dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
 pre.terminal { padding: 1em 0.5em; color: white; background: black;
                overflow-x: auto; }
