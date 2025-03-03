@@ -5,9 +5,16 @@ dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
 pre.terminal { padding: 1em 0.5em; color: white; background: black; }
 table { border-spacing: 0; border-collapse: collapse; }
 
-aside.warning { margin-left: 2em; padding-left: 1em; color: darkRed;
-                border-left: 4px darkRed solid; }
-aside.note { padding: 1em; background: lightBlue; }
+aside.warning, aside.note { margin-left: 2em; padding-left: 1em; }
+aside.warning { color: darkRed; border-left: 4px darkRed solid; }
+aside.warning > p:first-of-type > strong:first-of-type,
+aside.warning > strong:first-of-type
+  { color: white; background: darkRed; padding: 0.1em 0.25em; }
+
+aside.note { color: darkBlue; border-left: 4px darkBlue solid; }
+aside.note > p:first-of-type > strong:first-of-type,
+aside.note > strong:first-of-type
+  { color: white; background: darkBlue; padding: 0.1em 0.25em; }
 
 #contents {
     position: fixed; left: 0; top: 0; padding: 0.5em; width: 20%; height: 100%;
@@ -20,11 +27,11 @@ aside.note { padding: 1em; background: lightBlue; }
 #contents a { color: #dddddd; text-decoration: none; }
 #contents ul {  padding-inline-start: 1em; }
 
-table.comparison th { background: #e9f5ef; }
-table.comparison td, table.comparison th
-  { padding: 0 0.5em; border: 1px darkGray solid; }
+th { background: #e9f5ef; }
+td, th { padding: 0 0.5em; border: 1px darkGray solid; }
 
 td.code { padding-left: 1em; }
+td.code, td.linenos { border: 0; }
 td.code .c1 { color: #555555; }
 td.code .s2 { color: darkGreen; }
 td.code .mh { color: darkRed; }

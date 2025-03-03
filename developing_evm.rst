@@ -1,18 +1,18 @@
 
 #####################
-Generic oracle on EVM
+Classic oracle on EVM
 #####################
 
-Customer applications interact with Gora by calling Gora smart contracts. On
-EVM-compatible networks, smart contracts are almost always written in `Solidity
-<https://soliditylang.org/>`_ , so this is the language we use in our
-documentation and examples. For a quick hands-on introduction, see `Gora source
-code examples <https://github.com/GoraNetwork/phoenix-examples/>`_.  For a more
-complete overview as well as an API reference, read on.
+Classic oracle is the original Gora product designed to query any type of data
+source. On EVM-compatible networks, smart contracts are almost always written in
+`Solidity <https://soliditylang.org/>`_ , so this is the language we will use.
+For a quick hands-on introduction, see `Gora source code examples
+<https://github.com/GoraNetwork/phoenix-examples/>`_.  For a more complete
+overview as well as an API reference, read on.
 
-************
-Calling Gora
-************
+**********************
+Requesting oracle data
+**********************
 
 Gora functionality is accessed by calling *methods* of Gora *main smart
 contract*. To get started, you need Gora main contract address for the
@@ -26,32 +26,30 @@ in your smart contract and start making Gora calls. For example, read total
 amount of tokens currently staked in this Gora network:
 
 .. code:: solidity
+  :number-lines:
 
   address constant goraMainAddr = address(0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa);
   Gora gora = Gora(goraMainAddr);
   uint totalStake = gora.totalStake();
 
-*The above is an excerpt, for complete working examples see*
-`Gora source code examples <https://github.com/GoraNetwork/phoenix-examples/>`_.
-
-**********************
-Requesting oracle data
-**********************
-
 Oracle data is requested from Gora by calling `request` method of Gora main smart
 contract. In its simplest form, it takes the following positional arguments:
 
-=========== ========= ===========
-Argument #  ABI Type  Description
-=========== ========= ===========
-0           string    Data source specification
-1           bytes     Data source parameter
-2           string    Destination specification
-=========== ========= ===========
+.. table::
+  :class: args
+
+  =========== ========= ===========
+  Argument #  ABI Type  Description
+  =========== ========= ===========
+  0           string    Data source specification
+  1           bytes     Data source parameter
+  2           string    Destination specification
+  =========== ========= ===========
 
 For example:
 
 .. code:: solidity
+  :number-lines:
 
   bytes32 reqId = gora.request("http://example.com/mydata", bytes("substr:0,2"), "myMethod")
 
@@ -66,12 +64,12 @@ Data source specification
 
 Data source parameter
   For sources that are not *special* (i.e. do not begin with ``gora://``) this
-  parameter contains a *value extraction specification*. It describes how
-  oracle-returned value is to be extracted from data provided by the source. For
-  example, with a JSON endpoint that returns ``{ "score": 123 }`` one
-  would specify: ``jsonpath:$.score``. Gora supports a number of value extraction
-  options which will be explained in detail below.  Special Gora sources will be
-  described separately.
+  parameter contains a `value extraction specification <#value-extraction>`_.
+  It describes how oracle-returned value is to be extracted from data provided
+  by the source. For example, with a JSON endpoint that returns ``{ "score": 123
+  }`` one would specify: ``jsonpath:$.score``. Gora supports a number of value
+  extraction options which will be explained in detail below.  Special Gora
+  sources will be described separately.
 
 Destination specification
   Contains the name of the method in customer's smart contract to be called
@@ -94,19 +92,22 @@ contracts. On successful verification, Gora main smart contract will call the
 method you specified in your request and provide the resulting value. Your
 data-receiving method must only accept two arguments:
 
-===========  =========  ============
-Argument #   ABI Type   Description
-===========  =========  ============
-0            bytes32    Request ID
-1            bytes      Oracle value
-===========  =========  ============
+.. table::
+  :class: args
+
+  ===========  =========  ============
+  Argument #   ABI Type   Description
+  ===========  =========  ============
+  0            bytes32    Request ID
+  1            bytes      Oracle value
+  ===========  =========  ============
 
 Namely:
 
 Request ID
-  identifier of Gora request for which the value provided is the
-  response. You smart contract will likely want to use it to determine which of
-  the Gora requests made previously this response applies to.
+  identifier of Gora request for which the value provided is the response. You
+  smart contract will likely want to use it to determine which of the Gora
+  requests made previously this response applies to.
 
 Oracle value
   value returned by the oracle, as a byte string. Numeric values will be
@@ -114,65 +115,13 @@ Oracle value
   be down to receiving smart contract to convert them to Solidity numeric
   types if they need. Strings are returned as is.
 
-**********************************
-Value extraction specifications
-**********************************
-
-Gora users most often want a specific piece of data source output, so they must
-be able to tell Gora how to extract it. This is what a Gora value extraction
-specification does. It consists of up to three parts, separated by colon:
-method, expression and an optional rounding modifier. For example, `substr:4,11`
-tells Gora that it needs to return a substring from data source output, starting
-at 4th and ending at 11th character.
-
-Gora supports the following value extraction methods and expression formats:
-
-jsonpath
-  | JSONPath expression, see: https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/
-  | Example: ``jsonpath:jsonpath:$.data.temperature``
-
-xpath
-  | XPath expression, see: https://www.w3.org/TR/2017/REC-xpath-31-20170321/
-  | Example: ``xpath:/p/a``
-
-regex
-  | JavaScript regular expression, see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
-  | Example: ``regex: the magic number is ([0-9]+)``
-
-substr
-  | Substring specification, start and end offsets, e.g. `substr:4,11`
-  | Example: ``substr:0,10``
-
-bytes
-  | Same as substring specification, but operates on bytes rather than characters
-  | Example: ``bytes:2,4``
-
-
-An optional rounding modifier is used to round floating-point values to certain
-amount of digits after the point. This may be necessary with some types of
-values such as cryptocurrency exchange rates. They can be so volatile that
-different Gora nodes are likely to get slightly different results despite
-querying them at almost the same time. That would prevent the nodes from
-achieving consensus and confirming the value as authentic. Adequate rounding
-gets us around this issue.
-
-For instance, if you specify ``jsonpath:$.rate:3``, the responses
-``{ "rate": 1.2344 }`` and ``{ "rate": 1.2342 }`` that may be received by
-different Gora nodes will yield the same value ``"1.234"``. The nodes will
-achieve consensus and you will get ``"1.234"`` as the resulting oracle value.
-
-Rounding only affects fractional part of the rounded number, all whole part
-digits are preserved.  For example, if rounding parameter is set to ``4``, the
-number ``1.12345`` will be rounded to ``1.1234``; but, for exmaple, the number
-``12345678`` will remain unaffected.
-
 ***************************
 Using off-chain computation
 ***************************
 
 
 .. figure:: off_chain.svg
-   :width: 400
+   :width: 600
    :align: right
    :alt: Gora off-chain computation workflow diagram
 
@@ -190,9 +139,10 @@ recommend C language due to its simplicity and ubiquity, and `Clang compiler
 <https://clang.llvm.org/>`_ because of it can generate Web Assembly binaries
 directly. E.g.:
 
-.. code:: bash
+.. parsed-literal::
+   :class: terminal
 
-  $ clang example.c -Os --target=wasm32-unknown-unknown-wasm -c -o example.wasm
+   $ clang example.c -Os --target=wasm32-unknown-unknown-wasm -c -o example.wasm
 
 Compiled binary is then encoded as `Base64Url` (URL-safe variant of Base64) and
 included with the request to a special URL defined by Gora to handle off-chain

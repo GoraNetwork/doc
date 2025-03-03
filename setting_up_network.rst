@@ -84,7 +84,7 @@ time by pressing `Ctrl-C`. During initialization, Gora CLI tool will:
 
 To start over, rename or delete the produced config file ``~/.gora``.
 
-.. warning:: **WARNING!** **At no time should you run Gora software as root**. If
+.. warning:: **WARNING** **At no time should you run Gora software as root**. If
              hacked, a program executed with root priveleges becomes a gateway
              to complete control of your system.  This makes such software a
              high-priority target for hackers, which is neither in Gora's
@@ -130,10 +130,10 @@ To inspect instance's logs, use docker log command, e.g.:
 3b) Start your Gora Node on AWS
 ================================
 
-.. note:: *AWS functionality is currently* **experimental**, *new users are
-          encouraged to run their nodes locally*. *If you are willing to try
-          running on AWS, execute* ``export GORA_EXPERIMENTAL_MODE=1`` *and
-          proceed with caution.*
+.. note:: **NOTE** *AWS functionality is currently* **experimental**, *new
+          users are encouraged to run their nodes locally*. *If you are willing
+          to try running on AWS, execute* ``export GORA_EXPERIMENTAL_MODE=1``
+          *and proceed with caution.*
 
 Running your Gora node on AWS is a lower maintenance option, altough it is not
 as flexible or economical as running it locally. To begin, download and install
@@ -181,7 +181,7 @@ running in the background, execute ``./gora docker-stop``. To stop a node on AWS
 run ``./gora aws-stop``.
 
 *****************************************
-Updating or moving your Gora installation
+Updating or moving installation
 *****************************************
 
 Gora CLI tool is updated with ``gora update`` command. It checks whether there is
