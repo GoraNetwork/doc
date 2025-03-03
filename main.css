@@ -5,6 +5,8 @@ dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
 pre.terminal { padding: 1em 0.5em; color: white; background: black; }
 table { border-spacing: 0; border-collapse: collapse; }
 
+tr:nth-child(even) { background-color: #f0f0f0; }
+
 #main-logo { position: absolute; top: 10px; left: 10px; }
 
 aside.warning, aside.note { margin-left: 2em; padding-left: 1em; }
