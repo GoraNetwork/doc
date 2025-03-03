@@ -9,7 +9,7 @@ Running Gora nodes
 
 .. figure:: node_installation.svg
    :width: 550
-   :align: right
+   :align: left
    :alt: Gora node operation workflow and options
 
 Gora is a *decentralized* blockchain oracle. To produce its values, it relies on

@@ -1,4 +1,3 @@
-
 #####################
 Classic oracle on EVM
 #####################
@@ -122,7 +121,7 @@ Using off-chain computation
 
 .. figure:: off_chain.svg
    :width: 650
-   :align: right
+   :align: left
    :alt: Gora off-chain computation workflow diagram
 
    Gora off-chain computation workflow

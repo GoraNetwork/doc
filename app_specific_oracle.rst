@@ -47,7 +47,7 @@ ASO architecture and workflow
 
 .. figure:: aso_arch.svg
    :width: 800
-   :align: center
+   :align: left
    :alt: Gora ASO architecture and workflow diagram
 
 Gora's app-specific oracle relies on two key mechanisms: an ASO smart contract
@@ -91,7 +91,7 @@ aspects of ASO's, including compiling oracle programs and testing them.
 
 .. figure:: aso_managing.svg
    :width: 850
-   :align: center
+   :align: left
    :alt: Gora web-based control panel in ASO architecture
 
 To start using Gora ASO control panel, go to https://aso.gora.io/ and connect
@@ -213,7 +213,7 @@ online sources.
 
 .. figure:: aso_api.svg
    :width: 900
-   :align: center
+   :align: left
    :alt: Oracle programs in fulfilling ASO requests
 
 Gora off-chain API is made available to C programs by including

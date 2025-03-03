@@ -137,7 +137,7 @@ td.code .kt { font-weight: bold; color: darkBlue; }</style>
             <p>Rather than simply fetching data online and passing it on for verification, for ASO requests Gora nodes execute <em>oracle programs</em>: tiny pieces of software that implement customizations and extensions to oracle functionality. Oracle programs are created by customers deploying ASO's. For simpler cases, this can be done without programming using Gora web-based code generation tool. When higher levels of customization are required, oracle programs are written explicitly in C or any language that compiles to Web Assembly.</p>
             <section id="aso-architecture-and-workflow">
                 <h3>ASO architecture and workflow</h3>
-                <figure align="center">
+                <figure align="left">
                     <img width="800" alt="Gora ASO architecture and workflow diagram" src="aso_arch.svg" />
                 </figure>
                 <p>Gora's app-specific oracle relies on two key mechanisms: an ASO smart contract and an <em>executor</em> oracle. ASO smart contract contains oracle program and custom configuration required by customer for their specific use case. An executor oracle is a generic and complete oracle engine that implements fundamental oracle functionality such as distributed node management and consensus verification. They work together to serve web3 application requests as follows:</p>
@@ -152,7 +152,7 @@ td.code .kt { font-weight: bold; color: darkBlue; }</style>
             <section id="creating-and-managing-aso-s">
                 <h3>Creating and managing ASO's</h3>
                 <p>Gora application-specific oracles are normally created and updated using Gora's web-based <em>ASO control panel</em>. It provides a user-friendly way to handle all aspects of ASO's, including compiling oracle programs and testing them.</p>
-                <figure align="center">
+                <figure align="left">
                     <img width="850" alt="Gora web-based control panel in ASO architecture" src="aso_managing.svg" />
                 </figure>
                 <p>To start using Gora ASO control panel, go to <a href="https://aso.gora.io/">https://aso.gora.io/</a> and connect your Web3 wallet by clicking "Connect Wallet". If you already created ASO's using the account selected in your wallet, you will be able to choose one from the drop-down list. You will also see a "Create new" clicking it will create a new ASO for you.</p>
@@ -191,7 +191,7 @@ td.code .kt { font-weight: bold; color: darkBlue; }</style>
                 <section id="programs-api">
                     <h4>Programs API</h4>
                     <p>Oracle programs are executed by Gora nodes in a customized Web Assembly environment. They interact with the host node via <em>Gora off-Chain API</em> that provides functionality to query data sources, fetch results, write log messages and more. Another essential part of this API is support for repeated program execution in the same request context. This is necessary because Web Assembly programs cannot efficiently pause while waiting to receive data, such as from online sources.</p>
-                    <figure align="center">
+                    <figure align="left">
                         <img width="900" alt="Oracle programs in fulfilling ASO requests" src="aso_api.svg" />
                     </figure>
                     <p>Gora off-chain API is made available to C programs by including <code>gora_off_chain.h</code> header file. When compiling via ASO control panel, it is made available for inclusion automatically. It defines the following custom functions:</p>
@@ -507,7 +507,7 @@ td.code .kt { font-weight: bold; color: darkBlue; }</style>
             </section>
             <section id="using-off-chain-computation">
                 <h3>Using off-chain computation</h3>
-                <figure align="right">
+                <figure align="left">
                     <img width="650" alt="Gora off-chain computation workflow diagram" src="off_chain.svg" />
                     <figcaption>Gora off-chain computation workflow</figcaption>
                 </figure>
@@ -540,7 +540,7 @@ $</pre>
         </section>
         <section id="running-gora-nodes">
             <h2>Running Gora nodes</h2>
-            <figure align="right">
+            <figure align="left">
                 <img width="550" alt="Gora node operation workflow and options" src="node_installation.svg" />
             </figure>
             <p>Gora is a <em>decentralized</em> blockchain oracle. To produce its values, it relies on a network of independent blockchain-connected nodes running <em>Gora Node Runner (GNR)</em>. Gora token issuance and distribution, required to bootstrap consensus verification, are usually done once by the network owner and are beyond the scope of this discussion. For the purposes of this document, setting up a Gora node network comes down to setting up GNR for each node operator.</p>
@@ -586,10 +586,10 @@ $</pre>
 2024-10-04T11:19:57.984Z INFO  Version: "1.1.65"
 2024-10-04T11:19:57.984Z INFO  Built on: "Sat, 02 Nov 2024 02:54:17 GMT"
 2024-10-04T11:19:57.984Z INFO  Revision: "f9e66e7918f43326974d7ac345bec4bee734a0df"
-2024-10-04T11:19:57.984Z INFO  Smart contracts revision: "ac9e053..."
+2024-10-04T11:19:57.984Z INFO  Smart contracts revision: "ac9e053d68dd6718c02ed36b76cd9ba478a390bb"
 2024-10-04T11:19:57.984Z INFO  Docker image: "107782235753.dkr.ecr.eu-central-1.amazonaws.com/gora-nr:v1.1.65"
 2024-10-04T11:19:57.985Z INFO  Docker image hash: "dd20b9d55e7081687b3cacfba9d1e93a49e924c4e8e7a582cbedc86b6285c55d"
-2024-11-04T11:19:58.951Z INFO  EVM network "baseMainnet" enabled, chain Id "8453", main at "0xd4c99F88095F32dF993030d9a6080e3BE723F617"
+2024-11-04T11:19:58.951Z INFO  EVM network "baseMainnet" enabled, chain Id "8453", main contract "Gora" at "0xd4c99F88095F32dF993030d9a6080e3BE723F617"
 2024-10-04T11:20:01.020Z INFO  Waiting for next oracle request</pre>
                     <p>To make the node switch into background upon startup, add <code>--background</code> to the command. For a quick check of instance's status, use <code>gora docker-status</code>. To inspect instance's logs, use docker log command, e.g.: <code>docker logs -fn 100 gora-nr</code>.</p>
                 </section>
