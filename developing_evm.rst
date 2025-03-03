@@ -121,7 +121,7 @@ Using off-chain computation
 
 
 .. figure:: off_chain.svg
-   :width: 600
+   :width: 650
    :align: right
    :alt: Gora off-chain computation workflow diagram
 

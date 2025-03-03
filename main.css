@@ -5,6 +5,8 @@ dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
 pre.terminal { padding: 1em 0.5em; color: white; background: black; }
 table { border-spacing: 0; border-collapse: collapse; }
 
+#main-logo { position: absolute; top: 10px; left: 10px; }
+
 aside.warning, aside.note { margin-left: 2em; padding-left: 1em; }
 aside.warning { color: darkRed; border-left: 4px darkRed solid; }
 aside.warning > p:first-of-type > strong:first-of-type,
@@ -17,8 +19,8 @@ aside.note > strong:first-of-type
   { color: white; background: darkBlue; padding: 0.1em 0.25em; }
 
 #contents {
-    position: fixed; left: 0; top: 0; padding: 0.5em; width: 20%; height: 100%;
-    font: 16px Verdana, Tahoma, sans-serif; line-height: 2em;
+    position: fixed; left: 0; top: 0; padding: 0.5em 0.5em 0.5em; width: 20%;
+    height: 100%; font: 16px Verdana, Tahoma, sans-serif; line-height: 2em;
     background: #17271f; border-right: 2px white outset;
 }
 

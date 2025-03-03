@@ -42,7 +42,7 @@ here.  For Gora node operators, instructions and background information are also
 provided. Most recent and relevant products are described first, followed by
 info on legacy offerings.
 
-
 .. include:: app_specific_oracle.rst
 .. include:: developing_evm.rst
 .. include:: setting_up_network.rst
+.. include:: appendix.rst

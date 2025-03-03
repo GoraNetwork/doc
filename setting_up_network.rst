@@ -3,12 +3,12 @@
 .. _AWS CLI: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 .. _Gora CLI tool: https://download.gora.io/
 
-###############################
-Setting up a Gora node network
-###############################
+###########
+Gora nodes
+###########
 
 .. figure:: node_installation.svg
-   :width: 450
+   :width: 550
    :align: right
    :alt: Gora node operation workflow and options
 
