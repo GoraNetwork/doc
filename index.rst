@@ -22,7 +22,7 @@ via reliable consensus procedure.
 
 .. figure:: overview.svg
    :width: 600
-   :align: right
+   :align: left
    :alt: Gora structure and workflow overview diagram
 
    Gora general structure and workflow
