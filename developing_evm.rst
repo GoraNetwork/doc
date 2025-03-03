@@ -1,7 +1,7 @@
 
-#################################
-Developing applications with Gora
-#################################
+#####################
+Generic oracle on EVM
+#####################
 
 Customer applications interact with Gora by calling Gora smart contracts. On
 EVM-compatible networks, smart contracts are almost always written in `Solidity

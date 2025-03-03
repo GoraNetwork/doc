@@ -15,7 +15,7 @@ aside.note { padding: 1em; background: lightBlue; }
     background: #17271f; border-right: 2px white outset;
 }
 
-#contents { color: #dddddd; }
+#contents { color: #dddddd; overflow: scroll; }
 #contents h1 { display: none; }
 #contents a { color: #dddddd; text-decoration: none; }
 #contents ul {  padding-inline-start: 1em; }

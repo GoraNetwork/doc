@@ -2,11 +2,11 @@
 App-specific Oracles (ASO's)
 #############################
 
-App-specific oracle (*ASO*) is an oracle designed to serve a certain web3
-application or application type. While a general-purpose oracle strives for
-maximum flexibility to support all kinds or applications, it may lack
-specialized data processing or access control features needed for more niche use
-cases.
+App-specific oracles (*ASO*'s) are Gora's response to recent market demands.
+These are oracles designed to serve a certain web3 application or application
+type. While a general-purpose oracle strives for maximum flexibility to support
+all kinds or applications, it may lack specialized data processing or access
+control features needed for more niche use cases.
 
 For example, a sports oracle may want to provide team statistics which requires
 getting data from several resources and performing floating-point maths on it. A
