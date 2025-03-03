@@ -2,12 +2,39 @@
 
     <title>Gora Decentralized Oracle Documentation</title>
     <meta charset="utf-8" />
-    <style>dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
-pre.terminal {
-    padding: 1em 0.5em; color: white; background: black;
+    <style>body { font: 15px Verdana, Tahoma, sans-serif; line-height: 1.5em;
+       margin: 0 0.5em 0.5em 22%; }
+dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
+pre.terminal { padding: 1em 0.5em; color: white; background: black; }
+table { border-spacing: 0; border-collapse: collapse; }
+tr:nth-child(even) { background-color: #f0f0f0; }
+#main-logo { position: absolute; top: 10px; left: 10px; }
+aside.warning, aside.note { margin-left: 2em; padding-left: 1em; }
+aside.warning { color: darkRed; border-left: 4px darkRed solid; }
+aside.warning > p:first-of-type > strong:first-of-type,
+aside.warning > strong:first-of-type
+  { color: white; background: darkRed; padding: 0.1em 0.25em; }
+aside.note { color: darkBlue; border-left: 4px darkBlue solid; }
+aside.note > p:first-of-type > strong:first-of-type,
+aside.note > strong:first-of-type
+  { color: white; background: darkBlue; padding: 0.1em 0.25em; }
+#contents {
+    position: fixed; left: 0; top: 0; padding: 0.5em 0.5em 0.5em; width: 20%;
+    height: 100%; font: 16px Verdana, Tahoma, sans-serif; line-height: 2em;
+    background: #17271f; border-right: 2px white outset;
 }
-aside.warning { padding: 1em; color: darkRed; background: lightYellow; }
-aside.note { padding: 1em; background: lightBlue; }</style>
+#contents { color: #dddddd; overflow: scroll; }
+#contents h1 { display: none; }
+#contents a { color: #dddddd; text-decoration: none; }
+#contents ul {  padding-inline-start: 1em; }
+th { background: #e9f5ef; }
+td, th { padding: 0 0.5em; border: 1px darkGray solid; }
+td.code { padding-left: 1em; }
+td.code, td.linenos { border: 0; }
+td.code .c1 { color: #555555; }
+td.code .s2 { color: darkGreen; }
+td.code .mh { color: darkRed; }
+td.code .kt { font-weight: bold; color: darkBlue; }</style>
 
 <html>
 <body>
@@ -16,48 +43,504 @@ aside.note { padding: 1em; background: lightBlue; }</style>
         <aside id="contents" class="topic contents">
             <h1>Contents</h1>
             <ul>
-                <li><a href="#about-gora">About Gora</a></li>
-                <li><a href="#setting-up-a-gora-node-network">Setting up a Gora node network</a>
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#app-specific-oracles-aso-s">App-specific Oracles (ASO's)</a>
                     <ul>
-                        <li><a href="#prerequisites">Prerequisites</a></li>
-                        <li><a href="#installing-gora-node-runner">Installing Gora Node Runner</a>
-                            <ul>
-                                <li><a href="#install-required-software">1) Install required software</a></li>
-                                <li><a href="#initialize-your-installation">2) Initialize your installation</a></li>
-                                <li><a href="#a-start-your-gora-node-locally">3a) Start your Gora node locally</a></li>
-                                <li><a href="#b-start-your-gora-node-on-aws">3b) Start your Gora Node on AWS</a></li>
-                                <li><a href="#stop-your-gora-node">4) Stop your Gora node</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#updating-or-moving-your-gora-installation">Updating or moving your Gora installation</a></li>
-                        <li><a href="#gora-node-configuration">Gora node configuration</a></li>
+                        <li><a href="#aso-architecture-and-workflow">ASO architecture and workflow</a></li>
+                        <li><a href="#creating-and-managing-aso-s">Creating and managing ASO's</a></li>
+                        <li><a href="#oracle-programs">Oracle programs</a></li>
+                        <li><a href="#using-aso-s">Using ASO's</a></li>
+                        <li><a href="#executor-oracles">Executor oracles</a></li>
                     </ul>
                 </li>
-                <li><a href="#developing-applications-with-gora">Developing applications with Gora</a>
+                <li><a href="#classic-oracle-on-evm">Classic oracle on EVM</a>
                     <ul>
-                        <li><a href="#calling-gora">Calling Gora</a></li>
                         <li><a href="#requesting-oracle-data">Requesting oracle data</a></li>
                         <li><a href="#receiving-oracle-data">Receiving oracle data</a></li>
-                        <li><a href="#value-extraction-specifications">Value extraction specifications</a></li>
                         <li><a href="#using-off-chain-computation">Using off-chain computation</a></li>
                         <li><a href="#gora-off-chain-computation-api">Gora off-chain computation API</a></li>
                     </ul>
                 </li>
+                <li><a href="#running-gora-nodes">Running Gora nodes</a>
+                    <ul>
+                        <li><a href="#prerequisites">Prerequisites</a></li>
+                        <li><a href="#installing-gora-node-runner">Installing Gora Node Runner</a></li>
+                        <li><a href="#updating-or-moving-installations">Updating or moving installations</a></li>
+                        <li><a href="#gora-node-configuration">Gora node configuration</a></li>
+                    </ul>
+                </li>
+                <li><a href="#appendix">Appendix</a>
+                    <ul>
+                        <li><a href="#value-extraction-specifications-1">Value extraction specifications</a></li>
+                    </ul>
+                </li>
+                <li><a href="#roadmap-for-2025">Roadmap for 2025</a></li>
             </ul>
         </aside>
-        <section id="about-gora">
-            <h2>About Gora</h2>
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p><a href="https://gora.io/">Gora</a> enables blockchain programs (smart contracts) to interact with the outside world. Getting financial information from high-quality providers, extracting arbitrary data from public pages, calling online APIs or running Web Assembly code off-chain - is all made possible by Gora. To maintain security and trust, Gora relies on decentralization. A network of independent Gora nodes executes requested operations in parallel and certifies the outcome via reliable consensus procedure.</p>
             <figure align="right">
-                <img width="400" alt="Gora structure and workflow overview diagram" src="overview.svg" />
+                <img width="600" alt="Gora structure and workflow overview diagram" src="overview.svg" />
                 <figcaption>Gora general structure and workflow</figcaption>
             </figure>
-            <p><a href="https://gora.io/">Gora</a> enables blockchain programs (smart contracts) to interact with the outside world. Getting financial information from high-quality providers, extracting arbitrary data from public pages, calling online APIs or running Web Assembly code off-chain - is all made possible by Gora. To maintain security and trust, Gora relies on decentralization. A network of independent Gora nodes executes requested operations in parallel and certifies the outcome via reliable consensus procedure.</p>
-            <p>This document is aimed at developers working with Gora-enabled blockchains or companies interested in adding Gora capabilities to a blockchain they manage. Its main focus is developer experience and technical description of current Gora offering. For help on using Gora on <a href="https://algorand.org/">Algorand</a>, please refer to Gora legacy documentation.</p>
+            <p>Customers interact with Gora in one of three roles: investor, node operator or smart contract developer. An investor purchases Gora tokens and delegates them to a node operator, receiving a share of rewards accrued from processing Gora requests. A node operator stakes Gora tokens (theirs own or investor's) and runs Gora Node Runner software to process Gora requests and receive rewards in Gora tokens. A smart contract developer writes applications that make use of Gora smart contract API's.</p>
+            <p>This document is aimed mainly at developers or node operators. Software engineers working with Gora-enabled blockchains, as well as companies interested in adding an oracle to blockchains they manage, will find technical information here. For Gora node operators, instructions and background information are also provided. Most recent and relevant products are described first, followed by info on legacy offerings.</p>
         </section>
-        <section id="setting-up-a-gora-node-network">
-            <h2>Setting up a Gora node network</h2>
+        <section id="app-specific-oracles-aso-s">
+            <h2>App-specific Oracles (ASO's)</h2>
+            <p>App-specific oracles (<em>ASO</em>'s) are Gora's response to recent market demands. These are oracles designed to serve a certain web3 application or application type. While a general-purpose oracle strives for maximum flexibility to support all kinds or applications, it may lack specialized data processing or access control features needed for more niche use cases.</p>
+            <p>For example, a sports oracle may want to provide team statistics which requires getting data from several resources and performing floating-point maths on it. A private oracle may want to only serve specific smart contracts or authenticate itself to data sources in a bespoke way.</p>
+            <table class="comparison">
+                <thead>
+                    <tr>
+                        <th>Features</th>
+                        <th>General-purpose oracle</th>
+                        <th>App-specific oracle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ease of use</td>
+                        <td>Moderate</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td>Customizability</td>
+                        <td>Low</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td>Restrictions on data sources</td>
+                        <td>Not supported</td>
+                        <td>Up to ASO owner</td>
+                    </tr>
+                    <tr>
+                        <td>Restrictions on users</td>
+                        <td>Not supported</td>
+                        <td>Up to ASO owner</td>
+                    </tr>
+                    <tr>
+                        <td>Third-party monetization</td>
+                        <td>Not supported</td>
+                        <td>Via ASO owner's fee</td>
+                    </tr>
+                    <tr>
+                        <td>Failover capability</td>
+                        <td>None</td>
+                        <td>Via multiple executors</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Gora provides accesible and flexible tools to create your own ASO's and deploy them to EVM-compatible blockchains of your choice: either public, like Base or Polygon, or private, which organizations can run internally. Gora does this by combining its tried and true general-purpose oracle architecture with a powerful off-chain computation engine.</p>
+            <p>Rather than simply fetching data online and passing it on for verification, for ASO requests Gora nodes execute <em>oracle programs</em>: tiny pieces of software that implement customizations and extensions to oracle functionality. Oracle programs are created by customers deploying ASO's. For simpler cases, this can be done without programming using Gora web-based code generation tool. When higher levels of customization are required, oracle programs are written explicitly in C or any language that compiles to Web Assembly.</p>
+            <section id="aso-architecture-and-workflow">
+                <h3>ASO architecture and workflow</h3>
+                <figure align="center">
+                    <img width="800" alt="Gora ASO architecture and workflow diagram" src="aso_arch.svg" />
+                </figure>
+                <p>Gora's app-specific oracle relies on two key mechanisms: an ASO smart contract and an <em>executor</em> oracle. ASO smart contract contains oracle program and custom configuration required by customer for their specific use case. An executor oracle is a generic and complete oracle engine that implements fundamental oracle functionality such as distributed node management and consensus verification. They work together to serve web3 application requests as follows:</p>
+                <ul>
+                    <li>An application smart contract makes a request for an oracle value. It calls the ASO smart contract, providing request parameters (if any) and expects a call back with a response.</li>
+                    <li>ASO smart contract combines received parameters with its configuration settings and oracle program, making a request to the executor oracle.</li>
+                    <li>Request to the executor oracle is picked up by decentralized network of nodes. Each online node runs the oracle program provided by the ASO smart contract. The program queries online data sources, processes received data, performs other programmed operations as needed to produce an oracle value.</li>
+                    <li>The produced value is submitted by each node to the executor smart contract for a proof-of-stake consensus verification. Upon reaching the configured threshold, the executor contract calls back ASO smart contract with the response. The ASO smart contract forwards the response to the application smart contract.</li>
+                </ul>
+                <p>Gora provides common shared executors on a number of popular public blockchain networks. ASO customers just starting out are advised to use these. When data privacy, extra computing power or control over staking tokenomics is desired, customers are welcome to setup their own executors using Gora software. ASO smart contract can switch executors at any time.</p>
+            </section>
+            <section id="creating-and-managing-aso-s">
+                <h3>Creating and managing ASO's</h3>
+                <p>Gora application-specific oracles are normally created and updated using Gora's web-based <em>ASO control panel</em>. It provides a user-friendly way to handle all aspects of ASO's, including compiling oracle programs and testing them.</p>
+                <figure align="center">
+                    <img width="850" alt="Gora web-based control panel in ASO architecture" src="aso_managing.svg" />
+                </figure>
+                <p>To start using Gora ASO control panel, go to <a href="https://aso.gora.io/">https://aso.gora.io/</a> and connect your Web3 wallet by clicking "Connect Wallet". If you already created ASO's using the account selected in your wallet, you will be able to choose one from the drop-down list. You will also see a "Create new" clicking it will create a new ASO for you.</p>
+                <aside class="warning"><strong>WARNING</strong> Creating or updating ASO's on a public mainnet generates blockchain transactions that cost real money. For trying things out free of charge, we suggest using a public testnet, such as Base Sepolia. Before doing that, you would need to make sure you have some testnet ETH in your wallet account. You should be able to get some via a public web faucet for the chosen network.</aside>
+                <p>Once you create a new ASO by clicking "Create new" button, or select an existing one in the dropdown list, you will be presented with ASO configuration form. It contains properties of the currenty selected ASO for you to edit.</p>
+                <aside class="warning"><strong>WARNING</strong> ASO configuration property values are stored on the blockchain, so the larger they are, the more it will cost. Oracle program source code property is for customer information only, it can be left empty on a mainnet to reduce storage cost.</aside>
+                <p>Configuration form fields and their meanings are as follows:</p>
+                <dl>
+                    <dt>ASO contract</dt>
+                    <dd>Address of the ASO contract being configured</dd>
+                    <dt>Description</dt>
+                    <dd>Short string describing the ASO, e.g. "Footbal player rating"</dd>
+                    <dt>Own fee</dt>
+                    <dd>Amount in blockchain native currency that must be paid by the calling smart contract to make a request to the ASO. Specified as whole number with regard to number of decimals used by the blockchain for its currency. E.g. <a href="https://base.org/">Base</a> like most EVM-based blockchains use 18 decimals, so to charge <code>0.0001</code> Base ether, set this to <code>100000000000000</code>.</dd>
+                    <dt>Executor</dt>
+                    <dd>Address of the executor oracle smart contract that the ASO will forward its requests to. This should default to Gora shared executor address on the current blockchain. Should you need to reset it, see addresses in <a href="#shared-gora-executors-2">Shared Gora executors</a> section. Customer using their own custom executor network will need to enter its address here.</dd>
+                    <dt>Maxium executor fee</dt>
+                    <dd>Highest amount that the ASO is allowed to pay for an executor oracle request. Executor request price is defined by the executor and can be fixed or varying to accomodate for market volatility. Setting maximum executor fee allows to prevent ASO losing money: if the executor fee goes higher, ASO will decline requests. <a href="#shared-gora-executors-2">Shared Gora executors</a> section contains their respective pricing info. Customers with a custom executor will have set its pricing when they had deployed it. Every executor will also set the asset in which it will be paid - an ERC20 token or native currency. This asset will be auto-detected by the ASO, so it does not need to be configured here.</dd>
+                    <dt>Source code</dt>
+                    <dd>Source code for the oracle program - piece of software that queries data sources and produces an oracle value. This field is for <em>for customer reference only</em> and is not used by ASO. It may be best to leave it empty on mainnet blockchain networks for privacy and cost saving. It is primarily intended for development use on public testnets or local blockchain networks.</dd>
+                    <dt>Compiled binary</dt>
+                    <dd>Oracle program in compiled (binary form). This field can be populated by compiling source code in the above field after pressing "Compile". Alternatively, users can upload their Web Assembly binaries converted to a hex string, optionally compressed with <code>gzip</code>.</dd>
+                </dl>
+            </section>
+            <section id="oracle-programs">
+                <h3>Oracle programs</h3>
+                <p>An ASO oracle program is a compact piece of software that queries online data sources and produces an oracle value. Any ASO has to have an oracle program to function, and usually it is written specifically for this ASO. While Gora ASO programs can be written in any language that compiles to Web Assembly, the ASO control panel and documentation examples use C language. It is simple, ubiquitous and can create very compact executables suitable for storage on the blockchain.</p>
+                <section id="entering-and-compiling">
+                    <h4>Entering and compiling</h4>
+                    <p>No software installation is required to work with oracle programs: they can be written, compiled, tested and deployed inside ASO web control panel. To get started, click "Insert example" button under the program source code field in a newly created ASO. The field (which must previously be empty) will be filled with a basic C program that always returns string <code>"Hello Gora!"</code> as the oracle value. Clicking "Compile" button will compile this program and populate the compiled binary field.</p>
+                </section>
+                <section id="testing-programs">
+                    <h4>Testing programs</h4>
+                    <p>ASO contol panel allows to test oracle programs before they are deployed to the blockchain. Pressing "Test oracle" button under the "Test" section will trigger compilation (when source code is present) and execution of the current oracle program. Click it to run the test and check out the result placed in "Test result" read-only field. For programs that take arguments, the field "Program arguments (JSON)" is populated with a JSON-formatted array. In a production environment, these arguments would come from <code>args</code> parameter of the <code>request()</code> method call to ASO smart contract.</p>
+                </section>
+                <section id="programs-api">
+                    <h4>Programs API</h4>
+                    <p>Oracle programs are executed by Gora nodes in a customized Web Assembly environment. They interact with the host node via <em>Gora off-Chain API</em> that provides functionality to query data sources, fetch results, write log messages and more. Another essential part of this API is support for repeated program execution in the same request context. This is necessary because Web Assembly programs cannot efficiently pause while waiting to receive data, such as from online sources.</p>
+                    <figure align="center">
+                        <img width="900" alt="Oracle programs in fulfilling ASO requests" src="aso_api.svg" />
+                    </figure>
+                    <p>Gora off-chain API is made available to C programs by including <code>gora_off_chain.h</code> header file. When compiling via ASO control panel, it is made available for inclusion automatically. It defines the following custom functions:</p>
+                    <dl>
+                        <dt><code>void gora_request_url(const char* url, const char* value_specs)</code></dt>
+                        <dd>Request data from an URL. <code>value_specs</code> argument contains one or more <a href="#value-extraction">value extraction specifications</a>, separated by tab characters. For their syntax, see the dedicated section below.</dd>
+                        <dt><code>void gora_set_next_url_param(const char* value)</code></dt>
+                        <dd>Set value of a template parameter in the URL last requested with <code>gora_request_url()</code>. For example, after requesting the URL <code>https://example.com/?a=##&amp;b=##</code>, one can call <code>gora_set_next_url_param("one")</code>, then <code>gora_set_next_url_param("two")</code>, yielding the URL <code>https://example.com/?a=one&amp;b=two</code>. This allows to have predefined templates for data source URLs and fill them at runtime.</dd>
+                        <dt><code>void gora_log(const char* message, const int level)</code></dt>
+                        <dd>Write a message to the node log. Intended for debugging only, oracle program logging is disabled by default on production nodes.</dd>
+                    </dl>
+                    <p>In addition to functions, Gora off-Chain API defines a <em>context</em> data structure It is designed for passing data from host node to oracle program as well as preserving current state between execution <em>stages</em> (more on that later). An instance of this structure is passed to oracle program whenever it executes. It contains:</p>
+                    <ul>
+                        <li>API version information for compatibility checks</li>
+                        <li>Arguments passed to the program with the oracle request</li>
+                        <li>Values from queried data sources extracted by host for the program</li>
+                        <li>Oracle value to be returned, set by the program</li>
+                        <li>Current execution stage number</li>
+                        <li>Scratch memory for program data to persist between execution stages</li>
+                    </ul>
+                    <p>Complete definition of the context structure is contained in <code>gora_off_chain.h</code> header file which all oracle program developers are advised to peruse.</p>
+                    <p>Like most low-level system languages, Web Assembly, which oracle programs are compiled to, does not support asynchronous calls. When a Web Assembly program needs to retrieve data from a source that cannot return it instantly (e.g. a network endpoint), it has to either constantly check for data arrival in a loop (very inefficient) or rely on runtime environment to call it when the data is ready. Gora off-chain API implements a variant of the second approach.</p>
+                    <p>Gora host node executes the program repeatedly, performing asynchronous operations between executions which are called <em>stages</em>. A <em>stage</em> starts when program's <em>main function</em> is called by the host node and ends when this function returns. During a stage, the program can schedule HTTP(S) requests, possibly using URL templates that it can fill at run time. When a stage ends, these requests are executed by the host node. On their completion, next stage commences.</p>
+                    <p>Request results are made available to the program via the context structure. The context contains current stage number, so program always knows which stage it is at. It also has persistent memory space to share data between stages. Finishing a stage, the program's main function returns a value telling the host node what to do next: execute the next stage, finish successfully or terminate with a specific error code. For a hands-on primer of using staged execution, please see example ASO progams.</p>
+                </section>
+            </section>
+            <section id="using-aso-s">
+                <h3>Using ASO's</h3>
+                <p>Gora app-specific oracles work using a simple callback pattern. To make an oracle request, customer smart contract calls ASO smart contract's <code>request</code> method. If parameters need to be passed to the oracle program, they are supplied as the method argument (array of byte strings). Unique request ID is returned by ASO for future reference. On successful request completion, customer smart contract gets a response call to its special <code>__goraAsoResponse</code> method from the same ASO smart contract. The call has two arguments: request ID to match the response to the initiated request, and the actual value returned by the oracle.</p>
+                <p>To get a feel of it, consider the following contrived Solidity fragment that might occur in a smart contract tracking Bitcoin price and DowJones Industrial Average index:</p>
+                <table data-language="solidity">
+                    <tr>
+                        <td class="linenos">
+                            <pre><span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-1"> 1</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-2"> 2</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-3"> 3</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-4"> 4</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-5"> 5</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-6"> 6</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-7"> 7</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-8"> 8</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-9"> 9</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-10">10</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-11">11</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-12">12</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-13">13</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-14">14</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-15">15</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-16">16</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-17">17</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-18">18</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-19">19</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-20">20</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-21">21</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-22">22</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-23">23</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-24">24</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-25">25</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-26">26</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-27">27</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-28">28</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-29">29</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-30">30</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-31">31</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-32">32</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-33">33</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-34">34</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-35">35</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-36">36</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-37">37</a></span>
+<span class="normal"><a href="#df245c97b23728150a3dd420c35c58ad-38">38</a></span></pre>
+                        </td>
+                        <td class="code">
+                            <pre><a id="df245c97b23728150a3dd420c35c58ad-1" name="df245c97b23728150a3dd420c35c58ad-1"></a><span class="c1">// ASO smart contracts to query, addresses will be known and chain-specific.</span>
+<a id="df245c97b23728150a3dd420c35c58ad-2" name="df245c97b23728150a3dd420c35c58ad-2"></a>GoraAso<span class="w"> </span>rateAso<span class="p">(</span><span class="mh">0xaaaaaaaaaaaaaaaaaaaaa</span><span class="p">);</span>
+<a id="df245c97b23728150a3dd420c35c58ad-3" name="df245c97b23728150a3dd420c35c58ad-3"></a>GoraAso<span class="w"> </span>dowJonesAso<span class="p">(</span><span class="mh">0xbbbbbbbbbbbbbbbbbbbbb</span><span class="p">);</span>
+<a id="df245c97b23728150a3dd420c35c58ad-4" name="df245c97b23728150a3dd420c35c58ad-4"></a>
+<a id="df245c97b23728150a3dd420c35c58ad-5" name="df245c97b23728150a3dd420c35c58ad-5"></a><span class="c1">// Local storage to track requests in flight.</span>
+<a id="df245c97b23728150a3dd420c35c58ad-6" name="df245c97b23728150a3dd420c35c58ad-6"></a><span class="kt">enum</span><span class="w"> </span><span class="nv">RequestType</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>None<span class="p">,</span><span class="w"> </span>BitcoinPrice<span class="p">,</span><span class="w"> </span>DowJones<span class="w"> </span><span class="p">};</span>
+<a id="df245c97b23728150a3dd420c35c58ad-7" name="df245c97b23728150a3dd420c35c58ad-7"></a><span class="kt">mapping</span><span class="p">(</span><span class="kt">bytes32</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span>RequestType<span class="p">)</span><span class="w"> </span>requests<span class="p">;</span>
+<a id="df245c97b23728150a3dd420c35c58ad-8" name="df245c97b23728150a3dd420c35c58ad-8"></a>
+<a id="df245c97b23728150a3dd420c35c58ad-9" name="df245c97b23728150a3dd420c35c58ad-9"></a><span class="c1">// Values to keep up to date. Byte strings for simplicity, but in</span>
+<a id="df245c97b23728150a3dd420c35c58ad-10" name="df245c97b23728150a3dd420c35c58ad-10"></a><span class="c1">// real-world apps these are usually unpacked into more suitable formats.</span>
+<a id="df245c97b23728150a3dd420c35c58ad-11" name="df245c97b23728150a3dd420c35c58ad-11"></a><span class="kt">bytes</span><span class="w"> </span><span class="nv">bitcoinPrice</span><span class="p">;</span>
+<a id="df245c97b23728150a3dd420c35c58ad-12" name="df245c97b23728150a3dd420c35c58ad-12"></a><span class="kt">bytes</span><span class="w"> </span><span class="nv">dowJones</span><span class="p">;</span>
+<a id="df245c97b23728150a3dd420c35c58ad-13" name="df245c97b23728150a3dd420c35c58ad-13"></a>
+<a id="df245c97b23728150a3dd420c35c58ad-14" name="df245c97b23728150a3dd420c35c58ad-14"></a><span class="c1">// Request a Bitcoin price update.</span>
+<a id="df245c97b23728150a3dd420c35c58ad-15" name="df245c97b23728150a3dd420c35c58ad-15"></a><span class="kt">function</span><span class="w"> </span><span class="nv">requestBitcoinPrice</span><span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="p">{</span>
+<a id="df245c97b23728150a3dd420c35c58ad-16" name="df245c97b23728150a3dd420c35c58ad-16"></a><span class="w">  </span><span class="kt">bytes</span><span class="p">[]</span><span class="w"> </span><span class="kt">memory</span><span class="w"> </span>reqParams<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">new</span><span class="w"> </span><span class="kt">bytes</span><span class="p">[](</span><span class="m m-Decimal">2</span><span class="p">);</span>
+<a id="df245c97b23728150a3dd420c35c58ad-17" name="df245c97b23728150a3dd420c35c58ad-17"></a><span class="w">  </span>reqParams<span class="p">[</span><span class="m m-Decimal">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">bytes</span><span class="p">(</span><span class="s2">&quot;btc&quot;</span><span class="p">);</span>
+<a id="df245c97b23728150a3dd420c35c58ad-18" name="df245c97b23728150a3dd420c35c58ad-18"></a><span class="w">  </span>reqParams<span class="p">[</span><span class="m m-Decimal">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">bytes</span><span class="p">(</span><span class="s2">&quot;usd&quot;</span><span class="p">);</span>
+<a id="df245c97b23728150a3dd420c35c58ad-19" name="df245c97b23728150a3dd420c35c58ad-19"></a><span class="w">  </span><span class="kt">bytes32</span><span class="w"> </span><span class="nv">reqId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>rateAso<span class="p">.</span>request<span class="p">(</span>reqParams<span class="p">);</span>
+<a id="df245c97b23728150a3dd420c35c58ad-20" name="df245c97b23728150a3dd420c35c58ad-20"></a><span class="w">  </span>requests<span class="p">[</span>reqId<span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>RequestType<span class="p">.</span>BitcoinPrice<span class="p">;</span>
+<a id="df245c97b23728150a3dd420c35c58ad-21" name="df245c97b23728150a3dd420c35c58ad-21"></a><span class="p">}</span>
+<a id="df245c97b23728150a3dd420c35c58ad-22" name="df245c97b23728150a3dd420c35c58ad-22"></a>
+<a id="df245c97b23728150a3dd420c35c58ad-23" name="df245c97b23728150a3dd420c35c58ad-23"></a><span class="c1">// Request a Dow Jones index update.</span>
+<a id="df245c97b23728150a3dd420c35c58ad-24" name="df245c97b23728150a3dd420c35c58ad-24"></a><span class="kt">function</span><span class="w"> </span><span class="nv">requestDowJones</span><span class="p">()</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="p">{</span>
+<a id="df245c97b23728150a3dd420c35c58ad-25" name="df245c97b23728150a3dd420c35c58ad-25"></a><span class="w">  </span><span class="kt">bytes32</span><span class="w"> </span><span class="nv">reqId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>dowJonesAso<span class="p">.</span>request<span class="p">(</span><span class="kt">new</span><span class="w"> </span><span class="kt">bytes</span><span class="p">[]());</span>
+<a id="df245c97b23728150a3dd420c35c58ad-26" name="df245c97b23728150a3dd420c35c58ad-26"></a><span class="w">  </span>requests<span class="p">[</span>reqId<span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>RequestType<span class="p">.</span>DowJones<span class="p">;</span>
+<a id="df245c97b23728150a3dd420c35c58ad-27" name="df245c97b23728150a3dd420c35c58ad-27"></a><span class="p">}</span>
+<a id="df245c97b23728150a3dd420c35c58ad-28" name="df245c97b23728150a3dd420c35c58ad-28"></a>
+<a id="df245c97b23728150a3dd420c35c58ad-29" name="df245c97b23728150a3dd420c35c58ad-29"></a><span class="c1">// Handle oracle responses.</span>
+<a id="df245c97b23728150a3dd420c35c58ad-30" name="df245c97b23728150a3dd420c35c58ad-30"></a><span class="kt">function</span><span class="w"> </span><span class="nv">__goraAsoResponse</span><span class="p">(</span><span class="kt">bytes32</span><span class="w"> </span><span class="nv">reqId</span><span class="p">,</span><span class="w"> </span><span class="kt">bytes</span><span class="w"> </span><span class="nv">calldata</span><span class="w"> </span>value<span class="p">)</span><span class="w"> </span><span class="kt">external</span><span class="w"> </span><span class="p">{</span>
+<a id="df245c97b23728150a3dd420c35c58ad-31" name="df245c97b23728150a3dd420c35c58ad-31"></a><span class="w">  </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span>requests<span class="p">[</span>reqId<span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span>RequestType<span class="p">.</span>BitcoinPrice<span class="p">)</span>
+<a id="df245c97b23728150a3dd420c35c58ad-32" name="df245c97b23728150a3dd420c35c58ad-32"></a><span class="w">    </span>bitcoinPrice<span class="w"> </span><span class="o">=</span><span class="w"> </span>value<span class="p">;</span>
+<a id="df245c97b23728150a3dd420c35c58ad-33" name="df245c97b23728150a3dd420c35c58ad-33"></a><span class="w">  </span><span class="kt">else</span><span class="w"> </span><span class="kt">if</span><span class="w"> </span><span class="p">(</span>requests<span class="p">[</span>reqId<span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span>RequestType<span class="p">.</span>DowJones<span class="p">)</span>
+<a id="df245c97b23728150a3dd420c35c58ad-34" name="df245c97b23728150a3dd420c35c58ad-34"></a><span class="w">    </span>dowJones<span class="w"> </span><span class="o">=</span><span class="w"> </span>value<span class="p">;</span>
+<a id="df245c97b23728150a3dd420c35c58ad-35" name="df245c97b23728150a3dd420c35c58ad-35"></a><span class="w">  </span><span class="kt">else</span>
+<a id="df245c97b23728150a3dd420c35c58ad-36" name="df245c97b23728150a3dd420c35c58ad-36"></a><span class="w">    </span>revert<span class="p">(</span><span class="s2">&quot;Response to an unknown request&quot;</span><span class="p">);</span>
+<a id="df245c97b23728150a3dd420c35c58ad-37" name="df245c97b23728150a3dd420c35c58ad-37"></a><span class="w">  </span>delete<span class="w"> </span>requests<span class="p">[</span>reqId<span class="p">];</span>
+<a id="df245c97b23728150a3dd420c35c58ad-38" name="df245c97b23728150a3dd420c35c58ad-38"></a><span class="p">}</span></pre>
+                        </td>
+                    </tr>
+                </table>
+                <p>For complete working examples demonstrating uses of Gora ASO, please see the examples repository.</p>
+            </section>
+            <section id="executor-oracles">
+                <h3>Executor oracles</h3>
+                <p>Every ASO relies on an executor oracle (<em>executor</em>) for basic lower-level blockchain oracle operations. Separating ASO's and executors allows for more flexibility, failover capabilities and a seamless customer upgrade path from shared to private infrastructure. Gora recommends new ASO customers to start with a shared executor.</p>
+                <table class="comparison">
+                    <thead>
+                        <tr>
+                            <th>Features</th>
+                            <th>Shared executor</th>
+                            <th>Custom executor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Managed by</td>
+                            <td>Gora</td>
+                            <td>ASO owner</td>
+                        </tr>
+                        <tr>
+                            <td>Requires setup and configuration</td>
+                            <td>No</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td>Private data sources</td>
+                            <td>Not supported</td>
+                            <td>Configurable</td>
+                        </tr>
+                        <tr>
+                            <td>Node software customization</td>
+                            <td>Not supported</td>
+                            <td>Possible</td>
+                        </tr>
+                        <tr>
+                            <td>Node hardware capabilities</td>
+                            <td>Limited</td>
+                            <td>Up to ASO owner</td>
+                        </tr>
+                        <tr>
+                            <td>Payment options</td>
+                            <td>GORA token</td>
+                            <td>Any ERC20 token</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <section id="shared-executors">
+                    <h4>Shared executors</h4>
+                    <p>Gora provides shared executors for ASO customer use. These are essentially generic oracles relying on a decentralized network of nodes for data querying and validation. Node operators use Gora tokens to make stakes for proof-of-stake valudation and to receive rewards for fulfilling oracle requests. Customers using a shared Gora executor must therefore fund their ASO smart contract with Gora tokens and maintain their balance as they are being spent.</p>
+                    <p>To use a Gora shared executor, set your ASO executor address according to network being used:</p>
+                    <table class="comparison">
+                        <thead>
+                            <tr>
+                                <th>Blockchain Network</th>
+                                <th>Address</th>
+                                <th>Fee asset</th>
+                                <th>Fee amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Base Sepolia</td>
+                                <td>TODO</td>
+                                <td>TODO</td>
+                                <td>TODO</td>
+                            </tr>
+                            <tr>
+                                <td>Base Mainnet</td>
+                                <td>TODO</td>
+                                <td>TODO</td>
+                                <td>TODO</td>
+                            </tr>
+                            <tr>
+                                <td>Polygon Testnet</td>
+                                <td>TODO</td>
+                                <td>TODO</td>
+                                <td>TODO</td>
+                            </tr>
+                            <tr>
+                                <td>Polygon Mainnet</td>
+                                <td>TODO</td>
+                                <td>TODO</td>
+                                <td>TODO</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>When using a testnet, visit <a href="https://dev.gora.io/faucet">Gora testnet faucet</a> to get tokens for funding your ASO contract.</p>
+                </section>
+                <section id="custom-executors">
+                    <h4>Custom executors</h4>
+                    <p>Shared executors rely on distributed networks of nodes run by general public. This may not be suitable for certain use cases: for example, when private data (such as keys) is used for querying data sources, or when oracle programs use exceptionally large amounts of resources.</p>
+                    <p>For these kinds of situations, Gora provides a way for customers to deploy their own executors. Once customer deploys an executor smart contract, they can bring up a separate node network under their own management. Standard Gora node software which can work with private authentication keys can be used, or Gora can develop customized Gora node versions for customer's specific needs.</p>
+                    <p>At this time, creating custom executors is a semi-manual process, with a completely automated tool being on the roadmap. If you would like to explore this option, please contact Gora.</p>
+                </section>
+            </section>
+        </section>
+        <section id="classic-oracle-on-evm">
+            <h2>Classic oracle on EVM</h2>
+            <p>Classic oracle is the original Gora product designed to query any type of data source. On EVM-compatible networks, smart contracts are almost always written in <a href="https://soliditylang.org/">Solidity</a> , so this is the language we will use. For a quick hands-on introduction, see <a href="https://github.com/GoraNetwork/phoenix-examples/">Gora source code examples</a>. For a more complete overview as well as an API reference, read on.</p>
+            <section id="requesting-oracle-data">
+                <h3>Requesting oracle data</h3>
+                <p>Gora functionality is accessed by calling <em>methods</em> of Gora <em>main smart contract</em>. To get started, you need Gora main contract address for the blockchain network that you are going to use. The preferred way to find it is to check the home page of Gora Explorer for the network in question. For example, <a href="https://mainnet.base.explorer.gora.io/">Gora Explorer for Base mainnet</a>. Gora main contract address is shown next to "Gora App" label.</p>
+                <p>With Gora main contract address, you can create a Gora API Solidity object in your smart contract and start making Gora calls. For example, read total amount of tokens currently staked in this Gora network:</p>
+                <table data-language="solidity">
+                    <tr>
+                        <td class="linenos">
+                            <pre><span class="normal"><a href="#e1ca781442c8e83016888cfcc57dee26-1">1</a></span>
+<span class="normal"><a href="#e1ca781442c8e83016888cfcc57dee26-2">2</a></span>
+<span class="normal"><a href="#e1ca781442c8e83016888cfcc57dee26-3">3</a></span></pre>
+                        </td>
+                        <td class="code">
+                            <pre><a id="e1ca781442c8e83016888cfcc57dee26-1" name="e1ca781442c8e83016888cfcc57dee26-1"></a><span class="kt">address</span><span class="w"> </span><span class="nv">constant</span><span class="w"> </span>goraMainAddr<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">address</span><span class="p">(</span><span class="mh">0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span><span class="p">);</span>
+<a id="e1ca781442c8e83016888cfcc57dee26-2" name="e1ca781442c8e83016888cfcc57dee26-2"></a>Gora<span class="w"> </span>gora<span class="w"> </span><span class="o">=</span><span class="w"> </span>Gora<span class="p">(</span>goraMainAddr<span class="p">);</span>
+<a id="e1ca781442c8e83016888cfcc57dee26-3" name="e1ca781442c8e83016888cfcc57dee26-3"></a><span class="kt">uint</span><span class="w"> </span><span class="nv">totalStake</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gora<span class="p">.</span>totalStake<span class="p">();</span></pre>
+                        </td>
+                    </tr>
+                </table>
+                <p>Oracle data is requested from Gora by calling <cite>request</cite> method of Gora main smart contract. In its simplest form, it takes the following positional arguments:</p>
+                <table class="args">
+                    <thead>
+                        <tr>
+                            <th>Argument #</th>
+                            <th>ABI Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td>string</td>
+                            <td>Data source specification</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>bytes</td>
+                            <td>Data source parameter</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>string</td>
+                            <td>Destination specification</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>For example:</p>
+                <table data-language="solidity">
+                    <tr>
+                        <td class="linenos">
+                            <pre><span class="normal"><a href="#0b960ae6d5ab75760e7a8b182b018703-1">1</a></span></pre>
+                        </td>
+                        <td class="code">
+                            <pre><a id="0b960ae6d5ab75760e7a8b182b018703-1" name="0b960ae6d5ab75760e7a8b182b018703-1"></a><span class="kt">bytes32</span><span class="w"> </span><span class="nv">reqId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gora<span class="p">.</span>request<span class="p">(</span><span class="s2">&quot;http://example.com/mydata&quot;</span><span class="p">,</span><span class="w"> </span><span class="kt">bytes</span><span class="p">(</span><span class="s2">&quot;substr:0,2&quot;</span><span class="p">),</span><span class="w"> </span><span class="s2">&quot;myMethod&quot;</span><span class="p">)</span></pre>
+                        </td>
+                    </tr>
+                </table>
+                <p>More precisely, Gora <cite>request</cite> method arguments have the following meanings:</p>
+                <dl>
+                    <dt>Data source specification</dt>
+                    <dd>Specifies the data source and method to access it. It has the structure of a standard URL, e.g. <cite>http://some-source.example.com/some_data.json</cite>. Besides HTTP(S), request URLs may use Gora-specific access protocols. For example, <cite>gora://classic/1</cite> specifies test source that always returns <cite>1</cite>, without querying external endpoints.</dd>
+                    <dt>Data source parameter</dt>
+                    <dd>For sources that are not <em>special</em> (i.e. do not begin with <code>gora://</code>) this parameter contains a <a href="#value-extraction">value extraction specification</a>. It describes how oracle-returned value is to be extracted from data provided by the source. For example, with a JSON endpoint that returns <code>{ "score": 123
+}</code> one would specify: <code>jsonpath:$.score</code>. Gora supports a number of value extraction options which will be explained in detail below. Special Gora sources will be described separately.</dd>
+                    <dt>Destination specification</dt>
+                    <dd>Contains the name of the method in customer's smart contract to be called with the oracle return value. Gora returns oracle value by calling the same customer's smart contract that that requested it.</dd>
+                </dl>
+                <p><strong>Return value</strong> of the <cite>request</cite> method is a unique identifier for the created request. It is necessary to map returned oracle values to requests when making multiple oracle calls, to manipulate created requests or to access their properties.</p>
+            </section>
+            <section id="receiving-oracle-data">
+                <h3>Receiving oracle data</h3>
+                <p>After your Gora request is created and committed to public blockchain, it should be picked up and processed by Gora nodes in short order. Data extracted by nodes according to your specifications will be put through consensus by Gora smart contracts. On successful verification, Gora main smart contract will call the method you specified in your request and provide the resulting value. Your data-receiving method must only accept two arguments:</p>
+                <table class="args">
+                    <thead>
+                        <tr>
+                            <th>Argument #</th>
+                            <th>ABI Type</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td>bytes32</td>
+                            <td>Request ID</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>bytes</td>
+                            <td>Oracle value</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>Namely:</p>
+                <dl>
+                    <dt>Request ID</dt>
+                    <dd>identifier of Gora request for which the value provided is the response. You smart contract will likely want to use it to determine which of the Gora requests made previously this response applies to.</dd>
+                    <dt>Oracle value</dt>
+                    <dd>value returned by the oracle, as a byte string. Numeric values will be provided as their string representaitons, e.g. "0.1234", "-12". It will be down to receiving smart contract to convert them to Solidity numeric types if they need. Strings are returned as is.</dd>
+                </dl>
+            </section>
+            <section id="using-off-chain-computation">
+                <h3>Using off-chain computation</h3>
+                <figure align="right">
+                    <img width="650" alt="Gora off-chain computation workflow diagram" src="off_chain.svg" />
+                    <figcaption>Gora off-chain computation workflow</figcaption>
+                </figure>
+                <p>For use cases that require more flexibility, Gora supports oracle requests that execute user-supplied <a href="https://webassembly.org/">Web Assembly</a> to produce an oracle value. This enables querying of data sources determined at runtime and processing their outputs in arbitrary ways. The user-supplied code is executed off-chain by Gora nodes and is subject to resource limits.</p>
+                <p>To make use of this feature, developers write their off-chain programs utilizing Gora off-chain API. Any language that compiles to Web Assembly may be used. We recommend C language due to its simplicity and ubiquity, and <a href="https://clang.llvm.org/">Clang compiler</a> because of it can generate Web Assembly binaries directly. E.g.:</p>
+                <pre class="terminal">$ clang example.c -Os --target=wasm32-unknown-unknown-wasm -c -o example.wasm</pre>
+                <p>Compiled binary is then encoded as <cite>Base64Url</cite> (URL-safe variant of Base64) and included with the request to a special URL defined by Gora to handle off-chain computation requests. In simpler form, where web assembly executable binary is provided in smart contract source code, this URL has the following format: <code>gora://offchain/v&lt;API version&gt;/basic?body=&lt;Base64Url-encoded WASM binary&gt;[optional positional arguments]</code>.</p>
+                <p>The executable body can also be supplied in binary form as the <em>data source parameter</em>. Which is more convenient for larger executables or automated builds. In that case, the <code>body</code> data source URL parameter is omitted.</p>
+                <p>Current Gora offchain API version is <code>0</code>. So, for example, to execute your program with two positional arguments (<code>"red"</code> and <code>"apple"</code>) you would specify the following URL: <code>gora://offchain/v0/basic?arg=red&amp;arg=apple&amp;body=AGFzbQEAAAABhoCAg...</code></p>
+                <p>To convert binaries into Base64URL encoding, you can use <code>basenc</code> command-line utility, normally included with Linux and MacOs:</p>
+                <pre class="terminal">$ basenc --base64url example.wasm
+AGFzbQEAAAABhoCAgAABYAF/AX8CuoCAgAACA2Vudg9fX2xpbmVhcl9tZW1vcnkCAAEDZW52GV9f
+aW5kaXJlY3RfZnVuY3Rpb25fdGFibGUBcAAAA4KAgIAAAQAHjICAgAABCGdvcmFNYWluAAAMgYCA
+gAABCpGAgIAAAQ8AIABBgICAgAA2AghBAAsLk4CAgAABAEEACw1IZWxsbyB3b3JsZCEAAMKAgIAA
+B2xpbmtpbmcCCJuAgIAAAgCkAQAJZ29yYV9tYWluAQIGLkwuc3RyAAANBZKAgIAAAQ4ucm9kYXRh
+Li5MLnN0cgABAJGAgIAACnJlbG9jLkNPREUFAQQGAQAApoCAgAAJcHJvZHVjZXJzAQxwcm9jZXNz
+ZWQtYnkBBWNsYW5nBjE2LjAuNgCsgICAAA90YXJnZXRfZmVhdHVyZXMCKw9tdXRhYmxlLWdsb2Jh
+bHMrCHNpZ24tZXh0
+$</pre>
+                <p>To reduce blockchain storage use, you can apply Gzip compression before encoding:</p>
+                <pre class="terminal">gzip &lt; example.wasm | basenc --base64url</pre>
+                <p>Gora will automatically recognize and decompress gzipped Web Assembly binaries.</p>
+            </section>
+            <section id="gora-off-chain-computation-api">
+                <h3>Gora off-chain computation API</h3>
+                <p>Web Assembly programs supplied with off-chain computation requests interact with host Gora nodes via a simple API. It provides functions to setup and initiate HTTP(s) requests, or write log messages. It also includes a persistent data structure to share data with the host node or between <em>steps</em> of your program. <em>Steps</em> are essentially repeated executions of the program in course of serving the same off-chain computation request. They are necessary because Web Assembly programs cannot efficiently pause while waiting to receive data from external sources such as network connections.</p>
+                <p>A <em>step</em> starts when the program's <em>main function</em> is called by the executing Gora node and ends when this function returns. During a step, the program can schedule HTTP(S) requests, possibly using URL templates that it can fill at run time. When the step ends, these requests are executed by the Gora node. On their completion, the next step commences and your program can access request results as well as other data provided by the Gora node via current <em>context</em> structure. The <em>context</em> persists for the duration of executing your off-chain computation request. Finishing a step, the program returns a value which tells the Gora node what to do next: execute another step, finish successfully or terminate with a specific error code.</p>
+                <p>For the list of valid return values, see <a href="https://github.com/GoraNetwork/phoenix-examples/blob/main/gora_off_chain.h">gora_off_chain.h</a>. header file. To learn how Gora Off-Chain API is used in practice and its execution model, please consider <a href="https://github.com/GoraNetwork/phoenix-examples/">Gora source code examples</a>.</p>
+            </section>
+        </section>
+        <section id="running-gora-nodes">
+            <h2>Running Gora nodes</h2>
             <figure align="right">
-                <img width="400" alt="Gora node operation workflow and options" src="node_installation.svg" />
+                <img width="550" alt="Gora node operation workflow and options" src="node_installation.svg" />
             </figure>
             <p>Gora is a <em>decentralized</em> blockchain oracle. To produce its values, it relies on a network of independent blockchain-connected nodes running <em>Gora Node Runner (GNR)</em>. Gora token issuance and distribution, required to bootstrap consensus verification, are usually done once by the network owner and are beyond the scope of this discussion. For the purposes of this document, setting up a Gora node network comes down to setting up GNR for each node operator.</p>
             <p>The GNR is distributed as a Linux-based <a href="https://docker.io/">Docker</a> image that runs on any docker-enabled customer host or in Amazon cloud as an <a href="https://aws.amazon.com/fargate/">AWS Fargate</a> application. GNR is managed via <a href="https://download.gora.io/">Gora CLI tool</a> - a self-contained command-line executable that encapsulates all required functionality for Gora node operators or power users.</p>
@@ -91,7 +574,7 @@ aside.note { padding: 1em; background: lightBlue; }</style>
                     </ul>
                     <p>To start over, rename or delete the produced config file <code>~/.gora</code>.</p>
                     <aside class="warning">
-                        <p><strong>At no time should you run Gora software as root</strong>. If hacked, a program executed with root priveleges becomes a gateway to complete control of your system. This makes such software a high-priority target for hackers, which is neither in Gora's interest nor yours. <strong>No support will be provided for such usage scenarios.</strong></p>
+                        <p><strong>WARNING</strong> <strong>At no time should you run Gora software as root</strong>. If hacked, a program executed with root priveleges becomes a gateway to complete control of your system. This makes such software a high-priority target for hackers, which is neither in Gora's interest nor yours. <strong>No support will be provided for such usage scenarios.</strong></p>
                         <p>If you run into a permissions issue, <strong>do NOT use sudo</strong> to force your way through. For docker-related errors, make sure you have added yourself to <code>docker</code> user group. When adding priveleges to your normal user account is undesirable, create a new user (e.g. <code>gora</code>) with <code>useradd</code> command, give it the necessary permissions and perform all Gora-related operations as that user.</p>
                     </aside>
                 </section>
@@ -111,7 +594,7 @@ aside.note { padding: 1em; background: lightBlue; }</style>
                 </section>
                 <section id="b-start-your-gora-node-on-aws">
                     <h4>3b) Start your Gora Node on AWS</h4>
-                    <aside class="note"><em>AWS functionality is currently</em> <strong>experimental</strong>, <em>new users are encouraged to run their nodes locally</em>. <em>If you are willing to try running on AWS, execute</em> <code>export GORA_EXPERIMENTAL_MODE=1</code> <em>and proceed with caution.</em></aside>
+                    <aside class="note"><strong>NOTE</strong> <em>AWS functionality is currently</em> <strong>experimental</strong>, <em>new users are encouraged to run their nodes locally</em>. <em>If you are willing to try running on AWS, execute</em> <code>export GORA_EXPERIMENTAL_MODE=1</code> <em>and proceed with caution.</em></aside>
                     <p>Running your Gora node on AWS is a lower maintenance option, altough it is not as flexible or economical as running it locally. To begin, download and install <a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">AWS CLI</a>. You should then be able start your Gora node right away by running <code>./gora aws-start</code>. During a first-time execution, several AWS configuration items will be set up for you, producing an output like:</p>
                     <pre class="terminal">Creating security group "gora-nr-sg"
 Creating log group "gora-nr-logs"
@@ -130,8 +613,8 @@ Task ID: "2468d56dff884c9ca536fb2e537f8928"</pre>
                     <p>To stop a Gora node running locally in the foreground, hit <code>Ctrl-C</code>. If it is running in the background, execute <code>./gora docker-stop</code>. To stop a node on AWS, run <code>./gora aws-stop</code>.</p>
                 </section>
             </section>
-            <section id="updating-or-moving-your-gora-installation">
-                <h3>Updating or moving your Gora installation</h3>
+            <section id="updating-or-moving-installations">
+                <h3>Updating or moving installations</h3>
                 <p>Gora CLI tool is updated with <code>gora update</code> command. It checks whether there is a more recent version than the one being run, and if so, offers to upgrade it by downloading and replacing the <code>gora</code> binary. Current binary will be backed up. GNR is distributed as a docker image, so it will be automatically updated whenever your Gora node is started. To ensure that you are running the latest version, simply stop and start your node again.</p>
                 <p>Your can move your Gora installation to a new server without setting it up from scratch. Copy the <code>gora</code> binary to a new location of your choice and <code>~/.gora</code> configuration file to your home directory on the new server. Make sure you have Docker installed and enabled for the user that runs Gora node on the new server as well. When you start your node for the first time at the new location, it may take some time to fetch the GNR docker image. Make sure not to run multiple nodes off the same configuration at the same time.</p>
             </section>
@@ -141,159 +624,67 @@ Task ID: "2468d56dff884c9ca536fb2e537f8928"</pre>
                 <p>Gora config file contains settings specific to your Gora node in JSON format. When deploying a node to cloud or launching it locally, Gora CLI tool reads this file and passes its contents to GNR via Docker container environment settings. This makes local configuration available to GNR without using docker mounts. The default location of Gora config file is <code>~/.gora</code>.</p>
             </section>
         </section>
-        <section id="developing-applications-with-gora">
-            <h2>Developing applications with Gora</h2>
-            <p>Customer applications interact with Gora by calling Gora smart contracts. On EVM-compatible networks, smart contracts are almost always written in <a href="https://soliditylang.org/">Solidity</a> , so this is the language we use in our documentation and examples. For a quick hands-on introduction, see <a href="https://github.com/GoraNetwork/phoenix-examples/">Gora source code examples</a>. For a more complete overview as well as an API reference, read on.</p>
-            <section id="calling-gora">
-                <h3>Calling Gora</h3>
-                <p>Gora functionality is accessed by calling <em>methods</em> of Gora <em>main smart contract</em>. To get started, you need Gora main contract address for the blockchain network that you are going to use. The preferred way to find it is to check the home page of Gora Explorer for the network in question. For example, <a href="https://mainnet.base.explorer.gora.io/">Gora Explorer for Base mainnet</a>. Gora main contract address is shown next to "Gora App" label.</p>
-                <p>With Gora main contract address, you can create a Gora API Solidity object in your smart contract and start making Gora calls. For example, read total amount of tokens currently staked in this Gora network:</p>
-                <pre data-language="solidity"><span class="kt">address</span><span class="w"> </span><span class="nv">constant</span><span class="w"> </span>goraMainAddr<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kt">address</span><span class="p">(</span><span class="mh">0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span><span class="p">);</span>
-Gora<span class="w"> </span>gora<span class="w"> </span><span class="o">=</span><span class="w"> </span>Gora<span class="p">(</span>goraMainAddr<span class="p">);</span>
-<span class="kt">uint</span><span class="w"> </span><span class="nv">totalStake</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gora<span class="p">.</span>totalStake<span class="p">();</span></pre>
-                <p><em>The above is an excerpt, for complete working examples see</em> <a href="https://github.com/GoraNetwork/phoenix-examples/">Gora source code examples</a>.</p>
-            </section>
-            <section id="requesting-oracle-data">
-                <h3>Requesting oracle data</h3>
-                <p>Oracle data is requested from Gora by calling <cite>request</cite> method of Gora main smart contract. In its simplest form, it takes the following positional arguments:</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Argument #</th>
-                            <th>ABI Type</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>0</td>
-                            <td>string</td>
-                            <td>Data source specification</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>bytes</td>
-                            <td>Data source parameter</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>string</td>
-                            <td>Destination specification</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p>For example:</p>
-                <pre data-language="solidity"><span class="kt">bytes32</span><span class="w"> </span><span class="nv">reqId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gora<span class="p">.</span>request<span class="p">(</span><span class="s2">&quot;http://example.com/mydata&quot;</span><span class="p">,</span><span class="w"> </span><span class="kt">bytes</span><span class="p">(</span><span class="s2">&quot;substr:0,2&quot;</span><span class="p">),</span><span class="w"> </span><span class="s2">&quot;myMethod&quot;</span><span class="p">)</span></pre>
-                <p>More precisely, Gora <cite>request</cite> method arguments have the following meanings:</p>
-                <dl>
-                    <dt>Data source specification</dt>
-                    <dd>Specifies the data source and method to access it. It has the structure of a standard URL, e.g. <cite>http://some-source.example.com/some_data.json</cite>. Besides HTTP(S), request URLs may use Gora-specific access protocols. For example, <cite>gora://classic/1</cite> specifies test source that always returns <cite>1</cite>, without querying external endpoints.</dd>
-                    <dt>Data source parameter</dt>
-                    <dd>For sources that are not <em>special</em> (i.e. do not begin with <code>gora://</code>) this parameter contains a <em>value extraction specification</em>. It describes how oracle-returned value is to be extracted from data provided by the source. For example, with a JSON endpoint that returns <code>{ "score": 123 }</code> one would specify: <code>jsonpath:$.score</code>. Gora supports a number of value extraction options which will be explained in detail below. Special Gora sources will be described separately.</dd>
-                    <dt>Destination specification</dt>
-                    <dd>Contains the name of the method in customer's smart contract to be called with the oracle return value. Gora returns oracle value by calling the same customer's smart contract that that requested it.</dd>
-                </dl>
-                <p><strong>Return value</strong> of the <cite>request</cite> method is a unique identifier for the created request. It is necessary to map returned oracle values to requests when making multiple oracle calls, to manipulate created requests or to access their properties.</p>
-            </section>
-            <section id="receiving-oracle-data">
-                <h3>Receiving oracle data</h3>
-                <p>After your Gora request is created and committed to public blockchain, it should be picked up and processed by Gora nodes in short order. Data extracted by nodes according to your specifications will be put through consensus by Gora smart contracts. On successful verification, Gora main smart contract will call the method you specified in your request and provide the resulting value. Your data-receiving method must only accept two arguments:</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Argument #</th>
-                            <th>ABI Type</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>0</td>
-                            <td>bytes32</td>
-                            <td>Request ID</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>bytes</td>
-                            <td>Oracle value</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p>Namely:</p>
-                <dl>
-                    <dt>Request ID</dt>
-                    <dd>identifier of Gora request for which the value provided is the response. You smart contract will likely want to use it to determine which of the Gora requests made previously this response applies to.</dd>
-                    <dt>Oracle value</dt>
-                    <dd>value returned by the oracle, as a byte string. Numeric values will be provided as their string representaitons, e.g. "0.1234", "-12". It will be down to receiving smart contract to convert them to Solidity numeric types if they need. Strings are returned as is.</dd>
-                </dl>
-            </section>
-            <section id="value-extraction-specifications">
+        <section id="appendix">
+            <h2>Appendix</h2>
+            <a id="value-extraction"></a>
+            <section id="value-extraction-specifications-1">
                 <h3>Value extraction specifications</h3>
-                <p>Gora users most often want a specific piece of data source output, so they must be able to tell Gora how to extract it. This is what a Gora value extraction specification does. It consists of up to three parts, separated by colon: method, expression and an optional rounding modifier. For example, <cite>substr:4,11</cite> tells Gora that it needs to return a substring from data source output, starting at 4th and ending at 11th character.</p>
-                <p>Gora supports the following value extraction methods and expression formats:</p>
-                <dl>
-                    <dt>jsonpath</dt>
-                    <dd>
-                        <pre class="line_block">JSONPath expression, see: <a href="https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/">https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/</a>
-Example: <code>jsonpath:jsonpath:$.data.temperature</code></pre>
-                    </dd>
-                    <dt>xpath</dt>
-                    <dd>
-                        <pre class="line_block">XPath expression, see: <a href="https://www.w3.org/TR/2017/REC-xpath-31-20170321/">https://www.w3.org/TR/2017/REC-xpath-31-20170321/</a>
-Example: <code>xpath:/p/a</code></pre>
-                    </dd>
-                    <dt>regex</dt>
-                    <dd>
-                        <pre class="line_block">JavaScript regular expression, see: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions</a>
-Example: <code>regex: the magic number is ([0-9]+)</code></pre>
-                    </dd>
-                    <dt>substr</dt>
-                    <dd>
-                        <pre class="line_block">Substring specification, start and end offsets, e.g. <cite>substr:4,11</cite>
-Example: <code>substr:0,10</code></pre>
-                    </dd>
-                    <dt>bytes</dt>
-                    <dd>
-                        <pre class="line_block">Same as substring specification, but operates on bytes rather than characters
-Example: <code>bytes:2,4</code></pre>
-                    </dd>
-                </dl>
+                <p>A <em>value extraction specification</em> tells oracle how to extract a specific piece of data from a response returned by the data source. It consists of up to three parts, separated by colons: method, expression and an optional rounding modifier. For example, <cite>substr:4,11</cite> tells Gora that it needs to return a substring from data source output, starting at 4th and ending at 11th character.</p>
+                <p>Gora supports several extraction methods and expression formats:</p>
+                <table class="comparison">
+                    <thead>
+                        <tr>
+                            <th>Expression type</th>
+                            <th>Example</th>
+                            <th>Best for</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><a href="https://datatracker.ietf.org/doc/draft-ietf-jsonpath-base/">JSONPath</a></td>
+                            <td><code>jsonpath:jsonpath:$.data.temperature</code></td>
+                            <td>JSON documents</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://www.w3.org/TR/2017/REC-xpath-31-20170321/">XPath</a></td>
+                            <td><code>xpath:/p/a</code></td>
+                            <td>XML documents</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">Regular expression</a></td>
+                            <td><code>regex: the magic number is ([0-9]+)</code></td>
+                            <td>Structured text</td>
+                        </tr>
+                        <tr>
+                            <td>Character Substring</td>
+                            <td><code>substr:0,10</code></td>
+                            <td>Unstructured text</td>
+                        </tr>
+                        <tr>
+                            <td>Byte fragment</td>
+                            <td><code>bytes:2,4</code></td>
+                            <td>Unstructured binary data</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <p>An optional rounding modifier is used to round floating-point values to certain amount of digits after the point. This may be necessary with some types of values such as cryptocurrency exchange rates. They can be so volatile that different Gora nodes are likely to get slightly different results despite querying them at almost the same time. That would prevent the nodes from achieving consensus and confirming the value as authentic. Adequate rounding gets us around this issue.</p>
-                <p>For instance, if you specify <code>jsonpath:$.rate:3</code>, the responses <code>{ "rate": 1.2344 }</code> and <code>{ "rate": 1.2342 }</code> that may be received by different Gora nodes will yield the same value <code>"1.234"</code>. The nodes will achieve consensus and you will get <code>"1.234"</code> as the resulting oracle value.</p>
-                <p>Rounding only affects fractional part of the rounded number, all whole part digits are preserved. For example, if rounding parameter is set to <code>4</code>, the number <code>1.12345</code> will be rounded to <code>1.1234</code>; but, for exmaple, the number <code>12345678</code> will remain unaffected.</p>
+                <p>For instance, if you specify <code>jsonpath:$.rate:3</code>, the responses <code>{ "rate":
+1.2344 }</code> and <code>{ "rate": 1.2342 }</code> that may be received by different Gora nodes will yield the same value <code>"1.234"</code>. The nodes will achieve consensus and you will get <code>"1.234"</code> as the resulting oracle value. Rounding only affects fractional part of the rounded number, all whole part digits are preserved. For example, if rounding parameter is set to <code>4</code>, the number <code>1.12345</code> will be rounded to <code>1.1234</code>; but, for exmaple, the number <code>12345678</code> will remain unaffected.</p>
             </section>
-            <section id="using-off-chain-computation">
-                <h3>Using off-chain computation</h3>
-                <figure align="right">
-                    <img width="400" alt="Gora off-chain computation workflow diagram" src="off_chain.svg" />
-                    <figcaption>Gora off-chain computation workflow</figcaption>
-                </figure>
-                <p>For use cases that require more flexibility, Gora supports oracle requests that execute user-supplied <a href="https://webassembly.org/">Web Assembly</a> to produce an oracle value. This enables querying of data sources determined at runtime and processing their outputs in arbitrary ways. The user-supplied code is executed off-chain by Gora nodes and is subject to resource limits.</p>
-                <p>To make use of this feature, developers write their off-chain programs utilizing Gora off-chain API. Any language that compiles to Web Assembly may be used. We recommend C language due to its simplicity and ubiquity, and <a href="https://clang.llvm.org/">Clang compiler</a> because of it can generate Web Assembly binaries directly. E.g.:</p>
-                <pre data-language="bash">$<span class="w"> </span>clang<span class="w"> </span>example.c<span class="w"> </span>-Os<span class="w"> </span>--target<span class="o">=</span>wasm32-unknown-unknown-wasm<span class="w"> </span>-c<span class="w"> </span>-o<span class="w"> </span>example.wasm</pre>
-                <p>Compiled binary is then encoded as <cite>Base64Url</cite> (URL-safe variant of Base64) and included with the request to a special URL defined by Gora to handle off-chain computation requests. In simpler form, where web assembly executable binary is provided in smart contract source code, this URL has the following format: <code>gora://offchain/v&lt;API version&gt;/basic?body=&lt;Base64Url-encoded WASM binary&gt;[optional positional arguments]</code>.</p>
-                <p>The executable body can also be supplied in binary form as the <em>data source parameter</em>. Which is more convenient for larger executables or automated builds. In that case, the <code>body</code> data source URL parameter is omitted.</p>
-                <p>Current Gora offchain API version is <code>0</code>. So, for example, to execute your program with two positional arguments (<code>"red"</code> and <code>"apple"</code>) you would specify the following URL: <code>gora://offchain/v0/basic?arg=red&amp;arg=apple&amp;body=AGFzbQEAAAABhoCAg...</code></p>
-                <p>To convert binaries into Base64URL encoding, you can use <code>basenc</code> command-line utility, normally included with Linux and MacOs:</p>
-                <pre class="terminal">$ basenc --base64url example.wasm
-AGFzbQEAAAABhoCAgAABYAF/AX8CuoCAgAACA2Vudg9fX2xpbmVhcl9tZW1vcnkCAAEDZW52GV9f
-aW5kaXJlY3RfZnVuY3Rpb25fdGFibGUBcAAAA4KAgIAAAQAHjICAgAABCGdvcmFNYWluAAAMgYCA
-gAABCpGAgIAAAQ8AIABBgICAgAA2AghBAAsLk4CAgAABAEEACw1IZWxsbyB3b3JsZCEAAMKAgIAA
-B2xpbmtpbmcCCJuAgIAAAgCkAQAJZ29yYV9tYWluAQIGLkwuc3RyAAANBZKAgIAAAQ4ucm9kYXRh
-Li5MLnN0cgABAJGAgIAACnJlbG9jLkNPREUFAQQGAQAApoCAgAAJcHJvZHVjZXJzAQxwcm9jZXNz
-ZWQtYnkBBWNsYW5nBjE2LjAuNgCsgICAAA90YXJnZXRfZmVhdHVyZXMCKw9tdXRhYmxlLWdsb2Jh
-bHMrCHNpZ24tZXh0
-$</pre>
-                <p>To reduce blockchain storage use, you can apply Gzip compression before encoding:</p>
-                <pre class="terminal">gzip &lt; example.wasm | basenc --base64url</pre>
-                <p>Gora will automatically recognize and decompress gzipped Web Assembly binaries.</p>
-            </section>
-            <section id="gora-off-chain-computation-api">
-                <h3>Gora off-chain computation API</h3>
-                <p>Web Assembly programs supplied with off-chain computation requests interact with host Gora nodes via a simple API. It provides functions to setup and initiate HTTP(s) requests, or write log messages. It also includes a persistent data structure to share data with the host node or between <em>steps</em> of your program. <em>Steps</em> are essentially repeated executions of the program in course of serving the same off-chain computation request. They are necessary because Web Assembly programs cannot efficiently pause while waiting to receive data from external sources such as network connections.</p>
-                <p>A <em>step</em> starts when the program's <em>main function</em> is called by the executing Gora node and ends when this function returns. During a step, the program can schedule HTTP(S) requests, possibly using URL templates that it can fill at run time. When the step ends, these requests are executed by the Gora node. On their completion, the next step commences and your program can access request results as well as other data provided by the Gora node via current <em>context</em> structure. The <em>context</em> persists for the duration of executing your off-chain computation request. Finishing a step, the program returns a value which tells the Gora node what to do next: execute another step, finish successfully or terminate with a specific error code.</p>
-                <p>For the list of valid return values, see <a href="https://github.com/GoraNetwork/phoenix-examples/blob/main/gora_off_chain.h">gora_off_chain.h</a>. header file. To learn how Gora Off-Chain API is used in practice and its execution model, please consider <a href="https://github.com/GoraNetwork/phoenix-examples/">Gora source code examples</a>.</p>
-            </section>
+        </section>
+        <section id="roadmap-for-2025">
+            <h2>Roadmap for 2025</h2>
+            <p>Gora is always working to improve its core product as well as cater for new market demands. In 2025, we plan to accomplish the following goals:</p>
+            <dl>
+                <dt>Browser-based Gora nodes</dt>
+                <dd>Currently running a Gora node requires a Linux server or an AWS cloud account. Soon we will make it possible with any Javascript-enabled web browser. This will allow anyone with a web3 wallet to instantly become a node operator, earning rewards and strengthening the distributed nature of Gora node networks. ASO customers will be able to get started much more easily with their own node networks too. We have been working on making our node software codebase browser-compatible for a while and we are now finalizing this work.</dd>
+                <dt>Solana support</dt>
+                <dd>Solana usage has grown tremendously in recent times. We are now building proof-of-concept implementations of our key components and will soon be prepared to fully tap into that ecosystem.</dd>
+                <dt>Gora mobile app</dt>
+                <dd>Building on the platform-agnostic nature of our revamped codebase, we are planning a React Native superapp. It will provide a single point of control for all Gora functions: a local Gora node, Gora-specific blockchain explorer, ASO control panel and server node deployments manager. Apart from user convenience, it will bring some unique opportunities such as direct feeding sensor data from any IOT or mobile device into blockchain.</dd>
+                <dt>Automated custom executor deployment</dt>
+                <dd>Currently ASO customers willing to deploy their own executor oracles must follow a semi-manual process with the help of our staff. We are planning to make it fully automated using a factory smart contract.</dd>
+            </dl>
         </section>
     </section>
 </body>
