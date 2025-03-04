@@ -2,8 +2,20 @@
 
     <title>Gora Decentralized Oracle Documentation</title>
     <meta charset="utf-8" />
-    <style>body { font: 15px Verdana, Tahoma, sans-serif; line-height: 1.5em;
-       margin: 0 0.5em 0.5em 22%; }
+    <style>body { font: 14pt Verdana, Tahoma, sans-serif; line-height: 1.5em; margin: 1em; }
+#contents h1 { display: none; }
+#contents ul {  padding-inline-start: 1em; }
+@media (min-width:1024px) {
+    body { font-size: 12pt; margin-left: 20em; }
+    #contents {
+        position: fixed; left: 0; top: 0; padding: 0.5em 0.5em 0.5em; width: 18em;
+        height: 100%; font: 16px Verdana, Tahoma, sans-serif; line-height: 2em;
+        color: #dddddd; overflow: scroll; background: #17271f;
+        border-right: 2px white outset;
+    }
+    #contents a { color: #dddddd; text-decoration: none; }
+}
+h1, h2, h3, h4, dt { color: #17271f; }
 dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
 pre.terminal { padding: 1em 0.5em; color: white; background: black;
                overflow-x: auto; }
@@ -19,15 +31,6 @@ aside.note { color: darkBlue; border-left: 4px darkBlue solid; }
 aside.note > p:first-of-type > strong:first-of-type,
 aside.note > strong:first-of-type
   { color: white; background: darkBlue; padding: 0.1em 0.25em; }
-#contents {
-    position: fixed; left: 0; top: 0; padding: 0.5em 0.5em 0.5em; width: 20%;
-    height: 100%; font: 16px Verdana, Tahoma, sans-serif; line-height: 2em;
-    background: #17271f; border-right: 2px white outset;
-}
-#contents { color: #dddddd; overflow: scroll; }
-#contents h1 { display: none; }
-#contents a { color: #dddddd; text-decoration: none; }
-#contents ul {  padding-inline-start: 1em; }
 th { background: #e9f5ef; }
 td, th { padding: 0 0.5em; border: 1px darkGray solid; }
 td.code { padding-left: 1em; }
@@ -35,7 +38,8 @@ td.code, td.linenos { border: 0; }
 td.code .c1 { color: #555555; }
 td.code .s2 { color: darkGreen; }
 td.code .mh { color: darkRed; }
-td.code .kt { font-weight: bold; color: darkBlue; }</style>
+td.code .kt { font-weight: bold; color: darkBlue; }
+</style>
 
 <html>
 <body>
