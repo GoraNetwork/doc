@@ -1,7 +1,7 @@
 # Build HTML of Gora Phoenix main documentation from reStructuredText.
 
 SHELL = /bin/bash # pick up executable paths properly
-CONVERTER = rst2html5 --halt 3 --template=template.html \
+CONVERTER = rst2html5 --halt 3 --strip-comments --template=template.html \
                       --stylesheet-inline
 
 all: html/index.html html/github_home.html svg png
