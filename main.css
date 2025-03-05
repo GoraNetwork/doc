@@ -17,8 +17,14 @@ p { margin: 2em 0; }
     p { margin: 1em 0; }
 }
 
-h1, h3, h4, dt { color: #17271f; }
+h1, h3, h4, h5, dt { color: #17271f; }
 h2 { padding: 0.5em; color: white; background: #17271f; }
+
+h2 { font-size: 180%; }
+h2 { font-size: 160%; }
+h3 { font-size: 140%; }
+h4 { font-size: 120%; }
+h5 { font-size: 110%; }
 
 figcaption { color: #195b3a; }
 dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
@@ -39,7 +45,7 @@ aside.warning > strong:first-of-type
 aside.note { color: darkBlue; border-left: 4px darkBlue solid; }
 aside.note > p:first-of-type > strong:first-of-type,
 aside.note > strong:first-of-type
-  { color: white; background: darkBlue; padding: 0.1em 0.25em; }
+  { color: #eeeeee; background: darkBlue; padding: 0.1em 0.25em; }
 
 th { background: #e9f5ef; }
 td, th { padding: 0 0.5em; border: 1px darkGray solid; }

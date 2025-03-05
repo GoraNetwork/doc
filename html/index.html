@@ -17,8 +17,13 @@ p { margin: 2em 0; }
     #contents a { color: #dddddd; text-decoration: none; }
     p { margin: 1em 0; }
 }
-h1, h3, h4, dt { color: #17271f; }
+h1, h3, h4, h5, dt { color: #17271f; }
 h2 { padding: 0.5em; color: white; background: #17271f; }
+h2 { font-size: 180%; }
+h2 { font-size: 160%; }
+h3 { font-size: 140%; }
+h4 { font-size: 120%; }
+h5 { font-size: 110%; }
 figcaption { color: #195b3a; }
 dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
 pre.terminal { padding: 1em 0.5em; color: white; background: black;
@@ -34,7 +39,7 @@ aside.warning > strong:first-of-type
 aside.note { color: darkBlue; border-left: 4px darkBlue solid; }
 aside.note > p:first-of-type > strong:first-of-type,
 aside.note > strong:first-of-type
-  { color: white; background: darkBlue; padding: 0.1em 0.25em; }
+  { color: #eeeeee; background: darkBlue; padding: 0.1em 0.25em; }
 th { background: #e9f5ef; }
 td, th { padding: 0 0.5em; border: 1px darkGray solid; }
 td.code { padding-left: 1em; }
@@ -68,6 +73,7 @@ td.code .kt { font-weight: bold; color: darkBlue; }
                         <li><a href="#receiving-oracle-data">Receiving oracle data</a></li>
                         <li><a href="#using-off-chain-computation">Using off-chain computation</a></li>
                         <li><a href="#gora-off-chain-computation-api">Gora off-chain computation API</a></li>
+                        <li><a href="#developer-quick-start-evm-1">Developer Quick Start (EVM)</a></li>
                     </ul>
                 </li>
                 <li><a href="#classic-oracle-on-algorand">Classic oracle on Algorand</a>
@@ -75,7 +81,7 @@ td.code .kt { font-weight: bold; color: darkBlue; }
                         <li><a href="#requesting-oracle-data-1">Requesting oracle data</a></li>
                         <li><a href="#calling-outside-of-blockchain">Calling outside of blockchain</a></li>
                         <li><a href="#troubleshooting-applications">Troubleshooting applications</a></li>
-                        <li><a href="#developer-quick-start-package">Developer quick start package</a></li>
+                        <li><a href="#developer-quick-start-1">Developer quick start</a></li>
                     </ul>
                 </li>
                 <li><a href="#running-gora-nodes">Running Gora nodes</a>
@@ -553,10 +559,111 @@ $</pre>
                 <p>A <em>step</em> starts when the program's <em>main function</em> is called by the executing Gora node and ends when this function returns. During a step, the program can schedule HTTP(S) requests, possibly using URL templates that it can fill at run time. When the step ends, these requests are executed by the Gora node. On their completion, the next step commences and your program can access request results as well as other data provided by the Gora node via current <em>context</em> structure. The <em>context</em> persists for the duration of executing your off-chain computation request. Finishing a step, the program returns a value which tells the Gora node what to do next: execute another step, finish successfully or terminate with a specific error code.</p>
                 <p>For the list of valid return values, see <a href="https://github.com/GoraNetwork/developer-quick-start/blob/main/gora_off_chain.h">gora_off_chain.h</a>. header file. To learn how Gora Off-Chain API is used in practice and its execution model, please consider <a href="https://github.com/GoraNetwork/phoenix-examples/">Gora source code examples</a>.</p>
             </section>
+            <section id="developer-quick-start-evm-1">
+                <h3>Developer Quick Start (EVM)</h3>
+                <p><a href="https://github.com/GoraNetwork/developer-quick-start/tree/main/evm">Developer Quick Start (EVM)</a> is a package of code examples and scripts to help developers start using Gora from their EVM blockchain applications. It contains:</p>
+                <blockquote>
+                    <ul>
+                        <li>Instructions on how to setup and use a local Gora development environment</li>
+                        <li>Example applications, also usable as templates</li>
+                        <li>Solidity compiler and EVM node binaries</li>
+                    </ul>
+                </blockquote>
+                <section id="solidity-examples">
+                    <h4>Solidity examples</h4>
+                    <p>The following extensively commented examples are provided as hands-on documentation and potential templates for your own applications:</p>
+                    <blockquote>
+                        <ul>
+                            <li><a href="https://github.com/GoraNetwork/developer-quick-start/blob/main/evm/example_basic.sol">example_basic.sol</a> - querying arbitrary HTTP JSON endpoints</li>
+                            <li><a href="https://github.com/GoraNetwork/developer-quick-start/blob/main/evm/example_off_chain.sol">example_off_chain.sol</a> - getting data from multiple APIs and processing it with off-chain computation</li>
+                        </ul>
+                    </blockquote>
+                    <aside class="note"><strong>NOTE</strong> If you are not too experienced with Solidity, or just want to run Gora examples or experiment modifying them, please skip to the next section.</aside>
+                    <p>Consider source code examples linked in the previous section. Integrate the APIs exposed in them into your own smart contracts, or deploy an example using your preferred setup, then modify it to build your app. For deployment, supply <em>Gora main smart contract address</em> as the first argument to the constructor, depending on the public network you are deploying to:</p>
+                    <blockquote>
+                        <ul>
+                            <li>Base Sepolia: <code>0xcb201275cb25a589f3877912815d5f17f66d4f13</code></li>
+                            <li>Base Mainnet: <code>0xd4c99f88095f32df993030d9a6080e3be723f617</code></li>
+                        </ul>
+                    </blockquote>
+                    <p>Once deployed, your smart contract should be able ready to issue Gora requests and receive Gora responses. For Base Sepolia, there is currently no fee for Gora requests. For Base Mainnet, you must have some Gora tokens on the querying account's balance to pay for requests.</p>
+                    <aside class="note"><strong>NOTE</strong> To develop your own applications with Gora and to deploy them to production networks, you are expected to use tools of your own choice. Gora does not try to bind you to any specific EVM toolchain.</aside>
+                </section>
+                <section id="setting-up-local-development-environment">
+                    <h4>Setting up local development environment</h4>
+                    <p>Following the steps below will set you up with a complete environment for compiling and deploying Gora smart contract examples.</p>
+                    <ol type="1">
+                        <li>Check operating system compatibility
+                            <p>Open a terminal session and execute: <cite>uname</cite>. If this prints out <cite>Linux</cite>, continue to the next step. If the output is anything else, you may proceed at your own risk, but with a non-Unix OS you will almost certainly fail.</p>
+                        </li>
+                        <li>Clone this repository
+                            <p>Install [Git](<a href="https://git-scm.com/">https://git-scm.com/</a>) if not already done so, then run:</p>
+                            <pre class="terminal">git clone <a href="https://github.com/GoraNetwork/developer-quick-start">https://github.com/GoraNetwork/developer-quick-start</a></pre>
+                            <p>You should get an output like:</p>
+                            <pre class="terminal">Cloning into 'developer-quick-start'...
+remote: Enumerating objects: 790, done.
+remote: Counting objects: 100% (232/232), done.
+remote: Compressing objects: 100% (145/145), done.
+remote: Total 790 (delta 156), reused 159 (delta 85), pack-reused 558 (from 1)
+Receiving objects: 100% (790/790), 67.78 MiB | 1.43 MiB/s, done.
+Resolving deltas: 100% (469/469), done.</pre>
+                        </li>
+                        <li>Change to EVM subdirectory and install NPM dependencies
+                            <p>Execute the following commands:</p>
+                            <pre class="terminal">cd developer-quick-start/evm
+npm i</pre>
+                            <p>You should then see something like this:</p>
+                            <pre class="terminal">added 9 packages, and audited 10 packages in 3s
+3 packages are looking for funding
+  run <cite>npm fund</cite> for details
+found 0 vulnerabilities
+
+If no errors popped up, proceed to the next step.</pre>
+                        </li>
+                        <li>Setup target blockchain network
+                            <aside class="warning"><strong>IMPORTANT!</strong> Examples can be run on either local built-in blockchain network, or a public network such as <a href="https://sepolia.basescan.org/">Base Sepolia</a>. We generally recommend using the local network for development and trying things out. But for users who do not want to install <a href="https://docker.io/">Docker</a> have a funded public network account and are OK with longer deploy/test iterations, the public network option may be preferable.</aside>
+                            <dl>
+                                <dt>Option A: Use local development blockchain network</dt>
+                                <dd>Run <code>./start_dev_env</code>. The script will start up, displaying log output from local EVM nodes as well as local Gora node. It must be running while you deploy and run the example scripts. It is the default configuration for running examples, so no additional setup will be necessary. To terminate the script, ending the development session, hit, <code>Ctrl-C</code>.</dd>
+                                <dt>Option B: Use a public network</dt>
+                                <dd>
+                                    <p>Public network configuration is set via environment variables. For example, to use Base Sepolia you would execute:</p>
+                                    <pre class="terminal">export GORA_EXAMPLE_EVM_MAIN_ADDR=0xcb201275cb25a589f3877912815d5f17f66d4f13
+export GORA_EXAMPLE_EVM_API_URL=https://sepolia.base.org
+export GORA_EXAMPLE_EVM_KEY=./my_base_sepolia_private_hex_key.txt</pre>
+                                    <p><code>./my_base_sepolia_private_hex_key.txt</code> is the example path to a text file containing private key for the account you want to use for deployment, in hex form. It can usually be found in account tools section of wallet software such as Metamask.</p>
+                                    <p>The environment variables will be picked up by the example-running script discussed below. It should be possible to deploy example scripts to any public EVM network using this method. Deploying to a mainnets is, however, strongly discouraged for security reasons.</p>
+                                </dd>
+                            </dl>
+                        </li>
+                    </ol>
+                </section>
+                <section id="running-and-modifying-the-examples">
+                    <h4>Running and modifying the examples</h4>
+                    <p>If using local development environment (option 1 in step 4 above), open another terminal window and change to the same directory in which you started the setup script. For public network configurtion (option 2 in step 4), please remain in the same terminal session.</p>
+                    <p>Then execute:</p>
+                    <pre class="terminal">./run_example basic</pre>
+                    <p>or</p>
+                    <pre class="terminal">./run_example off_chain</pre>
+                    <p>This should compile, deploy and run the example, providing detailed information on the outcome. For further details, consider <a href="#solidity-examples">Solidity examples</a>. You are welcome to modify the examples source code and try it repeating the step above.</p>
+                </section>
+                <section id="composition-of-the-development-environment">
+                    <h4>Composition of the development environment</h4>
+                    <p>Gora EVM local development environment relies on the following pieces of software:</p>
+                    <blockquote>
+                        <ul>
+                            <li>Solidity compiler (<code>solc</code> binary). Used to compile examples and potentially developer's own code.</li>
+                            <li>Geth EVM node software (<code>geth</code> binary). Provides local blockchain functionality to model master (L1) and slave (L2) EVM networks. Both instances of Geth are run in development mode (with <code>--dev</code> switch). Hardhat is not used because it has shown issues with multiple concurrent connections and was lagging behind recent Ethereum forks feature-wise.</li>
+                            <li>Gora smart contracts (files with <code>.compiled</code> extension), already compiled into combined JSON format.</li>
+                        </ul>
+                    </blockquote>
+                    <p><code>start_dev_env</code> script starts Geth instance, deploys Gora smart contracts and stays in the foreground, displaying log messages from the above as they come. Contrary to Gora Developer Quick Start package for Algorand, it must be running at all times to run Gora smart contracts locally. There is no way to start a Gora node or its local blockchain on-demand on per-example basis. To end your development session and terminate the script, hit Ctrl-C in the terminal window running it.</p>
+                </section>
+            </section>
         </section>
         <section id="classic-oracle-on-algorand">
             <h2>Classic oracle on Algorand</h2>
-            <p>Customer applications interact with Gora via smart contract calls. For a quick hands-on introduction to using Gora from your smart contracts, please see Gora <a href="https://github.com/GoraNetwork/developer-quick-start">Developer Quick Start</a> GitHub repository. For a complete reference and instructions on calling Gora from JavaScript, read on.</p>
+            <p>Customer applications interact with Gora via smart contract calls. For a quick hands-on introduction to using Gora from your smart contracts, please see Gora <a href="https://github.com/GoraNetwork/developer-quick-start/">Developer Quick Start</a> GitHub repository. For a complete reference and instructions on calling Gora from JavaScript, read on.</p>
             <section id="requesting-oracle-data-1">
                 <h3>Requesting oracle data</h3>
                 <p>Gora requests are made by calling <code>request</code> method of the main Gora smart contract. This contract's application ID is a part of Gora network configuration and can be found using <code>info</code> command of the Gora CLI tool. For example (with irrelevant output removed):</p>
@@ -981,10 +1088,10 @@ gora request --off-chain ./off_chain_example.wasm --args sm14hp
             </section>
             <section id="troubleshooting-applications">
                 <h3>Troubleshooting applications</h3>
-                <p>Troubleshooting Gora applications begins with making oracle requests and looking at how they are handled in each processing phase. For that, we recommend using Gora CLI tool, a Gora observer node and <a href="https://app.dappflow.org/explorer/home&gt;">Algorand Dapp Flow</a> web app. The rest of this section will walk you through setting them up and using them to trace execution of a Gora request.</p>
+                <p>Troubleshooting Gora applications begins with making oracle requests and looking at how they are handled in each processing phase. For that, we recommend using Gora CLI tool, a Gora observer node and <a href="https://app.dappflow.org/explorer/home">Algorand Dapp Flow</a> web app. The rest of this section will walk you through setting them up and using them to trace execution of a Gora request.</p>
                 <section id="observer-node">
                     <h4>Observer node</h4>
-                    <p>Gora observer node is a node set up and running on a Gora network for the purpose of monitoring requests. An observer node is not required to run continuously or have any GORA tokens staked. When using <a href="https://github.com/GoraNetwork/developer-quick-start">Developer Quick Start</a>, setting up an observer node is not necessary because it includes a full Gora node. Refer to the documentation at the above link for details. For troubleshooting applications on Algorand testnet or mainnet, if you are not already running a normal Gora node on the same network, set on up following the Getting Started section above.</p>
+                    <p>Gora observer node is a node set up and running on a Gora network for the purpose of monitoring requests. An observer node is not required to run continuously or have any GORA tokens staked. When using <a href="https://github.com/GoraNetwork/developer-quick-start/">Developer Quick Start</a>, setting up an observer node is not necessary because it includes a full Gora node. Refer to the documentation at the above link for details. For troubleshooting applications on Algorand testnet or mainnet, if you are not already running a normal Gora node on the same network, set on up following the Getting Started section above.</p>
                 </section>
                 <section id="checking-that-your-application-is-making-request-calls">
                     <h4>Checking that your application is making request calls</h4>
@@ -997,7 +1104,7 @@ gora request --off-chain ./off_chain_example.wasm --args sm14hp
                 </section>
                 <section id="monitoring-how-your-requests-are-processed">
                     <h4>Monitoring how your requests are processed</h4>
-                    <p>Once your Gora request call gets stored on the blockchain, it is up for detection and processing by Gora nodes. That including your observer node, which you will now utilize to monitor processing of your requests. If you are not using <a href="https://github.com/GoraNetwork/developer-quick-start">Developer Quick Start</a>, you will need to enable debug output on your node. Open your node config file (<code>~/.gora</code> by default) and under <code>"deployment"</code> section add the following lines:</p>
+                    <p>Once your Gora request call gets stored on the blockchain, it is up for detection and processing by Gora nodes. That including your observer node, which you will now utilize to monitor processing of your requests. If you are not using <a href="https://github.com/GoraNetwork/developer-quick-start/">Developer Quick Start</a>, you will need to enable debug output on your node. Open your node config file (<code>~/.gora</code> by default) and under <code>"deployment"</code> section add the following lines:</p>
                     <p><code>"logLevel": 5</code></p>
                     <p>Make sure to add a comma to the previous line if there is one or you will get a config syntax error when trying to start the node. Restart the node if it is already running.</p>
                     <p>If your observer node hasn't been running, start it now and keep an eye on its log messages: either by running it in the foreground or by tailing logs with <code>docker logs -f &lt;node container name&gt;</code>.</p>
@@ -1022,20 +1129,20 @@ gora request --off-chain ./off_chain_example.wasm --args sm14hp
 2023-12-10T20:47:01.326Z INFO  Submitted 1000004424 vote(s) on request "JHPCPIL4BP2GN5F7PQRAJEC6MBRHYMVALUZMMDZL7AWXGNZZATWA"</pre>
                     <p>If you see log messages with the <code>INFO</code> prefix, but none with <code>DEBUG</code>, then you have not enabled debug logging and need to ensure that you have followed the instructions in the beginning of this section properly. When running an observer node with no stake, it is normal not to see messages after "Using seed...".</p>
                     <p>Issues with Gora customer applications often crop up at this stage. These are most frequently caused by errors in Gora request encoding or data source specification.</p>
-                    <p>In case of incorrectly encoded request, the node will fail to decode the request correctly and log an error message beginning with <code>Error parsing request...</code>. Make sure you are encoding the request ABI type properly, consulting examples in <a href="https://github.com/GoraNetwork/developer-quick-start">Developer Quick Start</a> if necessary.</p>
+                    <p>In case of incorrectly encoded request, the node will fail to decode the request correctly and log an error message beginning with <code>Error parsing request...</code>. Make sure you are encoding the request ABI type properly, consulting examples in <a href="https://github.com/GoraNetwork/developer-quick-start/">Developer Quick Start</a> if necessary.</p>
                     <p>For problems with data sources, examine log messages after <code>Querying....</code>. If there are no errors reported, check debug messages carefully to make sure that data source URLs queried are correct, the content returned is valid and data extraction expressions are matching it as intended. Currently nodes have no way of explicitly reporting failures to customer smart contracts and will simply return an empty result in most scenarios.</p>
                 </section>
                 <section id="diagnosing-issues-with-destination-application">
                     <h4>Diagnosing issues with destination application</h4>
                     <p>The last phase of processing where a Gora request can fail starts when node voting concludes in consensus and a call is made to the destination smart contract. This may happen because customer's destination app is either specified incorrectly or fails during processing of Gora response.</p>
-                    <p>The destination call is always initiated by just one Gora node. In multi-node Gora networks, it is not possible to reliably predict which one it will be, so one cannot rely on node logs in the this (most common) scenario. The recommended way of debugging such issues is using <a href="https://github.com/GoraNetwork/developer-quick-start">Developer Quick Start</a>. It provides a local development network with a single node, making the destination call logs always available.</p>
+                    <p>The destination call is always initiated by just one Gora node. In multi-node Gora networks, it is not possible to reliably predict which one it will be, so one cannot rely on node logs in the this (most common) scenario. The recommended way of debugging such issues is using <a href="https://github.com/GoraNetwork/developer-quick-start/">Developer Quick Start</a>. It provides a local development network with a single node, making the destination call logs always available.</p>
                     <p>If your application is failing at this stage, examine the error folllowing <code>Calling "voting#...</code> message in your local development node logs. An error occuring inside your destination application will be reported in typical Algorand smart contract error format. Bear in mind, that the destination call is made in an inner transaction inside Gora voting smart contract and interpret TEAL source context accordingly.</p>
                     <p>To mininize risks of making error in repsonse handling, we recommend using Gora Python library available as a <a href="https://pypi.org/project/gora/">PIP package</a>.</p>
                 </section>
             </section>
-            <section id="developer-quick-start-package">
-                <h3>Developer quick start package</h3>
-                <p><a href="https://github.com/GoraNetwork/developer-quick-start">Developer Quick Start</a> (DQS) for Algorand is a package of code examples and scripts to help developers start using Gora from their blockchain applications. It is housed in a <a href="https://github.com/GoraNetwork/developer-quick-start">public GitHub repository</a> which contains:</p>
+            <section id="developer-quick-start-1">
+                <h3>Developer quick start</h3>
+                <p><a href="https://github.com/GoraNetwork/developer-quick-start/">Developer Quick Start</a> for Algorand is a package of code examples and scripts to help developers start using Gora from their blockchain applications. It is housed in a <a href="https://github.com/GoraNetwork/developer-quick-start">public GitHub repository</a> which contains:</p>
                 <blockquote>
                     <ul>
                         <li>Instructions on how to setup and use a local Gora development environment</li>
@@ -1143,7 +1250,7 @@ Received oracle value: 1.0</pre>
                 </section>
                 <section id="troubleshooting">
                     <h4>Troubleshooting</h4>
-                    <p><a href="https://app.dappflow.org/explorer/home&gt;">Algorand Dapp Flow</a> web app can be used to inspect related application transactions.</p>
+                    <p><a href="https://app.dappflow.org/explorer/home">Algorand Dapp Flow</a> web app can be used to inspect related application transactions.</p>
                     <aside class="warning"><strong>WARNING!</strong> You may get an error message from Dapp Flow containing: "disabled parameter: application-id". This is a minor issue and should not affect operation.</aside>
                     <p>To connect it to your local Algorand network, open the drop-down menu under the logo in the top left cornet and select "Sandbox". Use application or transaction IDs from the tested app output to find and inspect transactions of interest.</p>
                 </section>

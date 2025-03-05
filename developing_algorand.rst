@@ -4,9 +4,8 @@ Classic oracle on Algorand
 
 Customer applications interact with Gora via smart contract calls. For a quick
 hands-on introduction to using Gora from your smart contracts, please see Gora
-`Developer Quick Start <https://github.com/GoraNetwork/developer-quick-start>`_
-GitHub repository. For a complete reference and instructions on calling Gora
-from JavaScript, read on.
+`Developer Quick Start`_ GitHub repository. For a complete reference and
+instructions on calling Gora from JavaScript, read on.
 
 **********************
 Requesting oracle data
@@ -413,14 +412,14 @@ using them to trace execution of a Gora request.
 Observer node
 =============
 
-Gora observer node is a node set up and running on a Gora network for the purpose
-of monitoring requests. An observer node is not required to run continuously or
-have any GORA tokens staked. When using `Developer Quick Start <https://github.com/GoraNetwork/developer-quick-start>`_,
-setting up an observer node is not necessary because it includes a full Gora node.
-Refer to the documentation at the above link for details. For troubleshooting
-applications on Algorand testnet or mainnet, if you are not already running
-a normal Gora node on the same network, set on up following the Getting Started
-section above.
+Gora observer node is a node set up and running on a Gora network for the
+purpose of monitoring requests. An observer node is not required to run
+continuously or have any GORA tokens staked. When using `Developer Quick Start`_,
+setting up an observer node is not necessary because it includes a full Gora
+node.  Refer to the documentation at the above link for details. For
+troubleshooting applications on Algorand testnet or mainnet, if you are not
+already running a normal Gora node on the same network, set on up following the
+Getting Started section above.
 
 ======================================================
 Checking that your application is making request calls
@@ -456,12 +455,12 @@ transaction from your app address just made.
 Monitoring how your requests are processed
 ==========================================
 
-Once your Gora request call gets stored on the blockchain, it is up for detection
-and processing by Gora nodes. That including your observer node, which you will
-now utilize to monitor processing of your requests. If you are not using
-`Developer Quick Start <https://github.com/GoraNetwork/developer-quick-start>`_,
-you will need to enable debug output on your node. Open your node config file
-(``~/.gora`` by default) and under ``"deployment"`` section add the following lines:
+Once your Gora request call gets stored on the blockchain, it is up for
+detection and processing by Gora nodes. That including your observer node, which
+you will now utilize to monitor processing of your requests. If you are not
+using `Developer Quick Start`_, you will need to enable debug output on your
+node. Open your node config file (``~/.gora`` by default) and under
+``"deployment"`` section add the following lines:
 
 ``"logLevel": 5``
 
@@ -512,8 +511,7 @@ specification.
 In case of incorrectly encoded request, the node will fail to decode the request
 correctly and log an error message beginning with ``Error parsing request...``.
 Make sure you are encoding the request ABI type properly, consulting examples in
-`Developer Quick Start <https://github.com/GoraNetwork/developer-quick-start>`_
-if necessary.
+`Developer Quick Start`_ if necessary.
 
 For problems with data sources, examine log messages after ``Querying....``.  If
 there are no errors reported, check debug messages carefully to make sure that
@@ -534,9 +532,9 @@ incorrectly or fails during processing of Gora response.
 The destination call is always initiated by just one Gora node. In multi-node
 Gora networks, it is not possible to reliably predict which one it will be, so
 one cannot rely on node logs in the this (most common) scenario. The recommended
-way of debugging such issues is using `Developer Quick Start <https://github.com/GoraNetwork/developer-quick-start>`_.
-It provides a local development network with a single node, making the
-destination call logs always available.
+way of debugging such issues is using `Developer Quick Start`_.  It provides a
+local development network with a single node, making the destination call logs
+always available.
 
 If your application is failing at this stage, examine the error folllowing
 ``Calling "voting#...`` message in your local development node logs. An error
@@ -548,15 +546,14 @@ TEAL source context accordingly.
 To mininize risks of making error in repsonse handling, we recommend using Gora
 Python library available as a `PIP package <https://pypi.org/project/gora/>`_.
 
-*****************************
-Developer quick start package
-*****************************
+*********************
+Developer quick start
+*********************
 
-`Developer Quick Start <https://github.com/GoraNetwork/developer-quick-start>`_
-(DQS) for Algorand is a package of code examples and scripts to help developers
-start using Gora from their blockchain applications.  It is housed in a
-`public GitHub repository <https://github.com/GoraNetwork/developer-quick-start>`_
-which contains:
+`Developer Quick Start`_ for Algorand is a package of code examples and scripts
+to help developers start using Gora from their blockchain applications.  It is
+housed in a `public GitHub repository
+<https://github.com/GoraNetwork/developer-quick-start>`_ which contains:
 
  * Instructions on how to setup and use a local Gora development environment
  * Example applications, also usable as templates
@@ -758,4 +755,3 @@ transactions.
 To connect it to your local Algorand network, open the drop-down menu under the
 logo in the top left cornet and select "Sandbox". Use application or transaction
 IDs from the tested app output to find and inspect transactions of interest.
-
