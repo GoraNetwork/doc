@@ -17,8 +17,10 @@ p { margin: 2em 0; }
     p { margin: 1em 0; }
 }
 
-h1, h2, h3, h4, dt { color: #17271f; }
+h1, h3, h4, dt { color: #17271f; }
+h2 { padding: 0.5em; color: white; background: #17271f; }
 
+figcaption { color: #195b3a; }
 dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
 pre.terminal { padding: 1em 0.5em; color: white; background: black;
                overflow-x: auto; }

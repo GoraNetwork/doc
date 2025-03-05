@@ -1,8 +1,3 @@
-.. _Docker: https://docker.io/
-.. _AWS: https://aws.amazon.com/
-.. _AWS CLI: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
-.. _Gora CLI tool: https://download.gora.io/
-
 ###################
 Running Gora nodes
 ###################

@@ -118,7 +118,6 @@ Oracle value
 Using off-chain computation
 ***************************
 
-
 .. figure:: off_chain.svg
    :width: 650
    :align: left
@@ -208,7 +207,6 @@ request. Finishing a step, the program returns a value which tells the Gora node
 what to do next: execute another step, finish successfully or terminate with a
 specific error code.
 
-For the list of valid return values, see
-`gora_off_chain.h <https://github.com/GoraNetwork/phoenix-examples/blob/main/gora_off_chain.h>`_.
+For the list of valid return values, see `gora_off_chain.h`_.
 header file. To learn how Gora Off-Chain API is used in practice and its execution
 model, please consider `Gora source code examples <https://github.com/GoraNetwork/phoenix-examples/>`_.

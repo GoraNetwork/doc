@@ -1,3 +1,9 @@
+.. _Docker: https://docker.io/
+.. _AWS: https://aws.amazon.com/
+.. _AWS CLI: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+.. _Gora CLI tool: https://download.gora.io/
+.. _gora_off_chain.h: https://github.com/GoraNetwork/developer-quick-start/blob/main/gora_off_chain.h
+
 .. role:: js(code)
    :language: javascript
 
@@ -44,6 +50,7 @@ info on legacy offerings.
 
 .. include:: app_specific_oracle.rst
 .. include:: developing_evm.rst
+.. include:: developing_algorand.rst
 .. include:: setting_up_network.rst
 .. include:: appendix.rst
 .. include:: roadmap.rst
