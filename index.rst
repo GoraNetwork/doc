@@ -3,6 +3,7 @@
 .. _AWS CLI: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 .. _Base: https://base.org/
 .. _Gora CLI tool: https://download.gora.io/
+.. _Algorand Dapp Flow: https://app.dappflow.org/explorer/home>
 .. _gora_off_chain.h: https://github.com/GoraNetwork/developer-quick-start/blob/main/gora_off_chain.h
 
 .. role:: js(code)

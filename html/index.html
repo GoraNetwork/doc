@@ -981,7 +981,7 @@ gora request --off-chain ./off_chain_example.wasm --args sm14hp
             </section>
             <section id="troubleshooting-applications">
                 <h3>Troubleshooting applications</h3>
-                <p>Troubleshooting Gora applications begins with making oracle requests and looking at how they are handled in each processing phase. For that, we recommend using Gora CLI tool, a Gora observer node and <a href="https://app.dappflow.org/">Algorand Dapp Flow</a>. web app. The rest of this section will walk you through setting them up and using them to trace execution of a Gora request.</p>
+                <p>Troubleshooting Gora applications begins with making oracle requests and looking at how they are handled in each processing phase. For that, we recommend using Gora CLI tool, a Gora observer node and <a href="https://app.dappflow.org/explorer/home&gt;">Algorand Dapp Flow</a> web app. The rest of this section will walk you through setting them up and using them to trace execution of a Gora request.</p>
                 <section id="observer-node">
                     <h4>Observer node</h4>
                     <p>Gora observer node is a node set up and running on a Gora network for the purpose of monitoring requests. An observer node is not required to run continuously or have any GORA tokens staked. When using <a href="https://github.com/GoraNetwork/developer-quick-start">Developer Quick Start</a>, setting up an observer node is not necessary because it includes a full Gora node. Refer to the documentation at the above link for details. For troubleshooting applications on Algorand testnet or mainnet, if you are not already running a normal Gora node on the same network, set on up following the Getting Started section above.</p>
@@ -1143,8 +1143,9 @@ Received oracle value: 1.0</pre>
                 </section>
                 <section id="troubleshooting">
                     <h4>Troubleshooting</h4>
-                    <p>Algorand [Dapp Flow](<a href="https://app.dappflow.org/explorer/home">https://app.dappflow.org/explorer/home</a>) web app can be used to inspect and related application transactions. To connect it to your local Algorand network, open the drop-down menu under the logo in the top left cornet and select "Sandbox". Use application or transaction IDs from the tested app output to find and inspect transactions of interest.</p>
-                    <aside class="warning"><strong>WARNING!</strong> You may get an error message from Dapp Flow about "disabled parameter: application-id". This is a minor issue and should not affect operation.</aside>
+                    <p><a href="https://app.dappflow.org/explorer/home&gt;">Algorand Dapp Flow</a> web app can be used to inspect related application transactions.</p>
+                    <aside class="warning"><strong>WARNING!</strong> You may get an error message from Dapp Flow containing: "disabled parameter: application-id". This is a minor issue and should not affect operation.</aside>
+                    <p>To connect it to your local Algorand network, open the drop-down menu under the logo in the top left cornet and select "Sandbox". Use application or transaction IDs from the tested app output to find and inspect transactions of interest.</p>
                 </section>
             </section>
         </section>
