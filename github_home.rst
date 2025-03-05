@@ -21,15 +21,14 @@ relies on decentralization. A network of independent Gora nodes executes
 requested operations in parallel and certifies the outcome via reliable
 consensus procedure.
 
-You can use this page as the starting point for discovering Gora products and
-their API's, becoming a Gora node operator or an owner of an
-application-specific oracle - a custom blockchain oracle tailored to your needs.
-Peruse the links below for further info and don't hesitate to share your feedback
-at communications@gora.io
+Use this page as a starting point for discovering Gora products and their API's,
+becoming a Gora node operator or an owner of an application-specific oracle - a
+custom blockchain oracle tailored to your needs.  Peruse the links below for
+further info and don't hesitate to share your feedback at communications@gora.io
 
 .. class:: left
 
-`Current documentation <https://docs.gora.io/current/>`_
+`Current documentation <https://github.com/GoraNetwork/phoenix-docs/html/index.html>`_
   Documentation for current Gora offerings on EVM-compatible
   blockchains. Intended for Solidity developers as well as node operators
   interested in running Gora nodes for such chains.
