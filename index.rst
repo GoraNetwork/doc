@@ -58,3 +58,4 @@ info on legacy offerings.
 .. include:: setting_up_network.rst
 .. include:: appendix.rst
 .. include:: roadmap.rst
+.. include:: legacy.rst

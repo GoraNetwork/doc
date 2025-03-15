@@ -17,17 +17,16 @@ p { margin: 2em 0; }
     p { margin: 1em 0; }
 }
 
-h1, h3, h4, h5, dt { color: #17271f; }
+h1, h3, h4, h5, dt { color: #195b3a; }
 h2 { padding: 0.5em; color: white; background: #17271f; }
 
-h2 { font-size: 180%; }
 h2 { font-size: 160%; }
-h3 { font-size: 140%; }
-h4 { font-size: 120%; }
-h5 { font-size: 110%; }
+h3 { font-size: 140%; color: #17271f; }
+h4 { font-size: 120%; padding: 0.25em; color: #17271f; background: #e9f5ef; }
+h5 { font-size: 110%; margin: 0.5em 0; }
 
 figcaption { color: #195b3a; }
-dt { font-weight: bold; margin-top: 0.5em; margin-bottom: 0.5em; }
+dt { font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
 pre.terminal { padding: 1em 0.5em; color: white; background: black;
                overflow-x: auto; }
 table { border-spacing: 0; border-collapse: collapse; }
