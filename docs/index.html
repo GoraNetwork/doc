@@ -2,22 +2,26 @@
 
     <title>Gora Decentralized Oracle Documentation</title>
     <meta charset="utf-8" />
-    <style>body { font: 16pt Verdana, Tahoma, sans-serif; line-height: 1.5em; margin: 2em; }
-#contents h1 { display: none; }
+    <style>body { position: relative; font: 16pt Verdana, Tahoma, sans-serif;
+       line-height: 1.5em; margin: 2em; }
+#mainLogo { position: absolute; top: 20px; left: 15px; z-index: 3; }
+#contents { padding: 60px 0.5em 0.5em; color: #dddddd;  background: #17271f; z-index: 1; }
+#contents a { color: #dddddd; text-decoration: none; }
 #contents ul {  padding-inline-start: 1em; }
 p { margin: 2em 0; }
 @media (min-width:1024px) {
     body { font-size: 12pt; margin: 1em 1em 1em 20em; }
+    #mainLogo { position: fixed; z-index: 3; }
     #contents {
-        position: fixed; left: 0; top: 0; padding: 0.5em 0.5em 0.5em; width: 18em;
+        position: fixed; left: 0; top: 0; padding: 10px 0.5em 0.5em; width: 18em;
         height: 100%; font: 16px Verdana, Tahoma, sans-serif; line-height: 2em;
-        color: #dddddd; overflow: scroll; background: #17271f;
-        border-right: 2px white outset;
+        overflow: scroll; border-right: 2px white outset;
+        border-top: 85px #17271f solid;
     }
-    #contents a { color: #dddddd; text-decoration: none; }
     p { margin: 1em 0; }
 }
-h1, h3, h4, h5, dt { color: #195b3a; }
+h1 { display: none; }
+h3, h4, h5, dt { color: #195b3a; }
 h2 { padding: 0.5em; color: white; background: #17271f; }
 h2 { font-size: 160%; }
 h3 { font-size: 140%; color: #17271f; }
@@ -29,7 +33,6 @@ pre.terminal { padding: 1em 0.5em; color: white; background: black;
                overflow-x: auto; }
 table { border-spacing: 0; border-collapse: collapse; }
 tr:nth-child(even) { background-color: #f0f0f0; }
-#main-logo { position: absolute; top: 10px; left: 10px; }
 aside.warning, aside.note { margin-left: 2em; padding-left: 1em; }
 aside.warning { color: darkRed; border-left: 4px darkRed solid; }
 aside.warning > p:first-of-type > strong:first-of-type,
@@ -50,7 +53,9 @@ td.code .kt { font-weight: bold; color: darkBlue; }
 </style>
 
 <html>
-<body>
+  <body>
+    <img id="mainLogo" src="logo.png" width="200" alt="Gora logo">
+    
     <section id="gora-decentralized-oracle-documentation">
         <h1>Gora Decentralized Oracle Documentation</h1>
         <aside id="contents" class="topic contents">
@@ -1549,5 +1554,6 @@ Task ID: "2468d56dff884c9ca536fb2e537f8928"</pre>
             </section>
         </section>
     </section>
-</body>
+
+  </body>
 </html>
