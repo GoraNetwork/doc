@@ -4,7 +4,7 @@ body { position: relative; font: 16pt Verdana, Tahoma, sans-serif;
 #mainLogo { position: absolute; top: 20px; left: 15px; z-index: 3; }
 #contents { padding: 60px 0.5em 0.5em; color: #dddddd;  background: #17271f; z-index: 1; }
 #contents a { color: #dddddd; text-decoration: none; }
-#contents ul {  padding-inline-start: 1em; }
+#contents ul { padding-inline-start: 1em; }
 
 p { margin: 2em 0; }
 
@@ -17,6 +17,7 @@ p { margin: 2em 0; }
         overflow: scroll; border-right: 2px white outset;
         border-top: 85px #17271f solid;
     }
+    #contents ul { margin-top: 0; }
     p { margin: 1em 0; }
 }
 

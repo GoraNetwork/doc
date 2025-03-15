@@ -7,7 +7,7 @@
 #mainLogo { position: absolute; top: 20px; left: 15px; z-index: 3; }
 #contents { padding: 60px 0.5em 0.5em; color: #dddddd;  background: #17271f; z-index: 1; }
 #contents a { color: #dddddd; text-decoration: none; }
-#contents ul {  padding-inline-start: 1em; }
+#contents ul { padding-inline-start: 1em; }
 p { margin: 2em 0; }
 @media (min-width:1024px) {
     body { font-size: 12pt; margin: 1em 1em 1em 20em; }
@@ -18,6 +18,7 @@ p { margin: 2em 0; }
         overflow: scroll; border-right: 2px white outset;
         border-top: 85px #17271f solid;
     }
+    #contents ul { margin-top: 0; }
     p { margin: 1em 0; }
 }
 h1 { display: none; }
@@ -1263,7 +1264,7 @@ Received oracle value: 1.0</pre>
                         <dd>Demonstrates the use of Gora with predefined data sources. These sources are pre-configured under fixed numeric ID's, with more of them potentially being added in future releases. This and following examples use Gora Python library to simplify oracle request building. This is the recommended approach for production use. The classic example queries two currency rates and returns the maximum of the these. The source #7 is queried in both cases, but different sources can be used just as well. Source #7 uses a paid data provider that requires authentication. It is enabled by specifying <code>##signKey</code> as the second source parameter which makes Gora nodes generate a temporary <em>signature key</em> bound to the request and the node. The data source server being queried will check the validity of the request and the node's stake on the blockchain. This allows opening a data source to Gora users only without requiring them to provide authentication data or exposing it on the blockchain.</dd>
                         <dt>General URL example: <a href="https://github.com/GoraNetwork/developer-quick-start/blob/main/example_url.py">example_url.py</a></dt>
                         <dd>Shows how to use Gora for fetching data from arbitrary URLs. Data from URL responses can be extracted with a variety of methods such as JSONPath, XPath, regular expressions, or substring specifications. Two key differences from the previous example are the request parameters and dummy method calls. The latter is necessary for increasing op code budget of the request transaction, to accomodate the needs of more the flexible request type. To issue such requests with more URLs, you may need to add more <code>do_nothing_N()</code> dummy methods and increase 4th parameter of <code>run_demo_app()</code> to raise op code budget even more.</dd>
-                        <dt>Off-chain computation example: <a href="https://github.com/GoraNetwork/developer-quick-start/blob/main/example_offchain.py">example_offchain.py</a></dt>
+                        <dt>Off-chain computation example: <a href="https://github.com/GoraNetwork/developer-quick-start/blob/main/example_off_chain.py">example_off_chain.py</a></dt>
                         <dd>Demonstrates Gora's arbitrary off-chain computation capability. It takes a UK postal code, geolocates it via third-party free API, then queries another free API and returns current air temperature at the location. The C source code accomplishing this can be found in <code>example_off_chain_multi_step.c</code>. The WebAssembly resulting from compilation of this code is included in the example app verbatim, as a byte string constant. For more off-chain executable specification options as well as other details on the off-chain computation feature, refer to Gora off-chain API documentation.</dd>
                     </dl>
                 </section>
