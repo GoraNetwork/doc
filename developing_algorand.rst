@@ -731,7 +731,7 @@ General URL example: `example_url.py <https://github.com/GoraNetwork/developer-q
   with more URLs, you may need to add more ``do_nothing_N()`` dummy methods and
   increase 4th parameter of ``run_demo_app()`` to raise op code budget even more.
 
-Off-chain computation example: `example_offchain.py <https://github.com/GoraNetwork/developer-quick-start/blob/main/example_offchain.py>`_
+Off-chain computation example: `example_off_chain.py <https://github.com/GoraNetwork/developer-quick-start/blob/main/example_off_chain.py>`_
   Demonstrates Gora's arbitrary off-chain computation capability. It takes a
   UK postal code, geolocates it via third-party free API, then queries another
   free API and returns current air temperature at the location. The C source code
