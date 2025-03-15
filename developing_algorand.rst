@@ -546,14 +546,15 @@ TEAL source context accordingly.
 To mininize risks of making error in repsonse handling, we recommend using Gora
 Python library available as a `PIP package <https://pypi.org/project/gora/>`_.
 
+.. _dqs-algorand:
+
 *********************
 Developer quick start
 *********************
 
 `Developer Quick Start`_ for Algorand is a package of code examples and scripts
-to help developers start using Gora from their blockchain applications.  It is
-housed in a `public GitHub repository
-<https://github.com/GoraNetwork/developer-quick-start>`_ which contains:
+to help developers start using Gora from their blockchain applications. It
+contains:
 
  * Instructions on how to setup and use a local Gora development environment
  * Example applications, also usable as templates

@@ -579,6 +579,7 @@ $</pre>
                 <p>A <em>step</em> starts when the program's <em>main function</em> is called by the executing Gora node and ends when this function returns. During a step, the program can schedule HTTP(S) requests, possibly using URL templates that it can fill at run time. When the step ends, these requests are executed by the Gora node. On their completion, the next step commences and your program can access request results as well as other data provided by the Gora node via current <em>context</em> structure. The <em>context</em> persists for the duration of executing your off-chain computation request. Finishing a step, the program returns a value which tells the Gora node what to do next: execute another step, finish successfully or terminate with a specific error code.</p>
                 <p>For the list of valid return values, see <a href="https://github.com/GoraNetwork/developer-quick-start/blob/main/gora_off_chain.h">gora_off_chain.h</a>. header file. To learn how Gora Off-Chain API is used in practice and its execution model, please consider <a href="https://github.com/GoraNetwork/phoenix-examples/">Gora source code examples</a>.</p>
             </section>
+            <a id="dqs-evm"></a>
             <section id="developer-quick-start-evm-1">
                 <h3>Developer Quick Start (EVM)</h3>
                 <p><a href="https://github.com/GoraNetwork/developer-quick-start/tree/main/evm">Developer Quick Start (EVM)</a> is a package of code examples and scripts to help developers start using Gora from their EVM blockchain applications. It contains:</p>
@@ -1160,9 +1161,10 @@ gora request --off-chain ./off_chain_example.wasm --args sm14hp
                     <p>To mininize risks of making error in repsonse handling, we recommend using Gora Python library available as a <a href="https://pypi.org/project/gora/">PIP package</a>.</p>
                 </section>
             </section>
+            <a id="dqs-algorand"></a>
             <section id="developer-quick-start-1">
                 <h3>Developer quick start</h3>
-                <p><a href="https://github.com/GoraNetwork/developer-quick-start/">Developer Quick Start</a> for Algorand is a package of code examples and scripts to help developers start using Gora from their blockchain applications. It is housed in a <a href="https://github.com/GoraNetwork/developer-quick-start">public GitHub repository</a> which contains:</p>
+                <p><a href="https://github.com/GoraNetwork/developer-quick-start/">Developer Quick Start</a> for Algorand is a package of code examples and scripts to help developers start using Gora from their blockchain applications. It contains:</p>
                 <blockquote>
                     <ul>
                         <li>Instructions on how to setup and use a local Gora development environment</li>

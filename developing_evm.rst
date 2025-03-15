@@ -211,6 +211,8 @@ For the list of valid return values, see `gora_off_chain.h`_.
 header file. To learn how Gora Off-Chain API is used in practice and its execution
 model, please consider `Gora source code examples <https://github.com/GoraNetwork/phoenix-examples/>`_.
 
+.. _dqs-evm:
+
 ***************************
 Developer Quick Start (EVM)
 ***************************
