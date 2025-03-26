@@ -40,7 +40,7 @@ via reliable consensus procedure.
 Customers interact with Gora in one of three roles: investor, node operator or
 smart contract developer. An investor purchases Gora tokens and delegates them
 to a node operator, receiving a share of rewards accrued from processing Gora
-requests. A node operator stakes Gora tokens (theirs own or investor's) and runs
+requests. A node operator stakes Gora tokens (their own or investor's) and runs
 Gora Node Runner software to process Gora requests and receive rewards in Gora
 tokens. A smart contract developer writes applications that make use of Gora
 smart contract API's.

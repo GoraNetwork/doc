@@ -6,40 +6,35 @@ App-specific oracles (*ASO*'s) are Gora's response to recent market demands.
 These are oracles designed to serve a certain web3 application or application
 type. While a general-purpose oracle strives for maximum flexibility to support
 all kinds or applications, it may lack specialized data processing or access
-control features needed for more niche use cases.
-
-For example, a sports oracle may want to provide team statistics which requires
-getting data from several resources and performing floating-point maths on it. A
-private oracle may want to only serve specific smart contracts or authenticate
-itself to data sources in a bespoke way.
+control features needed for more niche use cases. For example, a sports oracle
+may want to provide team statistics which requires getting data from several
+resources and performing floating-point maths on it. A private oracle may want
+to only serve specific smart contracts or authenticate itself to data sources in
+a bespoke way.
 
 .. table::
   :class: comparison
 
-  ================================ ======================= =======================
-  Features                         General-purpose oracle  App-specific oracle
-  ================================ ======================= =======================
-  Ease of use                      Moderate                High
-  Customizability                  Low                     High
-  Restrictions on data sources     Not supported           Up to ASO owner
-  Restrictions on users            Not supported           Up to ASO owner
-  Third-party monetization         Not supported           Via ASO owner's fee
-  Failover capability              None                    Via multiple executors
-  ================================ ======================= =======================
+  ================================ ======================= ========================
+  Feature                          General-purpose oracle  App-specific oracle
+  ================================ ======================= ========================
+  Ease of use                      *Moderate*              *High*
+  Customizability                  *Low*                   *High*
+  Restrictions on data sources     *Not supported*         *Up to ASO owner*
+  Restrictions on users            *Not supported*         *Up to ASO owner*
+  Third-party monetization         *Not supported*         *Via ASO owner's fee*
+  Failover capability              *None*                  *Via multiple executors*
+  ================================ ======================= ========================
 
 Gora provides accesible and flexible tools to create your own ASO's and deploy
 them to EVM-compatible blockchains of your choice: either public, like Base or
 Polygon, or private, which organizations can run internally. Gora does this by
 combining its tried and true general-purpose oracle architecture with a powerful
-off-chain computation engine.
-
-Rather than simply fetching data online and passing it on for verification, for
-ASO requests Gora nodes execute *oracle programs*: tiny pieces of software that
-implement customizations and extensions to oracle functionality. Oracle programs
-are created by customers deploying ASO's. For simpler cases, this can be done
-without programming using Gora web-based code generation tool. When higher
-levels of customization are required, oracle programs are written explicitly in
-C or any language that compiles to Web Assembly.
+off-chain computation engine. Rather than simply fetching data online and
+passing it on for verification, Gora ASO requests execute *oracle programs*:
+tiny pieces of software that implement customizations and extensions to oracle
+functionality. Oracle programs can be easily created by customers deploying
+ASO's using programming languages of their choice.
 
 ******************************
 ASO architecture and workflow
@@ -50,30 +45,30 @@ ASO architecture and workflow
    :align: left
    :alt: Gora ASO architecture and workflow diagram
 
-Gora's app-specific oracle relies on two key mechanisms: an ASO smart contract
+Gora's app-specific oracles rely on two key mechanisms: an ASO smart contract
 and an *executor* oracle. ASO smart contract contains oracle program and custom
 configuration required by customer for their specific use case. An executor
 oracle is a generic and complete oracle engine that implements fundamental
-oracle functionality such as distributed node management and consensus
-verification. They work together to serve web3 application requests as follows:
+oracle functionality using a distributed node network and consensus verification.
+They work together to serve web3 application requests as follows:
 
-* An application smart contract makes a request for an oracle value. It calls
-  the ASO smart contract, providing request parameters (if any) and expects a
-  call back with a response.
+#. An application smart contract makes a request for an oracle value by calling
+   the ASO smart contract. It provides request parameters (if any) and expects a
+   call back with a response.
 
-* ASO smart contract combines received parameters with its configuration
-  settings and oracle program, making a request to the executor oracle.
+#. ASO smart contract combines received parameters with its configuration
+   settings, its oracle program and makes a request to the executor oracle.
 
-* Request to the executor oracle is picked up by decentralized network of nodes.
-  Each online node runs the oracle program provided by the ASO smart contract.
-  The program queries online data sources, processes received data, performs
-  other programmed operations as needed to produce an oracle value.
+#. Request to the executor oracle is picked up by decentralized network of nodes.
+   Each online node runs the oracle program provided by the ASO smart contract.
+   The program queries online data sources, processes received data and performs
+   other programmed operations as needed to produce an oracle value.
 
-* The produced value is submitted by each node to the executor smart contract
-  for a proof-of-stake consensus verification. Upon reaching the configured
-  threshold, the executor contract calls back ASO smart contract with the
-  response. The ASO smart contract forwards the response to the application
-  smart contract.
+#. The produced value is submitted by each node to the executor smart contract
+   for a proof-of-stake consensus verification. Upon reaching the configured
+   threshold, the executor contract calls back ASO smart contract with the
+   response. The ASO smart contract forwards the response to the application
+   smart contract.
 
 Gora provides common shared executors on a number of popular public blockchain
 networks. ASO customers just starting out are advised to use these. When data
@@ -97,26 +92,27 @@ aspects of ASO's, including compiling oracle programs and testing them.
 To start using Gora ASO control panel, go to https://aso.gora.io/ and connect
 your Web3 wallet by clicking "Connect Wallet". If you already created ASO's
 using the account selected in your wallet, you will be able to choose one from
-the drop-down list. You will also see a "Create new" clicking it will create a
-new ASO for you.
+the drop-down list. You will also see a "Create new" button clicking which will
+make a new ASO for you.
 
 .. warning:: **WARNING** Creating or updating ASO's on a public mainnet
              generates blockchain transactions that cost real money. For trying
              things out free of charge, we suggest using a public testnet, such
-             as Base Sepolia.  Before doing that, you would need to make sure
-             you have some testnet ETH in your wallet account. You should be
-             able to get some via a public web faucet for the chosen network.
+             as Base Sepolia. Before doing that, ensure your wallet account has
+             some testnet ETH which you can get via a public web faucet for the
+             chosen network.
 
-Once you create a new ASO by clicking "Create new" button, or select an existing
-one in the dropdown list, you will be presented with ASO configuration form.
+Once you create a new ASO by clicking "Create new" button or select an existing
+one in the dropdown list, you will be presented with the ASO control panel.
 It contains properties of the currenty selected ASO for you to edit.
 
 .. warning:: **WARNING** ASO configuration property values are stored on the
-             blockchain, so the larger they are, the more it will cost. Oracle
-             program source code property is for customer information only, it
-             can be left empty on a mainnet to reduce storage cost.
+             blockchain, so the larger they are the more it will cost. Do not
+             populate them if you don't need them. For example, Oracle program
+             source code property is for customer information only and should
+             generally be left empty on a mainnet.
 
-Configuration form fields and their meanings are as follows:
+Control panel entry fields and their meanings are as follows:
 
 ASO contract
   Address of the ASO contract being configured
@@ -126,26 +122,19 @@ Description
 
 Own fee
   Amount in blockchain native currency that must be paid by the calling smart
-  contract to make a request to the ASO. Specified as whole number with regard
-  to number of decimals used by the blockchain for its currency. E.g. `Base
-  <https://base.org/>`_ like most EVM-based blockchains use 18 decimals, so to
-  charge ``0.0001`` Base ether, set this to ``100000000000000``.
+  contract to make a request to the ASO, e.g. ``0.0012``.
 
 Executor
-  Address of the executor oracle smart contract that the ASO will forward its
-  requests to. This should default to Gora shared executor address on the
-  current blockchain. Should you need to reset it, see addresses in `Shared Gora
-  executors <#shared-gora-executors-2>`_ section. Customer using their own
-  custom executor network will need to enter its address here.
+  Address of the executor oracle smart contract for the ASO to use. This should
+  default to Gora shared executor address on this blockchain. A customer using
+  their own custom executor will need to enter its address here.
 
 Maxium executor fee
   Highest amount that the ASO is allowed to pay for an executor oracle request.
   Executor request price is defined by the executor and can be fixed or varying
-  to accomodate for market volatility. Setting maximum executor fee allows to
-  prevent ASO losing money: if the executor fee goes higher, ASO will decline
-  requests. `Shared Gora executors <#shared-gora-executors-2>`_ section contains
-  their respective pricing info. Customers with a custom executor will have set
-  its pricing when they had deployed it. Every executor will also set the asset
+  to accomodate for market volatility. Empty field means no limit. Setting
+  maximum executor fee allows to prevent ASO losing money: if the executor fee
+  goes higher, ASO will decline requests. Every executor will also set the asset
   in which it will be paid - an ERC20 token or native currency. This asset will
   be auto-detected by the ASO, so it does not need to be configured here.
 
@@ -153,21 +142,22 @@ Source code
   Source code for the oracle program - piece of software that queries data
   sources and produces an oracle value. This field is for *for customer
   reference only* and is not used by ASO. It may be best to leave it empty on
-  mainnet blockchain networks for privacy and cost saving. It is primarily
-  intended for development use on public testnets or local blockchain networks.
+  mainnet blockchain networks for privacy and cost saving. Its primary purpose
+  is convenience while developing on public testnets or local blockchain
+  networks.
 
 Compiled binary
-  Oracle program in compiled (binary form). This field can be populated by
-  compiling source code in the above field after pressing "Compile".
+  Oracle program in compiled (binary form). This field can be populated
+  compiling source code in the above field by pressing "Compile" button.
   Alternatively, users can upload their Web Assembly binaries converted to a hex
-  string, optionally compressed with ``gzip``.
+  string with optional ``gzip`` compression.
 
 ***************
 Oracle programs
 ***************
 
 An ASO oracle program is a compact piece of software that queries online data
-sources and produces an oracle value. Any ASO has to have an oracle program to
+sources and produces an oracle value. Any ASO must have an oracle program to
 function, and usually it is written specifically for this ASO. While Gora ASO
 programs can be written in any language that compiles to Web Assembly, the ASO
 control panel and documentation examples use C language. It is simple,
@@ -178,38 +168,36 @@ blockchain.
 Entering and compiling
 ======================
 
-No software installation is required to work with oracle programs: they can be
+No software installation is required to work with oracle programs. They can be
 written, compiled, tested and deployed inside ASO web control panel. To get
-started, click "Insert example" button under the program source code field in a
-newly created ASO. The field (which must previously be empty) will be filled
-with a basic C program that always returns string ``"Hello Gora!"`` as the
-oracle value. Clicking "Compile" button will compile this program and populate
-the compiled binary field.
+started, click "Insert example" button in the control panel for a newly created
+ASO. The field (which must be empty) will be filled with a basic C program that
+returns string ``"Hello Gora!"`` as the oracle value. Clicking "Compile" button
+will compile this program and populate the compiled binary field.
 
-================
-Testing programs
-================
+=======
+Testing
+=======
 
 ASO contol panel allows to test oracle programs before they are deployed to the
-blockchain. Pressing "Test oracle" button under the "Test" section will trigger
-compilation (when source code is present) and execution of the current oracle
-program. Click it to run the test and check out the result placed in "Test
-result" read-only field. For programs that take arguments, the field "Program
-arguments (JSON)" is populated with a JSON-formatted array. In a production
-environment, these arguments would come from ``args`` parameter of the
-``request()`` method call to ASO smart contract.
+blockchain. Pressing "Test locally" button will trigger compilation (when source
+code is present) and execution of the current oracle program. Click it to run
+the test and check out the result placed in the "Log messages" box. For programs
+that take arguments, they can be provided "Program arguments (JSON)" field as a
+JSON-formatted array. In a production environment, these arguments would come
+from ``args`` parameter of the ``request()`` method call to ASO smart contract.
 
-============
-Programs API
-============
+===
+API
+===
 
-Oracle programs are executed by Gora nodes in a customized Web Assembly
-environment. They interact with the host node via *Gora off-Chain API* that
-provides functionality to query data sources, fetch results, write log messages
-and more. Another essential part of this API is support for repeated program
-execution in the same request context. This is necessary because Web Assembly
-programs cannot efficiently pause while waiting to receive data, such as from
-online sources.
+Oracle programs interact with the host node via *Gora off-Chain API*. It is
+essentially a customized Web Assembly environment that provides functionality to
+query data sources, fetch results, write log messages and more. A key part of
+this API is support for repeated program execution in the context of the same
+oracle request. This is necessary because Web Assembly programs cannot
+efficiently pause while waiting for asynchronous operations, such as receiving
+data from online sources.
 
 .. figure:: aso_api.svg
    :width: 900
