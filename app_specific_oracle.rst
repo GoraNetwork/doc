@@ -210,27 +210,27 @@ made available for inclusion automatically. It defines the following custom
 functions:
 
 ``void gora_request_url(const char* url, const char* value_specs)``
-  Request data from an URL. ``value_specs`` argument contains one or more
-  `value extraction specifications <#value-extraction>`_,
-  separated by tab characters. For their syntax, see the dedicated section below.
+  Request content from an URL. ``value_specs`` argument contains one or more
+  `value extraction specifications <#value-extraction>`_, separated by tab
+  characters.
 
 ``void gora_set_next_url_param(const char* value)``
-  Set value of a template parameter in the URL last requested with
-  ``gora_request_url()``. For example, after requesting the URL
-  ``https://example.com/?a=##&b=##``, one can call
-  ``gora_set_next_url_param("one")``, then ``gora_set_next_url_param("two")``,
-  yielding the URL ``https://example.com/?a=one&b=two``. This allows to have
-  predefined templates for data source URLs and fill them at runtime.
+  Set value of a template parameter in the URL most recently requested with
+  ``gora_request_url()``. For example, after calling ``gora_request_url("https://example.com/?a=##&b=##")``,
+  one can call ``gora_set_next_url_param("one")``, then
+  ``gora_set_next_url_param("two")`` which would result in URL
+  ``"https://example.com/?a=one&b=two"`` being requested. This allows having
+  predefined templates for data source URLs and filling them at runtime.
 
 ``void gora_log(const char* message, const int level)``
   Write a message to the node log. Intended for debugging only, oracle
   program logging is disabled by default on production nodes.
 
-In addition to functions, Gora off-Chain API defines a *context* data structure
+In addition to functions, Gora off-Chain API defines a *context* data structure.
 It is designed for passing data from host node to oracle program as well as
 preserving current state between execution *stages* (more on that later). An
-instance of this structure is passed to oracle program whenever it executes.
-It contains:
+instance of this structure is passed to oracle program whenever it executes.  It
+contains:
 
 * API version information for compatibility checks
 * Arguments passed to the program with the oracle request
@@ -243,12 +243,17 @@ Complete definition of the context structure is contained in
 ``gora_off_chain.h`` header file which all oracle program developers are advised
 to peruse.
 
-Like most low-level system languages, Web Assembly, which oracle programs are
-compiled to, does not support asynchronous calls. When a Web Assembly program
-needs to retrieve data from a source that cannot return it instantly (e.g. a
-network endpoint), it has to either constantly check for data arrival in a loop
-(very inefficient) or rely on runtime environment to call it when the data is
-ready. Gora off-chain API implements a variant of the second approach.
+----------------
+Staged execution
+----------------
+
+Execution of oracle programs in stages is necessary because, like most low-level
+system languages, Web Assembly does not support asynchronous calls. When a Web
+Assembly program needs to retrieve data from a source that cannot return it
+instantly (e.g. a network endpoint), it has to either constantly check for data
+arrival in a loop (very inefficient) or rely on runtime environment to call it
+when the data is ready. Gora off-chain API implements a variant of the second
+approach.
 
 Gora host node executes the program repeatedly, performing asynchronous
 operations between executions which are called *stages*. A *stage* starts when
@@ -264,7 +269,8 @@ at. It also has persistent memory space to share data between stages. Finishing
 a stage, the program's main function returns a value telling the host node what
 to do next: execute the next stage, finish successfully or terminate with a
 specific error code. For a hands-on primer of using staged execution, please see
-example ASO progams.
+example programs.
+
 
 ***********
 Using ASO's
@@ -370,32 +376,32 @@ network being used:
 .. table::
   :class: comparison
 
-  =====================  ============  ============  ============
-  Blockchain Network     Address       Fee asset     Fee amount
-  =====================  ============  ============  ============
-  Base Sepolia           TODO          TODO          TODO
-  Base Mainnet           TODO          TODO          TODO
-  Polygon Testnet        TODO          TODO          TODO
-  Polygon Mainnet        TODO          TODO          TODO
-  =====================  ============  ============  ============
+  =====================  ========================================== ============  ============
+  Blockchain Network     Address                                    Fee asset     Fee amount
+  =====================  ========================================== ============  ============
+  Base Sepolia           0x627e0C53aF5Bb97610A8146F931188FCB43C9B49 GORA          1
+  Base Mainnet           0xd4c99F88095F32dF993030d9a6080e3BE723F617 GORA          1
+  Polygon Testnet        TBA                                        GORA          1   
+  Polygon Mainnet        TBA                                        GORA          1   
+  =====================  ========================================== ============  ============
 
-When using a testnet, visit `Gora testnet faucet <https://dev.gora.io/faucet>`_
-to get tokens for funding your ASO contract.
+When using a testnet, visit Gora testnet faucet to get tokens for funding your
+ASO contract.
 
 ================
 Custom executors
 ================
 
 Shared executors rely on distributed networks of nodes run by general public.
-This may not be suitable for certain use cases: for example, when private data
+This may not be suitable for certain use cases. For example, when private data
 (such as keys) is used for querying data sources, or when oracle programs use
-exceptionally large amounts of resources.
+exceptionally large amounts of computing resources.
 
 For these kinds of situations, Gora provides a way for customers to deploy their
 own executors. Once customer deploys an executor smart contract, they can bring
-up a separate node network under their own management. Standard Gora node
-software which can work with private authentication keys can be used, or Gora
-can develop customized Gora node versions for customer's specific needs.
+up a separate node network under their own management. Standard Gora software
+which can work with private authentication keys can be used to run it, or Gora
+can customize its node software for customer's specific needs.
 
 At this time, creating custom executors is a semi-manual process, with a
 completely automated tool being on the roadmap. If you would like to explore
