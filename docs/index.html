@@ -449,7 +449,7 @@ td.code .kt { font-weight: bold; color: darkBlue; }
         </section>
         <section id="classic-oracle-on-evm">
             <h2>Classic oracle on EVM</h2>
-            <p>Classic oracle is the original Gora product designed to query any type of data source. On EVM-compatible networks, smart contracts are almost always written in <a href="https://soliditylang.org/">Solidity</a> , so this is the language we will use. For a quick hands-on introduction, see <a href="https://github.com/GoraNetwork/phoenix-examples/">Gora source code examples</a>. For a more complete overview as well as an API reference, read on.</p>
+            <p>Classic oracle is the original Gora product designed to query any type of data source. On EVM-compatible networks, smart contracts are almost always written in <a href="https://soliditylang.org/">Solidity</a>, so this is the language Gora uses. For a quick hands-on introduction, see <a href="https://github.com/GoraNetwork/developer-quick-start/tree/main/evm">Developer Quick Start (EVM)</a>. For a more complete overview as well as an API reference, read on.</p>
             <section id="requesting-oracle-data">
                 <h3>Requesting oracle data</h3>
                 <p>Gora functionality is accessed by calling <em>methods</em> of Gora <em>main smart contract</em>. To get started, you need Gora main contract address for the blockchain network that you are going to use. The preferred way to find it is to check the home page of Gora Explorer for the network in question. For example, <a href="https://mainnet.base.explorer.gora.io/">Gora Explorer for Base mainnet</a>. Gora main contract address is shown next to "Gora App" label.</p>
@@ -468,7 +468,7 @@ td.code .kt { font-weight: bold; color: darkBlue; }
                         </td>
                     </tr>
                 </table>
-                <p>Oracle data is requested from Gora by calling <cite>request</cite> method of Gora main smart contract. In its simplest form, it takes the following positional arguments:</p>
+                <p>Oracle data is requested from Gora by calling <cite>request</cite> method of Gora main smart contract. In its simplest form, it takes just two positional arguments:</p>
                 <table class="args">
                     <thead>
                         <tr>
@@ -488,21 +488,16 @@ td.code .kt { font-weight: bold; color: darkBlue; }
                             <td>bytes</td>
                             <td>Data source parameter</td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>string</td>
-                            <td>Destination specification</td>
-                        </tr>
                     </tbody>
                 </table>
                 <p>For example:</p>
                 <table data-language="solidity">
                     <tr>
                         <td class="linenos">
-                            <pre><span class="normal"><a href="#0b960ae6d5ab75760e7a8b182b018703-1">1</a></span></pre>
+                            <pre><span class="normal"><a href="#36f7b45973869321745d9f61da35f1e9-1">1</a></span></pre>
                         </td>
                         <td class="code">
-                            <pre><a id="0b960ae6d5ab75760e7a8b182b018703-1" name="0b960ae6d5ab75760e7a8b182b018703-1"></a><span class="kt">bytes32</span><span class="w"> </span><span class="nv">reqId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gora<span class="p">.</span>request<span class="p">(</span><span class="s2">&quot;http://example.com/mydata&quot;</span><span class="p">,</span><span class="w"> </span><span class="kt">bytes</span><span class="p">(</span><span class="s2">&quot;substr:0,2&quot;</span><span class="p">),</span><span class="w"> </span><span class="s2">&quot;myMethod&quot;</span><span class="p">)</span></pre>
+                            <pre><a id="36f7b45973869321745d9f61da35f1e9-1" name="36f7b45973869321745d9f61da35f1e9-1"></a><span class="kt">bytes32</span><span class="w"> </span><span class="nv">reqId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>gora<span class="p">.</span>request<span class="p">(</span><span class="s2">&quot;http://example.com/mydata&quot;</span><span class="p">,</span><span class="w"> </span><span class="kt">bytes</span><span class="p">(</span><span class="s2">&quot;substr:0,2&quot;</span><span class="p">))</span></pre>
                         </td>
                     </tr>
                 </table>
@@ -513,8 +508,6 @@ td.code .kt { font-weight: bold; color: darkBlue; }
                     <dt>Data source parameter</dt>
                     <dd>For sources that are not <em>special</em> (i.e. do not begin with <code>gora://</code>) this parameter contains a <a href="#value-extraction">value extraction specification</a>. It describes how oracle-returned value is to be extracted from data provided by the source. For example, with a JSON endpoint that returns <code>{ "score": 123
 }</code> one would specify: <code>jsonpath:$.score</code>. Gora supports a number of value extraction options which will be explained in detail below. Special Gora sources will be described separately.</dd>
-                    <dt>Destination specification</dt>
-                    <dd>Contains the name of the method in customer's smart contract to be called with the oracle return value. Gora returns oracle value by calling the same customer's smart contract that that requested it.</dd>
                 </dl>
                 <p><strong>Return value</strong> of the <cite>request</cite> method is a unique identifier for the created request. It is necessary to map returned oracle values to requests when making multiple oracle calls, to manipulate created requests or to access their properties.</p>
             </section>

@@ -4,10 +4,9 @@ Classic oracle on EVM
 
 Classic oracle is the original Gora product designed to query any type of data
 source. On EVM-compatible networks, smart contracts are almost always written in
-`Solidity <https://soliditylang.org/>`_ , so this is the language we will use.
-For a quick hands-on introduction, see `Gora source code examples
-<https://github.com/GoraNetwork/phoenix-examples/>`_.  For a more complete
-overview as well as an API reference, read on.
+`Solidity <https://soliditylang.org/>`_, so this is the language Gora uses.
+For a quick hands-on introduction, see `Developer Quick Start (EVM)`_. For a
+more complete overview as well as an API reference, read on.
 
 **********************
 Requesting oracle data
@@ -32,7 +31,7 @@ amount of tokens currently staked in this Gora network:
   uint totalStake = gora.totalStake();
 
 Oracle data is requested from Gora by calling `request` method of Gora main smart
-contract. In its simplest form, it takes the following positional arguments:
+contract. In its simplest form, it takes just two positional arguments:
 
 .. table::
   :class: args
@@ -42,7 +41,6 @@ contract. In its simplest form, it takes the following positional arguments:
   =========== ========= ===========
   0           string    Data source specification
   1           bytes     Data source parameter
-  2           string    Destination specification
   =========== ========= ===========
 
 For example:
@@ -50,7 +48,7 @@ For example:
 .. code:: solidity
   :number-lines:
 
-  bytes32 reqId = gora.request("http://example.com/mydata", bytes("substr:0,2"), "myMethod")
+  bytes32 reqId = gora.request("http://example.com/mydata", bytes("substr:0,2"))
 
 More precisely, Gora `request` method arguments have the following meanings:
 
@@ -69,11 +67,6 @@ Data source parameter
   }`` one would specify: ``jsonpath:$.score``. Gora supports a number of value
   extraction options which will be explained in detail below.  Special Gora
   sources will be described separately.
-
-Destination specification
-  Contains the name of the method in customer's smart contract to be called
-  with the oracle return value. Gora returns oracle value by calling the same
-  customer's smart contract that that requested it.
 
 **Return value** of the `request` method is a unique identifier for the
 created request. It is necessary to map returned oracle values to requests
