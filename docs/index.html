@@ -8,6 +8,8 @@
 #contents { padding: 60px 0.5em 0.5em; color: #dddddd;  background: #17271f; z-index: 1; }
 #contents a { color: #dddddd; text-decoration: none; }
 #contents ul { padding-inline-start: 1em; }
+a { color: #005f2f; }
+a:visited { color: #455f52; }
 p { margin: 2em 0; }
 @media (min-width:1024px) {
     body { font-size: 12pt; margin: 1em 1em 1em 20em; }
@@ -27,20 +29,24 @@ h3 { font-size: 140%; color: #17271f; padding-bottom: 0.25em;
      border-bottom: 1px #195b3a solid; }
 h4 { font-size: 120%; color: #17271f; }
 h5 { font-size: 110%; margin: 0.5em 0; }
+blockquote { margin-left: 0; }
 dt { color: #17271f; }
-figcaption { color: #195b3a; }
+code { font: 12pt Courier, monospace; color: #195b3a; }
+figcaption { font-style: italic; color: #195b3a; }
 dt { font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
 ol li { margin-top: 0.5em; }
 pre.terminal { padding: 1em 0.5em; color: white; background: black;
                overflow-x: auto; }
+pre.terminal a { color: white; text-decoration: none; }
 table { border-spacing: 0; border-collapse: collapse; }
 tr:nth-child(even) { background-color: #f0f0f0; }
-aside.warning, aside.note { margin-left: 2em; padding-left: 1em; }
+aside.warning, aside.note { margin: 1em 0 1em 2em; padding-left: 1em; }
 aside.warning { color: darkRed; border-left: 4px darkRed solid; }
 aside.warning > p:first-of-type > strong:first-of-type,
 aside.warning > strong:first-of-type
   { color: white; background: darkRed; padding: 0.1em 0.25em; }
 aside.note { color: darkBlue; border-left: 4px darkBlue solid; }
+aside.note code { color: darkBlue; }
 aside.note > p:first-of-type > strong:first-of-type,
 aside.note > strong:first-of-type
   { color: #eeeeee; background: darkBlue; padding: 0.1em 0.25em; }
@@ -85,7 +91,7 @@ td.code .kt { font-weight: bold; color: darkBlue; }
                 <li><a href="#classic-oracle-on-algorand">Classic oracle on Algorand</a>
                     <ul>
                         <li><a href="#requesting-oracle-data-1">Requesting oracle data</a></li>
-                        <li><a href="#calling-outside-of-blockchain">Calling outside of blockchain</a></li>
+                        <li><a href="#calling-from-outside-of-blockchain">Calling from outside of blockchain</a></li>
                         <li><a href="#troubleshooting-applications">Troubleshooting applications</a></li>
                         <li><a href="#developer-quick-start-1">Developer quick start</a></li>
                     </ul>
@@ -574,32 +580,17 @@ $</pre>
             <a id="dqs-evm"></a>
             <section id="developer-quick-start-evm-1">
                 <h3>Developer Quick Start (EVM)</h3>
-                <p><a href="https://github.com/GoraNetwork/developer-quick-start/tree/main/evm">Developer Quick Start (EVM)</a> is a package of code examples and scripts to help developers start using Gora from their EVM blockchain applications. It contains:</p>
-                <blockquote>
-                    <ul>
-                        <li>Instructions on how to setup and use a local Gora development environment</li>
-                        <li>Example applications, also usable as templates</li>
-                        <li>Solidity compiler and EVM node binaries</li>
-                    </ul>
-                </blockquote>
+                <p><a href="https://github.com/GoraNetwork/developer-quick-start/tree/main/evm">Developer Quick Start (EVM)</a> is a package of code examples and scripts to help developers start using Gora from their EVM blockchain applications. It contains instructions for Gora local development environment, example applications also usable as templates and Solidity compiler and EVM node Linux binaries.</p>
+                <aside class="note"><strong>NOTE</strong> To develop your own applications with Gora and to deploy them to production networks, you are expected to use tools of your own choice. Gora does not try to bind you to any specific EVM toolchain.</aside>
                 <section id="solidity-examples">
                     <h4>Solidity examples</h4>
                     <p>The following extensively commented examples are provided as hands-on documentation and potential templates for your own applications:</p>
                     <blockquote>
                         <ul>
-                            <li><a href="https://github.com/GoraNetwork/developer-quick-start/blob/main/evm/example_basic.sol">example_basic.sol</a> - querying arbitrary HTTP JSON endpoints</li>
-                            <li><a href="https://github.com/GoraNetwork/developer-quick-start/blob/main/evm/example_off_chain.sol">example_off_chain.sol</a> - getting data from multiple APIs and processing it with off-chain computation</li>
+                            <li><a href="https://github.com/GoraNetwork/developer-quick-start/blob/main/evm/example_basic.asol">example_basic.sol</a> - makes the simplest possible type of query, fetching a predefined value from a Gora built-in test data source.</li>
+                            <li><a href="https://github.com/GoraNetwork/developer-quick-start/blob/main/evm/example_off_chain.sol">example_off_chain.sol</a> - demonstrates Gora off-chain computation capability by making two runtime-defined JSON API requests to fetch air temperature at a British postcode.</li>
                         </ul>
                     </blockquote>
-                    <p>Consider source code examples linked in the previous section. Integrate the APIs exposed in them into your own smart contracts, or deploy an example using your preferred setup, then modify it to build your app. For deployment, supply <em>Gora main smart contract address</em> as the first argument to the constructor, depending on the public network you are deploying to:</p>
-                    <blockquote>
-                        <ul>
-                            <li>Base Sepolia: <code>0xcb201275cb25a589f3877912815d5f17f66d4f13</code></li>
-                            <li>Base Mainnet: <code>0xd4c99f88095f32df993030d9a6080e3be723f617</code></li>
-                        </ul>
-                    </blockquote>
-                    <p>Once deployed, your smart contract should be able ready to issue Gora requests and receive Gora responses. For Base Sepolia, there is currently no fee for Gora requests. For Base Mainnet, you must have some Gora tokens on the querying account's balance to pay for requests.</p>
-                    <aside class="note"><strong>NOTE</strong> To develop your own applications with Gora and to deploy them to production networks, you are expected to use tools of your own choice. Gora does not try to bind you to any specific EVM toolchain.</aside>
                 </section>
                 <section id="setting-up-local-development-environment">
                     <h4>Setting up local development environment</h4>
@@ -609,7 +600,7 @@ $</pre>
                             <p>Open a terminal session and execute: <cite>uname</cite>. If this prints out <cite>Linux</cite>, continue to the next step. If the output is anything else, you may proceed at your own risk, but with a non-Unix OS you will almost certainly fail.</p>
                         </li>
                         <li>Clone this repository
-                            <p>Install [Git](<a href="https://git-scm.com/">https://git-scm.com/</a>) if not already done so, then run:</p>
+                            <p>Install <a href="https://git-scm.com/">Git</a> if not already done so, then run:</p>
                             <pre class="terminal">git clone <a href="https://github.com/GoraNetwork/developer-quick-start">https://github.com/GoraNetwork/developer-quick-start</a></pre>
                             <p>You should get an output like:</p>
                             <pre class="terminal">Cloning into 'developer-quick-start'...
@@ -620,31 +611,28 @@ remote: Total 790 (delta 156), reused 159 (delta 85), pack-reused 558 (from 1)
 Receiving objects: 100% (790/790), 67.78 MiB | 1.43 MiB/s, done.
 Resolving deltas: 100% (469/469), done.</pre>
                         </li>
-                        <li>Change to EVM subdirectory and install NPM dependencies
-                            <p>Execute the following commands:</p>
+                        <li>Change to EVM subdirectory and install NPM dependencies:
                             <pre class="terminal">cd developer-quick-start/evm
 npm i</pre>
                             <p>You should then see something like this:</p>
                             <pre class="terminal">added 9 packages, and audited 10 packages in 3s
 3 packages are looking for funding
   run <cite>npm fund</cite> for details
-found 0 vulnerabilities
-
-If no errors popped up, proceed to the next step.</pre>
+found 0 vulnerabilities</pre>
+                            <p>If no errors popped up, proceed to the next step.</p>
                         </li>
                         <li>Setup target blockchain network
-                            <aside class="warning"><strong>IMPORTANT!</strong> Examples can be run on either local built-in blockchain network, or a public network such as <a href="https://sepolia.basescan.org/">Base Sepolia</a>. We generally recommend using the local network for development and trying things out. But for users who do not want to install <a href="https://docker.io/">Docker</a> have a funded public network account and are OK with longer deploy/test iterations, the public network option may be preferable.</aside>
+                            <aside class="warning"><strong>IMPORTANT!</strong> Examples can be run on either local built-in blockchain network, or a public network such as <a href="https://sepolia.basescan.org/">Base Sepolia</a>. We generally recommend using a local network for development and trying things out. But for users who do not want to install <a href="https://docker.io/">Docker</a>, have a funded public blockchain account and are OK with longer deploy/test iterations, the public network option may be preferable.</aside>
                             <dl>
                                 <dt>Option A: Use local development blockchain network</dt>
-                                <dd>Run <code>./start_dev_env</code>. The script will start up, displaying log output from local EVM nodes as well as local Gora node. It must be running while you deploy and run the example scripts. It is the default configuration for running examples, so no additional setup will be necessary. To terminate the script, ending the development session, hit, <code>Ctrl-C</code>.</dd>
+                                <dd>Run <code>./start_dev_env</code>. The script will start up, displaying log output from local EVM nodes as well as local Gora node. It must be running while you deploy and run the example scripts. To terminate the script, ending your development session, hit, <code>Ctrl-C</code>.</dd>
                                 <dt>Option B: Use a public network</dt>
                                 <dd>
                                     <p>Public network configuration is set via environment variables. For example, to use Base Sepolia you would execute:</p>
                                     <pre class="terminal">export GORA_EXAMPLE_EVM_MAIN_ADDR=0xcb201275cb25a589f3877912815d5f17f66d4f13
 export GORA_EXAMPLE_EVM_API_URL=https://sepolia.base.org
 export GORA_EXAMPLE_EVM_KEY=./my_base_sepolia_private_hex_key.txt</pre>
-                                    <p><code>./my_base_sepolia_private_hex_key.txt</code> is the example path to a text file containing private key for the account you want to use for deployment, in hex form. It can usually be found in account tools section of wallet software such as Metamask.</p>
-                                    <p>The environment variables will be picked up by the example-running script discussed below. It should be possible to deploy example scripts to any public EVM network using this method. Deploying to a mainnets is, however, strongly discouraged for security reasons.</p>
+                                    <p><code>./my_base_sepolia_private_hex_key.txt</code> is the example path to a text file containing private key for the account you want to use for deployment, in hex form. It can usually be found in account tools section of wallet software such as Metamask. The environment variables will be picked up by the example-running script discussed below. It should be possible to deploy example scripts to any public EVM network using this method. Deploying to a mainnets is, however, strongly discouraged for security reasons.</p>
                                 </dd>
                             </dl>
                         </li>
@@ -652,7 +640,7 @@ export GORA_EXAMPLE_EVM_KEY=./my_base_sepolia_private_hex_key.txt</pre>
                 </section>
                 <section id="running-and-modifying-the-examples">
                     <h4>Running and modifying the examples</h4>
-                    <p>If using local development environment (option 1 in step 4 above), open another terminal window and change to the same directory in which you started the setup script. For public network configurtion (option 2 in step 4), please remain in the same terminal session.</p>
+                    <p>For local development environment (option A in step 4 above), open another terminal window and change to the same directory in which you started the setup script. For public network configurtion (option B in step 4), please remain in the same terminal session.</p>
                     <p>Then execute:</p>
                     <pre class="terminal">./run_example basic</pre>
                     <p>or</p>
@@ -665,8 +653,8 @@ export GORA_EXAMPLE_EVM_KEY=./my_base_sepolia_private_hex_key.txt</pre>
                     <blockquote>
                         <ul>
                             <li>Solidity compiler (<code>solc</code> binary). Used to compile examples and potentially developer's own code.</li>
-                            <li>Geth EVM node software (<code>geth</code> binary). Provides local blockchain functionality to model master (L1) and slave (L2) EVM networks. Both instances of Geth are run in development mode (with <code>--dev</code> switch). Hardhat is not used because it has shown issues with multiple concurrent connections and was lagging behind recent Ethereum forks feature-wise.</li>
-                            <li>Gora smart contracts (files with <code>.compiled</code> extension), already compiled into combined JSON format.</li>
+                            <li>Geth EVM node software (<code>geth</code> binary). Provides local blockchain functionality to model master (L1) and slave (L2) EVM networks. Both instances of Geth are run in development mode (with <code>--dev</code> switch).</li>
+                            <li>Gora smart contracts (files with <code>.compiled</code> extension), compiled into combined JSON format.</li>
                         </ul>
                     </blockquote>
                     <p><code>start_dev_env</code> script starts Geth instance, deploys Gora smart contracts and stays in the foreground, displaying log messages from the above as they come. Contrary to Gora Developer Quick Start package for Algorand, it must be running at all times to run Gora smart contracts locally. There is no way to start a Gora node or its local blockchain on-demand on per-example basis. To end your development session and terminate the script, hit Ctrl-C in the terminal window running it.</p>
@@ -795,7 +783,7 @@ $</pre>
                     <p>Available sources and arguments applicable to them can be examined by running: <code>gora dev-sources</code>. The list of classic sources is defined by Gora is subject to extension in future releases.</p>
                     <p><strong>Parametrized sources</strong></p>
                     <p>To add flexibility to classic requests, certain source properties can be specified on per-query basis.</p>
-                    <p>For example, if a source provides many pieces of data from the same endpoint, it is more convenient to let the requester specify the ones they want than to define a separate source for each. This is achieved by <em>parametrizing</em> <code>value_path</code> property. Setting it to <code>##0</code> in the oracle source definition will make Gora nodes take its value from 0'th argument of the request being served. Parameter placeholders can just as well be placed inside strings where they will be substituted, e.g. <code>http://example.com/##2&amp;a=123</code>.</p>
+                    <p>For example, if a source provides many pieces of data from the same endpoint, it is more convenient to let the requester specify the ones they want than to define a separate source for each. This is achieved by <em>parametrizing</em> the <code>value_path</code> property. Setting it to <code>##0</code> in the oracle source definition will make Gora nodes take its value from 0'th argument of the request being served. Parameter placeholders can just as well be placed inside strings where they will be substituted, e.g. <code>http://example.com/##2&amp;a=123</code>.</p>
                     <p>The following oracle source definition properties can be parametrized: <code>url</code>, <code>value_path</code>, <code>timestamp_path</code>, <code>value_type</code>, <code>value</code>, <code>round_to</code>, <code>gateway</code>. <em>Substituted values are always treated as strings</em>. For example, when supplying a parameter to set <code>round_to</code> field to <code>5</code>, the string <code>"5"</code> must be used rather than numeric value of <code>5</code>.</p>
                 </section>
                 <section id="request-type-2-general-url-requests">
@@ -877,13 +865,12 @@ $</pre>
                 </section>
                 <section id="request-type-3-off-chain-computation">
                     <h4>Request type #3 - off-chain computation</h4>
-                    <p>For use cases that require even more flexibility, Gora supports oracle requests that execute user-supplied [Web Assembly](<a href="https://webassembly.org/">https://webassembly.org/</a>) code. The code is executed off-chain by Gora network nodes and is subject to resource limits.</p>
-                    <p>To make use of this feature the developer must write their program using Gora Off-Chain API in any language that compiles to Web Assembly. Compiled binary is then made available to Gora network nodes in one of the three ways: verbatim as a request parameter (for small programs), in on-chain box storage or as a download at a public URL.</p>
+                    <p>For use cases that require even more flexibility, Gora supports oracle requests that execute user-supplied <a href="https://webassembly.org/">Web Assembly</a> code. The code is executed off-chain by Gora network nodes and is subject to resource limits.</p>
                     <figure align="left">
-                        <img width="500" alt="Gora off-chain computation workflow diagram" src="off_chain.svg.svg" />
+                        <img width="600" alt="Gora off-chain computation workflow diagram" src="off_chain.svg" />
                         <figcaption>Gora off-chain computation workflow</figcaption>
                     </figure>
-                    <p>Request specification ABI type for this kind of request has the following structure:</p>
+                    <p>To make use of this feature the developer must write their program using Gora Off-Chain API in any language that compiles to Web Assembly. Compiled binary is then made available to Gora network nodes in one of the three ways: verbatim as a request parameter (for small programs), in on-chain box storage or as a download at a public URL. Request specification ABI type for this kind of request has the following structure:</p>
                     <table>
                         <thead>
                             <tr>
@@ -950,12 +937,10 @@ $</pre>
                     <p>Because of certain limitations of Web Assembly, programs cannot efficiently pause while waiting to receive data from extrnal sources such as URLs. To work around that, Gora off-chain programs are run in <em>steps</em>. Steps are essentially repeated executions of the program with a shared context that includes current execution number. A <em>step</em> starts when the program's <em>main function</em> is called by the executing node and ends when it returns.</p>
                     <p>During a step, the program can schedule HTTP(S) requests, possibly using URL templates that it can fill at run time. When the step ends, these requests are executed by the Gora node and on their completion, the next step commences. The program can access request results as well as other node-provided data such as the number of step currently executing via data structure passed to it as an argument.</p>
                     <p>Finishing a step, the program always returns a value which tells the Gora node what to do next: execute another step, finish successfully or terminate with a specific error code. For the list of valid return values, see <a href="https://github.com/GoraNetwork/developer-quick-start/blob/main/gora_off_chain.h">gora_off_chain.h</a> header file.</p>
-                    <p>To compile this example program, run: <code>`
-clang example_off_chain_multi_step.c -Os --target=wasm32-unknown-unknown-wasm -c -o example_off_chain_multi_step.wasm
-`</code></p>
-                    <p>To execute the compiled binary using Gora CLI and default test destination app, run: <code>`
-gora request --off-chain ./off_chain_example.wasm --args sm14hp
-`</code></p>
+                    <p>To compile this example program, run:</p>
+                    <pre class="terminal">clang example_off_chain_multi_step.c -Os --target=wasm32-unknown-unknown-wasm -c -o example_off_chain_multi_step.wasm</pre>
+                    <p>To execute the compiled binary using Gora CLI and default test destination app, run:</p>
+                    <pre class="terminal">gora request --off-chain ./off_chain_example.wasm --args sm14hp</pre>
                 </section>
                 <section id="multi-value-requests-and-responses">
                     <h4>Multi-value requests and responses</h4>
@@ -970,17 +955,18 @@ gora request --off-chain ./off_chain_example.wasm --args sm14hp
                             </td>
                         </tr>
                     </table>
-                    <p>To access individual results, smart contract handling the oracle response must unpack this ABI type. <em>N*th string in the array will correspond to the *n*th expression in the ``valuePath`` field. **Important:*</em> all returned pieces of data in such responses are stringified, including numbers. For example, number <code>9183</code> will be returned as ASCII string <code>"9183"</code>. Smart contract code handling the response must make the necessary conversions.</p>
+                    <p>To access individual results, smart contract handling the oracle response must unpack this ABI type. <em>N</em>th string in the array will correspond to the <em>n</em>th expression in the <code>valuePath</code> field.</p>
+                    <aside class="warning"><strong>IMPORTANT</strong> All returned pieces of data in multi-value responses are stringified, including numbers. For example, number <code>9183</code> will be returned as ASCII string <code>"9183"</code>. Smart contract code handling the response must make the necessary conversions.</aside>
                 </section>
                 <section id="rounding-numeric-response-values">
                     <h4>Rounding numeric response values</h4>
-                    <p>Certain kinds of data, such as cryptocurrency exchange rates, are so volatile that different Gora nodes are likely to get slightly different results despite querying them at almost the same time. To achieve consensus between nodes when using such sources, Gora can round queried values. A source that supports rounding will have "Round to digits" field when shown with <code>gora dev-sources</code> command. Usually, the rounding setting will be parametrized, for example: "Round to digits: ##3". This means that the number of significant digits to round to is supplied in parameter with index 3. The <em>number must be provided in string representation</em>, like all parameters. Rounding will only affect the fractional part of the rounded number, all integer digits are always preserved. For example, if rounding parameter is set to "7", the number <code>123890.7251</code> will be rounded to 123890.7, but the number <code>98765430</code> will remain unaffected.</p>
+                    <p>Certain kinds of data, such as cryptocurrency exchange rates, are so volatile that different Gora nodes are likely to get slightly different results despite querying them at almost the same time. To achieve consensus between nodes when using such sources, Gora can mathematically <em>round</em> queried values.</p>
+                    <p>A source that supports rounding will have "Round to digits" field when shown with <code>gora dev-sources</code> command. Usually, the rounding setting will be parametrized, for example: "Round to digits: ##3". This means that the number of significant digits to round to is supplied in parameter with index 3. The <em>number must be provided in string representation</em>, like all parameters. Rounding will only affect the fractional part of the rounded number, all integer digits are always preserved. For example, if rounding parameter is set to "7", the number <code>123890.7251</code> will be rounded to 123890.7, but the number <code>98765430</code> will remain unaffected.</p>
                 </section>
             </section>
-            <section id="calling-outside-of-blockchain">
-                <h3>Calling outside of blockchain</h3>
-                <p>While Gora's main purpose is to interact with smart contracts, it is sometimes desirable to access its functionality from normal Linux software. Examples below will be given in JavaScript, but they can be adapted to any language supported by the Algorand API, such as Python or Go.</p>
-                <p>We start by building the request spec ABI type to encode our request. It can be accomplished in a single call, but will be done in steps here for clarity:</p>
+            <section id="calling-from-outside-of-blockchain">
+                <h3>Calling from outside of blockchain</h3>
+                <p>While Gora's main purpose is to interact with smart contracts, it is sometimes desirable to access its functionality from normal Linux software. Examples below will be given in JavaScript, but they can be adapted to any language supported by the Algorand API, such as Python or Go. We start by building the request spec ABI type to encode our request. It can be accomplished in a single call, but will be done in steps here for clarity:</p>
                 <table data-language="javascript">
                     <tr>
                         <td class="linenos">
@@ -1056,7 +1042,7 @@ gora request --off-chain ./off_chain_example.wasm --args sm14hp
                         </td>
                     </tr>
                 </table>
-                <p>Done. The <code>requestSpec</code> variable can now be used for <code>spec</code> argument when calling the <code>request</code> method for Gora main smart contract.</p>
+                <p>The <code>requestSpec</code> variable can now be used for <code>spec</code> argument when calling the <code>request</code> method for Gora main smart contract.</p>
                 <section id="decoding-request-responses">
                     <h4>Decoding request responses</h4>
                     <p>Results of an oracle request are returned by calling <code>dest_method</code> method of the smart contract specified in <code>dest_id</code>. The method gets passed the following two arguments:</p>
@@ -1094,8 +1080,7 @@ gora request --off-chain ./off_chain_example.wasm --args sm14hp
                             <li><code>2</code> - negative number</li>
                         </ul>
                     </blockquote>
-                    <p>Bytes <code>1 - 8</code> contain the integer part, <code>9 - 17</code> - the decimal fraction part, as big endian uint64's.</p>
-                    <p>For example, <code>0x021000000000000000ff00000000000000</code> in memory order (first byte has 0 offset) decodes as <code>-16.255</code></p>
+                    <p>Bytes <code>1 - 8</code> contain the integer part, <code>9 - 17</code> - the decimal fraction part, as big endian uint64's. For example, <code>0x021000000000000000ff00000000000000</code> in memory order (first byte has 0 offset) decodes as <code>-16.255</code></p>
                 </section>
             </section>
             <section id="troubleshooting-applications">
@@ -1103,7 +1088,7 @@ gora request --off-chain ./off_chain_example.wasm --args sm14hp
                 <p>Troubleshooting Gora applications begins with making oracle requests and looking at how they are handled in each processing phase. For that, we recommend using Gora CLI tool, a Gora observer node and <a href="https://app.dappflow.org/explorer/home">Algorand Dapp Flow</a> web app. The rest of this section will walk you through setting them up and using them to trace execution of a Gora request.</p>
                 <section id="observer-node">
                     <h4>Observer node</h4>
-                    <p>Gora observer node is a node set up and running on a Gora network for the purpose of monitoring requests. An observer node is not required to run continuously or have any GORA tokens staked. When using <a href="https://github.com/GoraNetwork/developer-quick-start/">Developer Quick Start</a>, setting up an observer node is not necessary because it includes a full Gora node. Refer to the documentation at the above link for details. For troubleshooting applications on Algorand testnet or mainnet, if you are not already running a normal Gora node on the same network, set on up following the Getting Started section above.</p>
+                    <p>Gora observer node is a node set up and running on a Gora network for the purpose of monitoring requests. An observer node is not required to run continuously or have any GORA tokens staked. When using <a href="https://github.com/GoraNetwork/developer-quick-start/">Developer Quick Start</a>, setting up an observer node is not necessary because it includes a full Gora node. For troubleshooting applications on Algorand testnet or mainnet, if you are not already running a normal Gora node on the same network, set on up following the Getting Started section above.</p>
                 </section>
                 <section id="checking-that-your-application-is-making-request-calls">
                     <h4>Checking that your application is making request calls</h4>
@@ -1187,7 +1172,7 @@ gora request --off-chain ./off_chain_example.wasm --args sm14hp
                     <p>To install and configure Gora software for your development environment, run <cite>python3 setup.py</cite> and follow the prompts. Gora tools will be downloaded and config files created for you automatically in the checkout directory.</p>
                     <aside class="warning"><strong>WARNING!</strong> Do NOT follow normal Gora node setup process.</aside>
                     <p>When the above script finishes, you will have Gora smart contracts deployed to local network in your Algorand Sandbox install and a Gora node set up for them. This will form a local development-only single-node Gora network necessary to serve your locally tested applications.</p>
-                    <p>For local oracle requests to be served, your development Gora node must be running whenever they are made. There are two ways to ensure this. One is to run it temporarily from a script that executes your application test cycle. This is what example apps in this repository do; details can be gleaned from their source code. Another way is to run the node continuously for the duration of your development session. To start it with output to the terminal, change to the checkout directory and run: <code>GORA_CONFIG_FILE=./.gora ./gora_cli docker-start</code>. To make it run in the background, add <code>--background</code> switch to the above command; to see node's log messages, run <code>docker logs gora-nr-dev</code>.</p>
+                    <p>For local oracle requests to be served, your development Gora node must be running whenever they are made. There are two ways to ensure this. One is to run it temporarily from a script that executes your application test cycle. This is what example apps in this repository do; details can be gleaned from their source code. Another way is to run the node continuously for the duration of your development session. To start it with output to the terminal, change to the checkout directory and run: <code>GORA_CONFIG_FILE=./.gora ./gora_cli docker-start</code>. To make it run in the background, add <code>--background</code> switch to the above command. To see node's log messages, run <code>docker logs gora-nr-dev</code>.</p>
                     <aside class="warning"><strong>WARNING!</strong> Do not add more nodes with non-zero stakes to this setup. It can break oracle consensus and stop request processing.*</aside>
                 </section>
                 <section id="example-applications">

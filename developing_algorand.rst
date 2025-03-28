@@ -105,7 +105,7 @@ specified on per-query basis.
 
 For example, if a source provides many pieces of data from the same endpoint, it
 is more convenient to let the requester specify the ones they want than to
-define a separate source for each. This is achieved by *parametrizing*
+define a separate source for each. This is achieved by *parametrizing* the
 ``value_path`` property. Setting it to ``##0`` in the oracle source definition
 will make Gora nodes take its value from 0'th argument of the request being
 served.  Parameter placeholders can just as well be placed inside strings where
@@ -162,25 +162,23 @@ Request type #3 - off-chain computation
 =======================================
 
 For use cases that require even more flexibility, Gora supports oracle requests
-that execute user-supplied [Web Assembly](https://webassembly.org/) code. The
+that execute user-supplied `Web Assembly <https://webassembly.org/>`_ code. The
 code is executed off-chain by Gora network nodes and is subject to resource
 limits.
 
-To make use of this feature the developer must write their program using Gora
-Off-Chain API in any language that compiles to Web Assembly. Compiled binary is
-then made available to Gora network nodes in one of the three ways: verbatim as
-a request parameter (for small programs), in on-chain box storage or as a
-download at a public URL.
-
-.. figure:: off_chain.svg.svg
-   :width: 500
+.. figure:: off_chain.svg
+   :width: 600
    :align: left
    :alt: Gora off-chain computation workflow diagram
 
    Gora off-chain computation workflow
 
-Request specification ABI type for this kind of request has the
-following structure:
+To make use of this feature the developer must write their program using Gora
+Off-Chain API in any language that compiles to Web Assembly. Compiled binary is
+then made available to Gora network nodes in one of the three ways: verbatim as
+a request parameter (for small programs), in on-chain box storage or as a
+download at a public URL. Request specification ABI type for this kind of
+request has the following structure:
 
 =============== ============== ========================================
 Name            ABI Type       Description
@@ -241,14 +239,18 @@ specific error code. For the list of valid return values, see `gora_off_chain.h`
 header file.
 
 To compile this example program, run:
-```
-clang example_off_chain_multi_step.c -Os --target=wasm32-unknown-unknown-wasm -c -o example_off_chain_multi_step.wasm
-```
+
+.. parsed-literal::
+   :class: terminal
+
+   clang example_off_chain_multi_step.c -Os --target=wasm32-unknown-unknown-wasm -c -o example_off_chain_multi_step.wasm
 
 To execute the compiled binary using Gora CLI and default test destination app, run:
-```
-gora request --off-chain ./off_chain_example.wasm --args sm14hp
-```
+
+.. parsed-literal::
+   :class: terminal
+
+   gora request --off-chain ./off_chain_example.wasm --args sm14hp
 
 ==================================
 Multi-value requests and responses
@@ -268,11 +270,13 @@ data are packed into Algorand ABI type - an array of strings:
    const multiResponse = new Algosdk.ABIArrayDynamicType(Algosdk.ABIType.from("byte[]"));
 
 To access individual results, smart contract handling the oracle response must
-unpack this ABI type. *N*th string in the array will correspond to the *n*th
-expression in the ``valuePath`` field. **Important:** all returned pieces of
-data in such responses are stringified, including numbers. For example, number
-``9183`` will be returned as ASCII string ``"9183"``. Smart contract code
-handling the response must make the necessary conversions.
+unpack this ABI type. *N*\ th string in the array will correspond to the *n*\ th
+expression in the ``valuePath`` field.
+
+.. warning:: **IMPORTANT** All returned pieces of data in multi-value responses
+             are stringified, including numbers. For example, number ``9183``
+             will be returned as ASCII string ``"9183"``. Smart contract code
+             handling the response must make the necessary conversions.
 
 ================================
 Rounding numeric response values
@@ -281,27 +285,28 @@ Rounding numeric response values
 Certain kinds of data, such as cryptocurrency exchange rates, are so volatile
 that different Gora nodes are likely to get slightly different results despite
 querying them at almost the same time. To achieve consensus between nodes when
-using such sources, Gora can round queried values. A source that supports
-rounding will have "Round to digits" field when shown with ``gora dev-sources``
-command. Usually, the rounding setting will be parametrized, for example: "Round
-to digits: ##3". This means that the number of significant digits to round to is
-supplied in parameter with index 3.  The *number must be provided in string
-representation*, like all parameters. Rounding will only affect the fractional
-part of the rounded number, all integer digits are always preserved. For
-example, if rounding parameter is set to "7", the number ``123890.7251`` will be
-rounded to 123890.7, but the number ``98765430`` will remain unaffected.
+using such sources, Gora can mathematically *round* queried values.
 
-*****************************
-Calling outside of blockchain
-*****************************
+A source that supports rounding will have "Round to digits" field when shown
+with ``gora dev-sources`` command. Usually, the rounding setting will be
+parametrized, for example: "Round to digits: ##3". This means that the number of
+significant digits to round to is supplied in parameter with index 3.  The
+*number must be provided in string representation*, like all
+parameters. Rounding will only affect the fractional part of the rounded number,
+all integer digits are always preserved. For example, if rounding parameter is
+set to "7", the number ``123890.7251`` will be rounded to 123890.7, but the
+number ``98765430`` will remain unaffected.
+
+***********************************
+Calling from outside of blockchain
+***********************************
 
 While Gora's main purpose is to interact with smart contracts, it is sometimes
-desirable to access its functionality from normal Linux software. Examples
-below will be given in JavaScript, but they can be adapted to any language
-supported by the Algorand API, such as Python or Go.
-
-We start by building the request spec ABI type to encode our request. It can
-be accomplished in a single call, but will be done in steps here for clarity:
+desirable to access its functionality from normal Linux software. Examples below
+will be given in JavaScript, but they can be adapted to any language supported
+by the Algorand API, such as Python or Go. We start by building the request spec
+ABI type to encode our request. It can be accomplished in a single call, but
+will be done in steps here for clarity:
 
 .. code:: javascript
   :number-lines:
@@ -347,8 +352,8 @@ specifies currencies mnemonically while the other does it numerically:
   ]);
 
 
-Done. The ``requestSpec`` variable can now be used for ``spec`` argument when
-calling the ``request`` method for Gora main smart contract.
+The ``requestSpec`` variable can now be used for ``spec`` argument when calling
+the ``request`` method for Gora main smart contract.
 
 ==========================
 Decoding request responses
@@ -392,11 +397,10 @@ When returned oracle value is a number, it is encoded into a 17-byte array.
  * ``1`` - positive number
  * ``2`` - negative number
 
-Bytes ``1 - 8`` contain the integer part, ``9 - 17`` - the decimal fraction part,
-as big endian uint64's.
-
-For example, ``0x021000000000000000ff00000000000000`` in memory order (first byte
-has 0 offset) decodes as ``-16.255``
+Bytes ``1 - 8`` contain the integer part, ``9 - 17`` - the decimal fraction
+part, as big endian uint64's. For example,
+``0x021000000000000000ff00000000000000`` in memory order (first byte has 0
+offset) decodes as ``-16.255``
 
 *****************************
 Troubleshooting applications
@@ -404,9 +408,9 @@ Troubleshooting applications
 
 Troubleshooting Gora applications begins with making oracle requests and looking
 at how they are handled in each processing phase. For that, we recommend using
-Gora CLI tool, a Gora observer node and `Algorand Dapp Flow`_
-web app. The rest of this section will walk you through setting them up and
-using them to trace execution of a Gora request.
+Gora CLI tool, a Gora observer node and `Algorand Dapp Flow`_ web app. The rest
+of this section will walk you through setting them up and using them to trace
+execution of a Gora request.
 
 =============
 Observer node
@@ -416,10 +420,9 @@ Gora observer node is a node set up and running on a Gora network for the
 purpose of monitoring requests. An observer node is not required to run
 continuously or have any GORA tokens staked. When using `Developer Quick Start`_,
 setting up an observer node is not necessary because it includes a full Gora
-node.  Refer to the documentation at the above link for details. For
-troubleshooting applications on Algorand testnet or mainnet, if you are not
-already running a normal Gora node on the same network, set on up following the
-Getting Started section above.
+node. For troubleshooting applications on Algorand testnet or mainnet, if you
+are not already running a normal Gora node on the same network, set on up
+following the Getting Started section above.
 
 ======================================================
 Checking that your application is making request calls
@@ -613,7 +616,7 @@ source code.  Another way is to run the node continuously for the duration of
 your development session. To start it with output to the terminal, change to the
 checkout directory and run: ``GORA_CONFIG_FILE=./.gora ./gora_cli docker-start``.
 To make it run in the background, add ``--background`` switch to the above
-command; to see node's log messages, run ``docker logs gora-nr-dev``.
+command. To see node's log messages, run ``docker logs gora-nr-dev``.
 
 .. warning:: **WARNING!** Do not add more nodes with non-zero stakes to this
              setup.  It can break oracle consensus and stop request processing.*

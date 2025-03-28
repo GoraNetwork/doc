@@ -269,12 +269,13 @@ Developer Quick Start (EVM)
 ***************************
 
 `Developer Quick Start (EVM)`_ is a package of code examples and scripts to help
-developers start using Gora from their EVM blockchain applications.  It
-contains:
+developers start using Gora from their EVM blockchain applications. It contains
+instructions for Gora local development environment, example applications also
+usable as templates and Solidity compiler and EVM node Linux binaries.
 
- * Instructions on how to setup and use a local Gora development environment
- * Example applications, also usable as templates
- * Solidity compiler and EVM node binaries
+.. note:: **NOTE** To develop your own applications with Gora and to deploy them to
+          production networks, you are expected to use tools of your own
+          choice. Gora does not try to bind you to any specific EVM toolchain.
 
 =================
 Solidity examples
@@ -283,29 +284,13 @@ Solidity examples
 The following extensively commented examples are provided as hands-on
 documentation and potential templates for your own  applications:
 
- * `example_basic.sol <https://github.com/GoraNetwork/developer-quick-start/blob/main/evm/example_basic.sol>`_ -
-   querying arbitrary HTTP JSON endpoints
+  * `example_basic.sol <https://github.com/GoraNetwork/developer-quick-start/blob/main/evm/example_basic.asol>`_ -
+    makes the simplest possible type of query, fetching a predefined value from a Gora
+    built-in test data source.
 
- * `example_off_chain.sol <https://github.com/GoraNetwork/developer-quick-start/blob/main/evm/example_off_chain.sol>`_ -
-   getting data from multiple APIs and processing it with off-chain computation
-
-Consider source code examples linked in the previous section. Integrate the APIs
-exposed in them into your own smart contracts, or deploy an example using your
-preferred setup, then modify it to build your app. For deployment, supply *Gora
-main smart contract address* as the first argument to the constructor, depending
-on the public network you are deploying to:
-
-  * Base Sepolia: ``0xcb201275cb25a589f3877912815d5f17f66d4f13``
-  * Base Mainnet: ``0xd4c99f88095f32df993030d9a6080e3be723f617``
-
-Once deployed, your smart contract should be able ready to issue Gora requests
-and receive Gora responses. For Base Sepolia, there is currently no fee for Gora
-requests. For Base Mainnet, you must have some Gora tokens on the querying
-account's balance to pay for requests.
-
-.. note:: **NOTE** To develop your own applications with Gora and to deploy them to
-          production networks, you are expected to use tools of your own
-          choice. Gora does not try to bind you to any specific EVM toolchain.
+  * `example_off_chain.sol <https://github.com/GoraNetwork/developer-quick-start/blob/main/evm/example_off_chain.sol>`_ -
+    demonstrates Gora off-chain computation capability by making two runtime-defined
+    JSON API requests to fetch air temperature at a British postcode.
 
 ========================================
 Setting up local development environment
@@ -322,7 +307,7 @@ compiling and deploying Gora smart contract examples.
 
 2. Clone this repository
 
-   Install [Git](https://git-scm.com/) if not already done so, then run:
+   Install `Git <https://git-scm.com/>`_ if not already done so, then run:
 
    .. parsed-literal::
       :class: terminal
@@ -342,9 +327,7 @@ compiling and deploying Gora smart contract examples.
       Receiving objects: 100% (790/790), 67.78 MiB | 1.43 MiB/s, done.
       Resolving deltas: 100% (469/469), done.
 
-3. Change to EVM subdirectory and install NPM dependencies
-
-   Execute the following commands:
+3. Change to EVM subdirectory and install NPM dependencies:
 
    .. parsed-literal::
       :class: terminal
@@ -362,24 +345,23 @@ compiling and deploying Gora smart contract examples.
         run `npm fund` for details
       found 0 vulnerabilities
 
-      If no errors popped up, proceed to the next step.
+   If no errors popped up, proceed to the next step.
 
 4. Setup target blockchain network
 
    .. warning:: **IMPORTANT!** Examples can be run on either local built-in
                 blockchain network, or a public network such as `Base Sepolia
                 <https://sepolia.basescan.org/>`_. We generally recommend using
-                the local network for development and trying things out. But for
-                users who do not want to install `Docker`_ have a funded public
-                network account and are OK with longer deploy/test iterations,
-                the public network option may be preferable.
+                a local network for development and trying things out. But for
+                users who do not want to install `Docker`_, have a funded
+                public blockchain account and are OK with longer deploy/test
+                iterations, the public network option may be preferable.
 
    Option A: Use local development blockchain network
      Run ``./start_dev_env``. The script will start up, displaying log output from
      local EVM nodes as well as local Gora node. It must be running while you deploy
-     and run the example scripts. It is the default configuration for running
-     examples, so no additional setup will be necessary. To terminate the script,
-     ending the development session, hit, ``Ctrl-C``.
+     and run the example scripts. To terminate the script, ending your development
+     session, hit, ``Ctrl-C``.
 
    Option B: Use a public network
      Public network configuration is set via environment variables. For example, to
@@ -392,23 +374,21 @@ compiling and deploying Gora smart contract examples.
         export GORA_EXAMPLE_EVM_API_URL=https://sepolia.base.org
         export GORA_EXAMPLE_EVM_KEY=./my_base_sepolia_private_hex_key.txt
 
-     ``./my_base_sepolia_private_hex_key.txt`` is the example path to a text file
-     containing private key for the account you want to use for deployment, in hex
-     form. It can usually be found in account tools section of wallet software such
-     as Metamask.
-
-     The environment variables will be picked up by the example-running script
-     discussed below. It should be possible to deploy example scripts to any public
-     EVM network using this method. Deploying to a mainnets is, however, strongly
-     discouraged for security reasons.
+     ``./my_base_sepolia_private_hex_key.txt`` is the example path to a text
+     file containing private key for the account you want to use for deployment,
+     in hex form. It can usually be found in account tools section of wallet
+     software such as Metamask. The environment variables will be picked up by
+     the example-running script discussed below. It should be possible to deploy
+     example scripts to any public EVM network using this method. Deploying to a
+     mainnets is, however, strongly discouraged for security reasons.
 
 ==================================
 Running and modifying the examples
 ==================================
 
-If using local development environment (option 1 in step 4 above), open another
+For local development environment (option A in step 4 above), open another
 terminal window and change to the same directory in which you started the setup
-script. For public network configurtion (option 2 in step 4), please remain in
+script. For public network configurtion (option B in step 4), please remain in
 the same terminal session.
 
 Then execute:
@@ -442,11 +422,9 @@ Gora EVM local development environment relies on the following pieces of softwar
  * Geth EVM node software (``geth`` binary). Provides local blockchain
    functionality to model master (L1) and slave (L2) EVM networks. Both
    instances of Geth are run in development mode (with ``--dev`` switch).
-   Hardhat is not used because it has shown issues with multiple concurrent
-   connections and was lagging behind recent Ethereum forks feature-wise.
 
- * Gora smart contracts (files with ``.compiled`` extension), already compiled
-   into combined JSON format.
+ * Gora smart contracts (files with ``.compiled`` extension), compiled into
+   combined JSON format.
 
 ``start_dev_env`` script starts Geth instance, deploys Gora smart contracts and
 stays in the foreground, displaying log messages from the above as they come.
