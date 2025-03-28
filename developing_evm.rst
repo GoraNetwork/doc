@@ -97,19 +97,25 @@ data-receiving method must only accept two arguments:
 Namely:
 
 Request ID
-  identifier of Gora request for which the value provided is the response. You
+  Identifier of Gora request for which the value provided is the response. You
   smart contract will likely want to use it to determine which of the Gora
   requests made previously this response applies to.
 
 Oracle value
-  value returned by the oracle, as a byte string. Numeric values will be
+  Value returned by the oracle, as a byte string. Numeric values will be
   provided as their string representaitons, e.g. "0.1234", "-12". It will
   be down to receiving smart contract to convert them to Solidity numeric
-  types if they need. Strings are returned as is.
+  types as needed. Strings are returned as is.
 
 ***************************
 Using off-chain computation
 ***************************
+
+For use cases that require more flexibility, Gora supports oracle requests that
+execute user-supplied `Web Assembly <https://webassembly.org/>`_ to produce an
+oracle value. This enables querying data sources determined at runtime as well
+as processing queried data in arbitrary ways. User-supplied code is executed
+off-chain by Gora nodes and is subject to resource limits.
 
 .. figure:: off_chain.svg
    :width: 650
@@ -118,17 +124,11 @@ Using off-chain computation
 
    Gora off-chain computation workflow
 
-For use cases that require more flexibility, Gora supports oracle requests that
-execute user-supplied `Web Assembly <https://webassembly.org/>`_ to produce an
-oracle value. This enables querying of data sources determined at runtime and
-processing their outputs in arbitrary ways. The user-supplied code is executed
-off-chain by Gora nodes and is subject to resource limits.
-
 To make use of this feature, developers write their off-chain programs utilizing
-Gora off-chain API. Any language that compiles to Web Assembly may be used. We
+Gora off-chain API. They may use any language that compiles to Web Assembly. We
 recommend C language due to its simplicity and ubiquity, and `Clang compiler
-<https://clang.llvm.org/>`_ because of it can generate Web Assembly binaries
-directly. E.g.:
+<https://clang.llvm.org/>`_ because it generates Web Assembly binaries directly.
+E.g.:
 
 .. parsed-literal::
    :class: terminal
@@ -142,16 +142,15 @@ provided in smart contract source code, this URL has the following format:
 ``gora://offchain/v<API version>/basic?body=<Base64Url-encoded WASM binary>[optional positional arguments]``.
 
 The executable body can also be supplied in binary form as the *data source
-parameter*. Which is more convenient for larger executables or automated builds.
-In that case, the ``body`` data source URL parameter is omitted.
-
-Current Gora offchain API version is ``0``. So, for example, to execute your
-program with two positional arguments (``"red"`` and ``"apple"``) you would
+parameter* which is often convenient with larger executables or automated
+builds.  In that case, the ``body`` data source URL parameter is omitted.
+Current Gora offchain API version is ``0``. So, for example, to execute a
+program with two positional arguments (``"red"`` and ``"apple"``) one would
 specify the following URL:
 ``gora://offchain/v0/basic?arg=red&arg=apple&body=AGFzbQEAAAABhoCAg...``
 
-To convert binaries into Base64URL encoding, you can use ``basenc``
-command-line utility, normally included with Linux and MacOs:
+To convert binaries into Base64URL encoding, ``basenc`` command-line utility,
+normally included with Linux and MacOs, can be used:
 
 .. parsed-literal::
    :class: terminal
@@ -166,8 +165,7 @@ command-line utility, normally included with Linux and MacOs:
    bHMrCHNpZ24tZXh0
    $
 
-To reduce blockchain storage use, you can apply Gzip compression before
-encoding:
+Gzip compression can be applied before encoding to reduce blockchain storage use:
 
 .. parsed-literal::
    :class: terminal
@@ -176,33 +174,93 @@ encoding:
 
 Gora will automatically recognize and decompress gzipped Web Assembly binaries.
 
+.. _off-chain-api:
+
 ******************************
 Gora off-chain computation API
 ******************************
 
-Web Assembly programs supplied with off-chain computation requests interact with
-host Gora nodes via a simple API. It provides functions to setup and initiate
-HTTP(s) requests, or write log messages. It also includes a persistent data
-structure to share data with the host node or between *steps* of your
-program. *Steps* are essentially repeated executions of the program in course of
-serving the same off-chain computation request. They are necessary because Web
-Assembly programs cannot efficiently pause while waiting to receive data from
-external sources such as network connections.
+Oracle programs interact with the host node via *Gora off-Chain API*. It is
+essentially a customized Web Assembly environment that provides functionality to
+query data sources, fetch results, write log messages and more. A key part of
+this API is support for repeated program execution in the context of the same
+oracle request. This is necessary because Web Assembly programs cannot
+efficiently pause while waiting for asynchronous operations, such as receiving
+data from online sources.
 
-A *step* starts when the program's *main function* is called by the executing
-Gora node and ends when this function returns. During a step, the program can
-schedule HTTP(S) requests, possibly using URL templates that it can fill at run
-time. When the step ends, these requests are executed by the Gora node. On their
-completion, the next step commences and your program can access request results
-as well as other data provided by the Gora node via current *context* structure.
-The *context* persists for the duration of executing your off-chain computation
-request. Finishing a step, the program returns a value which tells the Gora node
-what to do next: execute another step, finish successfully or terminate with a
-specific error code.
+.. figure:: off_chain_api.svg
+   :width: 900
+   :align: left
+   :alt: Off-chain programs in fulfilling oracle requests
 
-For the list of valid return values, see `gora_off_chain.h`_.
-header file. To learn how Gora Off-Chain API is used in practice and its execution
-model, please consider `Gora source code examples <https://github.com/GoraNetwork/phoenix-examples/>`_.
+   Off-chain programs in fulfilling oracle requests
+
+Gora off-chain API is made available to C programs by including
+``gora_off_chain.h`` header file. When compiling via ASO control panel, it is
+made available for inclusion automatically. It defines the following custom
+functions:
+
+``void gora_request_url(const char* url, const char* value_specs)``
+  Request content from an URL. ``value_specs`` argument contains one or more
+  `value extraction specifications <#value-extraction>`_, separated by tab
+  characters.
+
+``void gora_set_next_url_param(const char* value)``
+  Set value of a template parameter in the URL most recently requested with
+  ``gora_request_url()``. For example, after calling ``gora_request_url("https://example.com/?a=##&b=##")``,
+  one can call ``gora_set_next_url_param("one")``, then
+  ``gora_set_next_url_param("two")`` which would result in URL
+  ``"https://example.com/?a=one&b=two"`` being requested. This allows having
+  predefined templates for data source URLs and filling them at runtime.
+
+``void gora_log(const char* message, const int level)``
+  Write a message to the node log. Intended for debugging only, oracle
+  program logging is disabled by default on production nodes.
+
+In addition to functions, Gora off-Chain API defines a *context* data structure.
+It is designed for passing data from host node to oracle program as well as
+preserving current state between execution *stages* (more on that later). An
+instance of this structure is passed to oracle program whenever it executes.  It
+contains:
+
+* API version information for compatibility checks
+* Arguments passed to the program with the oracle request
+* Values from queried data sources extracted by host for the program
+* Oracle value to be returned, set by the program
+* Current execution stage number
+* Scratch memory for program data to persist between execution stages
+
+Complete definition of the context structure is contained in
+``gora_off_chain.h`` header file which all oracle program developers are advised
+to peruse.
+
+================
+Staged execution
+================
+
+Execution of oracle programs in stages is necessary because, like most low-level
+system languages, Web Assembly does not support asynchronous calls. When a Web
+Assembly program needs to retrieve data from a source that cannot return it
+instantly (e.g. a network endpoint), it has to either constantly check for data
+arrival in a loop (very inefficient) or rely on runtime environment to call it
+when the data is ready. Gora off-chain API implements a variant of the second
+approach.
+
+Gora host node executes the program repeatedly, performing asynchronous
+operations between executions which are called *stages*. A *stage* starts when
+program's *main function* is called by the host node and ends when this function
+returns. During a stage, the program can schedule HTTP(S) requests, possibly
+using URL templates that it can fill at run time. When a stage ends, these
+requests are executed by the host node. On their completion, next stage
+commences.
+
+Request results are made available to the program via the context structure. The
+context contains current stage number, so program always knows which stage it is
+at. It also has persistent memory space to share data between stages. Finishing
+a stage, the program's main function returns a value telling the host node what
+to do next: execute the next stage, finish successfully or terminate with a
+specific error code. For a hands-on primer of using staged execution, please see
+example programs.
 
 .. _dqs-evm:
 
@@ -230,10 +288,6 @@ documentation and potential templates for your own  applications:
 
  * `example_off_chain.sol <https://github.com/GoraNetwork/developer-quick-start/blob/main/evm/example_off_chain.sol>`_ -
    getting data from multiple APIs and processing it with off-chain computation
-
-.. note:: **NOTE** If you are not too experienced with Solidity, or just want to
-          run Gora examples or experiment modifying them, please skip to the
-          next section.
 
 Consider source code examples linked in the previous section. Integrate the APIs
 exposed in them into your own smart contracts, or deploy an example using your

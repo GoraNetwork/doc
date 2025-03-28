@@ -45,6 +45,8 @@ ASO architecture and workflow
    :align: left
    :alt: Gora ASO architecture and workflow diagram
 
+   Gora ASO architecture and workflow diagram
+
 Gora's app-specific oracles rely on two key mechanisms: an ASO smart contract
 and an *executor* oracle. ASO smart contract contains oracle program and custom
 configuration required by customer for their specific use case. An executor
@@ -88,6 +90,8 @@ aspects of ASO's, including compiling oracle programs and testing them.
    :width: 850
    :align: left
    :alt: Gora web-based control panel in ASO architecture
+
+   Gora web-based control panel in ASO architecture
 
 To start using Gora ASO control panel, go to https://aso.gora.io/ and connect
 your Web3 wallet by clicking "Connect Wallet". If you already created ASO's
@@ -162,7 +166,8 @@ function, and usually it is written specifically for this ASO. While Gora ASO
 programs can be written in any language that compiles to Web Assembly, the ASO
 control panel and documentation examples use C language. It is simple,
 ubiquitous and can create very compact executables suitable for storage on the
-blockchain.
+blockchain. To learn about oracle program API and control flow, please see
+`Gora off-chain computation API <#off-chain-api>`_.
 
 ======================
 Entering and compiling
@@ -186,91 +191,6 @@ the test and check out the result placed in the "Log messages" box. For programs
 that take arguments, they can be provided "Program arguments (JSON)" field as a
 JSON-formatted array. In a production environment, these arguments would come
 from ``args`` parameter of the ``request()`` method call to ASO smart contract.
-
-===
-API
-===
-
-Oracle programs interact with the host node via *Gora off-Chain API*. It is
-essentially a customized Web Assembly environment that provides functionality to
-query data sources, fetch results, write log messages and more. A key part of
-this API is support for repeated program execution in the context of the same
-oracle request. This is necessary because Web Assembly programs cannot
-efficiently pause while waiting for asynchronous operations, such as receiving
-data from online sources.
-
-.. figure:: aso_api.svg
-   :width: 900
-   :align: left
-   :alt: Oracle programs in fulfilling ASO requests
-
-Gora off-chain API is made available to C programs by including
-``gora_off_chain.h`` header file. When compiling via ASO control panel, it is
-made available for inclusion automatically. It defines the following custom
-functions:
-
-``void gora_request_url(const char* url, const char* value_specs)``
-  Request content from an URL. ``value_specs`` argument contains one or more
-  `value extraction specifications <#value-extraction>`_, separated by tab
-  characters.
-
-``void gora_set_next_url_param(const char* value)``
-  Set value of a template parameter in the URL most recently requested with
-  ``gora_request_url()``. For example, after calling ``gora_request_url("https://example.com/?a=##&b=##")``,
-  one can call ``gora_set_next_url_param("one")``, then
-  ``gora_set_next_url_param("two")`` which would result in URL
-  ``"https://example.com/?a=one&b=two"`` being requested. This allows having
-  predefined templates for data source URLs and filling them at runtime.
-
-``void gora_log(const char* message, const int level)``
-  Write a message to the node log. Intended for debugging only, oracle
-  program logging is disabled by default on production nodes.
-
-In addition to functions, Gora off-Chain API defines a *context* data structure.
-It is designed for passing data from host node to oracle program as well as
-preserving current state between execution *stages* (more on that later). An
-instance of this structure is passed to oracle program whenever it executes.  It
-contains:
-
-* API version information for compatibility checks
-* Arguments passed to the program with the oracle request
-* Values from queried data sources extracted by host for the program
-* Oracle value to be returned, set by the program
-* Current execution stage number
-* Scratch memory for program data to persist between execution stages
-
-Complete definition of the context structure is contained in
-``gora_off_chain.h`` header file which all oracle program developers are advised
-to peruse.
-
-----------------
-Staged execution
-----------------
-
-Execution of oracle programs in stages is necessary because, like most low-level
-system languages, Web Assembly does not support asynchronous calls. When a Web
-Assembly program needs to retrieve data from a source that cannot return it
-instantly (e.g. a network endpoint), it has to either constantly check for data
-arrival in a loop (very inefficient) or rely on runtime environment to call it
-when the data is ready. Gora off-chain API implements a variant of the second
-approach.
-
-Gora host node executes the program repeatedly, performing asynchronous
-operations between executions which are called *stages*. A *stage* starts when
-program's *main function* is called by the host node and ends when this function
-returns. During a stage, the program can schedule HTTP(S) requests, possibly
-using URL templates that it can fill at run time. When a stage ends, these
-requests are executed by the host node. On their completion, next stage
-commences.
-
-Request results are made available to the program via the context structure. The
-context contains current stage number, so program always knows which stage it is
-at. It also has persistent memory space to share data between stages. Finishing
-a stage, the program's main function returns a value telling the host node what
-to do next: execute the next stage, finish successfully or terminate with a
-specific error code. For a hands-on primer of using staged execution, please see
-example programs.
-
 
 ***********
 Using ASO's
