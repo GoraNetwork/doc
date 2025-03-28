@@ -22,13 +22,12 @@ p { margin: 2em 0; }
 }
 
 h1 { display: none; }
-h3, h4, h5, dt { color: #195b3a; }
-h2 { padding: 0.5em; color: white; background: #17271f; }
-
-h2 { font-size: 160%; }
-h3 { font-size: 140%; color: #17271f; }
-h4 { font-size: 120%; padding: 0.25em; color: #17271f; background: #e9f5ef; }
+h2 { font-size: 160%; padding: 0.5em; color: white; background: #17271f; }
+h3 { font-size: 140%; color: #17271f; padding-bottom: 0.25em;
+     border-bottom: 1px #195b3a solid; }
+h4 { font-size: 120%; color: #17271f; }
 h5 { font-size: 110%; margin: 0.5em 0; }
+dt { color: #17271f; }
 
 figcaption { color: #195b3a; }
 dt { font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
